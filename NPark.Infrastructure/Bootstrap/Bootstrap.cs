@@ -40,6 +40,7 @@ namespace NPark.Infrastructure.Bootstrap
             services.EnsureDatabaseInitializationAndUpToDate();
             services.AddHttpClient();
             services.AddSingleton<ICacheService, MemoryCacheService>();
+            services.AddSingleton<IByteVerificationService, ByteVerificationService>();
             services.AddMediaService();
             services.AddQrCodeService();
             //services.AddSeeding();

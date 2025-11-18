@@ -14,8 +14,12 @@ namespace NPark.Infrastructure.Configuration
             builder.Property(t => t.StartDate).IsRequired();
             builder.Property(t => t.EndDate).IsRequired();
             builder.Property(t => t.Price).IsRequired();
+            builder.Property(t => t.UniqueGuidPart)
+                  .IsRequired()
+                  .HasColumnType("BINARY(4)");
             builder.Property(t => t.ExceedPrice).IsRequired().HasDefaultValue(0);
             builder.Property(t => t.IsCollected).IsRequired().HasDefaultValue(false);
+            builder.HasIndex(x => x.UniqueGuidPart).IsUnique();
         }
     }
 }

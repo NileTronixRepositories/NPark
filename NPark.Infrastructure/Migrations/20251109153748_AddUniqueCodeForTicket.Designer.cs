@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NPark.Infrastructure;
 
@@ -11,9 +12,11 @@ using NPark.Infrastructure;
 namespace NPark.Infrastructure.Migrations
 {
     [DbContext(typeof(NParkDBContext))]
-    partial class NParkDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251109153748_AddUniqueCodeForTicket")]
+    partial class AddUniqueCodeForTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,7 +386,7 @@ namespace NPark.Infrastructure.Migrations
 
                     b.Property<byte[]>("UniqueGuidPart")
                         .IsRequired()
-                        .HasColumnType("BINARY(4)");
+                        .HasColumnType("varbinary(900)");
 
                     b.HasKey("Id");
 
