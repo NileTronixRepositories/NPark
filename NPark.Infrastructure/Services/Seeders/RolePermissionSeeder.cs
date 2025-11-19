@@ -11,17 +11,9 @@ namespace NPark.Infrastructure.Services.Seeders
         private readonly IGenericRepository<RolePermission> _rolePermissionRepo;
         private readonly ILogger<RolePermissionSeeder> _logger;
 
-        private static readonly Guid AdminRoleId = new("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-
-        private static readonly Guid[] PermissionIds =
-        {
-            new("d6f0b8ae-7b3f-4a32-9f38-306eec4c80ff"), // Create
-            new("c4f8b057-b37f-4570-bc65-d29d830fb89d"), // Read
-            new("17a145f1-ef9d-4f74-98ff-bab12c997b8b"), // Update
-            new("42a3a074-d2c4-459d-bec9-cd6e29b7b38f"), // Delete
-        };
-
-        public RolePermissionSeeder(IGenericRepository<RolePermission> rolePermissionRepo, ILogger<RolePermissionSeeder> logger)
+        public RolePermissionSeeder(
+            IGenericRepository<RolePermission> rolePermissionRepo,
+            ILogger<RolePermissionSeeder> logger)
         {
             _rolePermissionRepo = rolePermissionRepo ?? throw new ArgumentNullException(nameof(rolePermissionRepo));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -31,23 +23,37 @@ namespace NPark.Infrastructure.Services.Seeders
         {
             var toInsert = new List<RolePermission>();
 
-            foreach (var permId in PermissionIds)
+            async Task AddIfNotExists(Guid roleId, Guid permissionId)
             {
-                // نفترض إن الـ RolePermission له Composite Key (RoleId + PermissionId)
                 var exists = await _rolePermissionRepo.IsExistAsync(
-                    rp => rp.RoleId == AdminRoleId && rp.PermissionId == permId,
+                    rp => rp.RoleId == roleId && rp.PermissionId == permissionId,
                     default);
 
                 if (exists)
                 {
                     _logger.LogInformation(
                         "RolePermission already exists for Role {RoleId} and Permission {PermissionId}. Skipping.",
-                        AdminRoleId, permId);
-                    continue;
+                        roleId, permissionId);
+                    return;
                 }
 
-                toInsert.Add(RolePermission.Create(AdminRoleId, permId));
+                toInsert.Add(RolePermission.Create(roleId, permissionId));
             }
+
+            // Admin → كل الـ Permissions
+            await AddIfNotExists(RoleSeeder.AdminRoleId, PermissionSeeder.CreatePermissionId);
+            await AddIfNotExists(RoleSeeder.AdminRoleId, PermissionSeeder.ReadPermissionId);
+            await AddIfNotExists(RoleSeeder.AdminRoleId, PermissionSeeder.UpdatePermissionId);
+            await AddIfNotExists(RoleSeeder.AdminRoleId, PermissionSeeder.DeletePermissionId);
+            await AddIfNotExists(RoleSeeder.AdminRoleId, PermissionSeeder.GenerateTicketPermissionId);
+            await AddIfNotExists(RoleSeeder.AdminRoleId, PermissionSeeder.GetTicketsPermissionId);
+
+            // EntranceCashier → GenerateTicket + GetTickets
+            await AddIfNotExists(RoleSeeder.EntranceCashierRoleId, PermissionSeeder.GenerateTicketPermissionId);
+            await AddIfNotExists(RoleSeeder.EntranceCashierRoleId, PermissionSeeder.GetTicketsPermissionId);
+
+            // ExitCashier → GetTickets فقط
+            await AddIfNotExists(RoleSeeder.ExitCashierRoleId, PermissionSeeder.GetTicketsPermissionId);
 
             if (toInsert.Count == 0)
             {
