@@ -43,7 +43,7 @@ namespace NPark.Infrastructure.Bootstrap
             services.AddSingleton<IByteVerificationService, ByteVerificationService>();
             services.AddMediaService();
             services.AddQrCodeService();
-            //services.AddSeeding();
+            services.AddSeeding();
             services.AddAuth(configuration);
 
             services.AddHttpClient("device-http", c =>
@@ -171,7 +171,7 @@ namespace NPark.Infrastructure.Bootstrap
         {
             services.AddScoped<ISeeder, PermissionSeeder>();
             services.AddScoped<ISeeder, RoleSeeder>();
-            services.AddScoped<ISeeder, PermissionRole>();
+            services.AddScoped<ISeeder, RolePermissionSeeder>();
             services.AddScoped<ISeeder, IUserSeeder>();
             services.AddScoped<IEnsureSeeding, EnsureSeeding>();
             services.AddHostedService<SeedingHostedService>();
