@@ -70,6 +70,7 @@ namespace NPark.Infrastructure.Services.Token
             {
                 Token = tokenValue,
                 RoleName = userEntity.Role.NameEn,
+                Permissions = userEntity.Role.GetPermissions.Select(x => x.Permission.NameEn).ToList()
             };
             return response;
         }

@@ -44,6 +44,6 @@ namespace NPark.Application.Abstraction.Security
         public const string Email = "email";
         public const string PhoneNumber = "phoneNumber";
         public const string GateId = "gateId";
-        public const string Permission = "permission";  // متعدد
+        public const string Permission = "permission";
     }
 }

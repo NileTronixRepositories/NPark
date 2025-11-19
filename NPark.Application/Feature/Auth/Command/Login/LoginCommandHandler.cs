@@ -37,7 +37,9 @@ namespace NPark.Application.Feature.Auth.Command.Login
             if (!isValid)
                 return Result<UserTokenDto>.Fail(new Error
                   (ErrorMessage.WrongPassword, ErrorMessage.WrongPassword, ErrorType.Security));
+
             var specGate = new GetParkingGateByGateNumberAndGateTypeSpecification(request.GateNumber, request.GateType);
+
             var gateEntity = await _parkingGateRepository.FirstOrDefaultWithSpecAsync(specGate, cancellationToken);
             gateEntity!.SetIsOccupied(true, userEntity.Id, DateTime.UtcNow);
             await _parkingGateRepository.SaveChangesAsync();
