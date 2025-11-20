@@ -32,6 +32,7 @@ namespace NPark.Application.Feature.Auth.Command.LogOut
                 var gate = await _gateRepository.GetByIdAsync((Guid)dto.GateId, cancellationToken);
                 gate?.SetIsOccupied(false, null, DateTime.UtcNow);
                 await _gateRepository.SaveChangesAsync(cancellationToken);
+
                 return Result.Ok();
             }
             return Result.Ok();

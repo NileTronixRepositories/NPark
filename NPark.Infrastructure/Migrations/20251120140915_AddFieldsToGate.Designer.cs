@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NPark.Infrastructure;
 
@@ -11,9 +12,11 @@ using NPark.Infrastructure;
 namespace NPark.Infrastructure.Migrations
 {
     [DbContext(typeof(NParkDBContext))]
-    partial class NParkDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251120140915_AddFieldsToGate")]
+    partial class AddFieldsToGate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,10 +88,10 @@ namespace NPark.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParkingSystemConfigurationId");
-
-                    b.HasIndex("GateNumber", "GateType")
+                    b.HasIndex("GateNumber")
                         .IsUnique();
+
+                    b.HasIndex("ParkingSystemConfigurationId");
 
                     b.ToTable("ParkingGate");
                 });
@@ -373,9 +376,6 @@ namespace NPark.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
 
-                    b.Property<Guid>("GateId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsCollected")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -394,17 +394,10 @@ namespace NPark.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("BINARY(4)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("GateId");
 
                     b.HasIndex("UniqueGuidPart")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets", (string)null);
                 });
@@ -539,25 +532,6 @@ namespace NPark.Infrastructure.Migrations
                     b.Navigation("Permission");
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("NPark.Domain.Entities.Ticket", b =>
-                {
-                    b.HasOne("NPark.Domain.Entities.ParkingGate", "ParkingGate")
-                        .WithMany()
-                        .HasForeignKey("GateId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("NPark.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ParkingGate");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NPark.Domain.Entities.User", b =>

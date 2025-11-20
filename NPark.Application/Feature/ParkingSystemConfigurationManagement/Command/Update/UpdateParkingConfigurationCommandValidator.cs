@@ -68,6 +68,9 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
                         g.RuleFor(x => x.LprIp)
                         .Must(IsValidIp).WithMessage("EntryGate LPR IP must be a valid IPv4 or IPv6 address.")
                         .When(x => !string.IsNullOrWhiteSpace(x.LprIp));
+                        g.RuleFor(x => x.PcIp)
+                    .Must(IsValidIp).WithMessage("ExitGate PC IP must be a valid IPv4 or IPv6 address.")
+                    .When(x => !string.IsNullOrWhiteSpace(x.PcIp));
                     });
 
             RuleForEach(x => x.ExitGates)
@@ -76,6 +79,9 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
                     g.RuleFor(x => x.LprIp)
                         .Must(IsValidIp).WithMessage("ExitGate LPR IP must be a valid IPv4 or IPv6 address.")
                         .When(x => !string.IsNullOrWhiteSpace(x.LprIp));
+                    g.RuleFor(x => x.PcIp)
+                        .Must(IsValidIp).WithMessage("ExitGate PC IP must be a valid IPv4 or IPv6 address.")
+                        .When(x => !string.IsNullOrWhiteSpace(x.PcIp));
                 });
 
             RuleFor(x => x)

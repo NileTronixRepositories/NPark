@@ -14,18 +14,24 @@ namespace NPark.Domain.Entities
         public bool IsCollected { get; private set; }
         public byte[] UniqueGuidPart { get; private set; }
         public string UniqueCode => BitConverter.ToString(UniqueGuidPart).Replace("-", "");
+        public Guid GateId { get; private set; }
+        public Guid UserId { get; private set; }
+        public User User { get; private set; }
+        public ParkingGate ParkingGate { get; private set; }
 
         private Ticket()
         { }
 
-        public static Ticket Create(DateTime startDate, DateTime endDate, decimal price)
+        public static Ticket Create(DateTime startDate, decimal price, Guid gateId, Guid userId
+            )
         {
             var ticket = new Ticket()
             {
                 Id = Guid.NewGuid(),
                 StartDate = startDate,
-                EndDate = endDate,
                 Price = price,
+                GateId = gateId,
+                UserId = userId
             };
 
             // Save the first 4 bytes of the Guid as the unique part

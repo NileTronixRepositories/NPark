@@ -4,61 +4,85 @@ using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NPark.Application.Abstraction.Security;
-using NPark.Application.Options;
+using NPark.Application.Specifications.ParkingSystemConfigurationSpec;
 using NPark.Domain.Entities;
+using NPark.Domain.Enums;
 
 namespace NPark.Application.Feature.TicketsManagement.Command.Add
 {
     public sealed class AddTicketCommandHandler : ICommandHandler<AddTicketCommand, byte[]>
     {
         private readonly IGenericRepository<Ticket> _ticketRepository;
+        private readonly IGenericRepository<PricingScheme> _pricingSchema;
+
+        private readonly IGenericRepository<ParkingSystemConfiguration> _parkingSystemConfigurationRepository;
         private readonly IQRCodeService _qrCodeService;
         private readonly IByteVerificationService _byteVerificationService;
-        private readonly SalaryConfig _option;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITokenReader _tokenReader;
         private readonly ILogger<AddTicketCommandHandler> _logger;
 
         public AddTicketCommandHandler(IGenericRepository<Ticket> ticketRepository,
-            IQRCodeService qrCodeService, IOptionsMonitor<SalaryConfig> option,
+            IQRCodeService qrCodeService,
             IHttpContextAccessor httpContextAccessor, IByteVerificationService byteVerificationService,
-            ILogger<AddTicketCommandHandler> logger)
+            ITokenReader tokenReader,
+            ILogger<AddTicketCommandHandler> logger, IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository)
         {
             _logger = logger;
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
             _qrCodeService = qrCodeService ?? throw new ArgumentNullException(nameof(qrCodeService));
-            _option = option.CurrentValue ?? throw new ArgumentNullException(nameof(option));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _byteVerificationService = byteVerificationService ?? throw new ArgumentNullException(nameof(byteVerificationService));
+            _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository;
+            _tokenReader = tokenReader ?? throw new ArgumentNullException(nameof(tokenReader));
         }
 
         public async Task<Result<byte[]>> Handle(AddTicketCommand request, CancellationToken cancellationToken)
         {
-            var endTime = DateTime.UtcNow.Add(_option.AllowedTime);
-            var entity = Ticket.Create(DateTime.UtcNow, endTime, _option.Salary);
-            await _ticketRepository.AddAsync(entity, cancellationToken);
-            _logger.LogWarning("UniqueGuidPart Before Save: " + BitConverter.ToString(entity.UniqueGuidPart));
+            var spec = new GetParkingSystemConfigurationForUpdateSpecification();
+            var configuration = await _parkingSystemConfigurationRepository
+                .FirstOrDefaultWithSpecAsync(spec, cancellationToken);
 
-            await _ticketRepository.SaveChangesAsync(cancellationToken);
-            var uniqueGuidPart = entity.UniqueGuidPart;
-            var byte5 = _byteVerificationService.GenerateComplexByte5FromGuid(uniqueGuidPart);
-            var combinedBytes = uniqueGuidPart.Concat(new byte[] { byte5 }).ToArray();
-            var encryptedData = Convert.ToBase64String(combinedBytes);
+            if (configuration is null)
+            {
+                return Result<byte[]>.Fail(new
+                    Error("Configuration not found", "Configuration not found", ErrorType.NotFound));
+            }
+            var tokenInfo = _httpContextAccessor!.HttpContext?.ReadToken(_tokenReader);
+            if (tokenInfo is null || tokenInfo.GateId.HasValue || tokenInfo.UserId.HasValue)
+            {
+                return Result<byte[]>.Fail(new Error("GateId not found", "GateId not found", ErrorType.NotFound));
+            }
+            if (configuration.PriceType == PriceType.Enter)
+            {
+                var pricingSchema = await _pricingSchema.GetByIdAsync(configuration.PricingSchemaId!.Value, cancellationToken);
+                var ticketEntity = Ticket.Create(DateTime.Now, pricingSchema!.Salary,
+                    tokenInfo.GateId.Value, tokenInfo.UserId.Value
 
-            var qrCode = _qrCodeService.GenerateQRCode(encryptedData);
+              );
+                await _ticketRepository.AddAsync(ticketEntity, cancellationToken);
+                await _ticketRepository.SaveChangesAsync(cancellationToken);
+                var Tbyte5 = _byteVerificationService.GenerateComplexByte5FromGuid(ticketEntity.UniqueGuidPart);
+                var combinedBytes = ticketEntity.UniqueGuidPart.Concat(new byte[] { Tbyte5 }).ToArray();
+                var encryptedData = Convert.ToBase64String(combinedBytes);
+                var TqrCode = _qrCodeService.GenerateQRCode(encryptedData);
+                return Result<byte[]>.Ok(TqrCode);
+            }
+            else
+            {
+                var ticketEntity = Ticket.Create(DateTime.Now, 0,
+                       tokenInfo.GateId.Value, tokenInfo.UserId.Value
 
-            return Result<byte[]>.Ok(qrCode);
+                 );
+                await _ticketRepository.AddAsync(ticketEntity, cancellationToken);
+                await _ticketRepository.SaveChangesAsync(cancellationToken);
+                var Tbyte5 = _byteVerificationService.GenerateComplexByte5FromGuid(ticketEntity.UniqueGuidPart);
+                var combinedBytes = ticketEntity.UniqueGuidPart.Concat(new byte[] { Tbyte5 }).ToArray();
+                var encryptedData = Convert.ToBase64String(combinedBytes);
+                var TqrCode = _qrCodeService.GenerateQRCode(encryptedData);
+                return Result<byte[]>.Ok(TqrCode);
+            }
         }
-
-        //private string GetUri(string id)
-        //{
-        //    var request = _httpContextAccessor.HttpContext.Request;
-        //    var ipHost = $"{request.Scheme}://{request.Host.Value}";
-
-        //    var fullUrl = $"{ipHost}?id={id}";
-
-        //    return fullUrl;
-        //}
     }
 }

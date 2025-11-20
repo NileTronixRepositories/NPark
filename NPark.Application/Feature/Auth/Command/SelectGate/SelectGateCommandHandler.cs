@@ -61,7 +61,14 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
 
             // Generate JWT token for the user and gate combination
             var token = await _jwtProvider.Generate(userEntity, gateEntity);
-
+            var peripheral = new GateDevicePeripheral
+            {
+                LprIp = gateEntity.LprIp,
+                PcIp = gateEntity.PcIp,
+                HasLpr = gateEntity.HasLpr,
+                HasPc = gateEntity.HasPc,
+            };
+            token.GateDevicePeripheral = peripheral;
             // Return the result with the generated token
             return Result<UserTokenDto>.Ok(token);
         }

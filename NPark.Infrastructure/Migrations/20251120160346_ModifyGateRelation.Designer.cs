@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NPark.Infrastructure;
 
@@ -11,9 +12,11 @@ using NPark.Infrastructure;
 namespace NPark.Infrastructure.Migrations
 {
     [DbContext(typeof(NParkDBContext))]
-    partial class NParkDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251120160346_ModifyGateRelation")]
+    partial class ModifyGateRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -394,17 +397,12 @@ namespace NPark.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("BINARY(4)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GateId");
 
                     b.HasIndex("UniqueGuidPart")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets", (string)null);
                 });
@@ -549,15 +547,7 @@ namespace NPark.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("NPark.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("ParkingGate");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NPark.Domain.Entities.User", b =>

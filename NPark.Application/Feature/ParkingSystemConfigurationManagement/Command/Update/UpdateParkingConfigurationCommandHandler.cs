@@ -54,11 +54,11 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
 
                 foreach (var gate in request.EntryGates)
                 {
-                    entity.AddParkingGate(ParkingGate.Create(gate.GateNumber, GateType.Entrance, gate.LprIp));
+                    entity.AddParkingGate(ParkingGate.Create(gate.GateNumber, GateType.Entrance, gate.LprIp, gate.PcIp));
                 }
                 foreach (var gate in request.ExitGates)
                 {
-                    entity.AddParkingGate(ParkingGate.Create(gate.GateNumber, GateType.Exit, gate.LprIp));
+                    entity.AddParkingGate(ParkingGate.Create(gate.GateNumber, GateType.Exit, gate.LprIp, gate.PcIp));
                 }
 
                 await _parkingSystemConfigurationRepository.AddAsync(entity, cancellationToken);
@@ -94,11 +94,11 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
                 var list = new List<ParkingGate>();
                 foreach (var gate in request.EntryGates)
                 {
-                    list.Add(ParkingGate.Create(gate.GateNumber, GateType.Entrance, gate.LprIp, entity.Id));
+                    list.Add(ParkingGate.Create(gate.GateNumber, GateType.Entrance, gate.LprIp, gate.PcIp, entity.Id));
                 }
                 foreach (var gate in request.ExitGates)
                 {
-                    list.Add(ParkingGate.Create(gate.GateNumber, GateType.Exit, gate.LprIp, entity.Id));
+                    list.Add(ParkingGate.Create(gate.GateNumber, GateType.Exit, gate.LprIp, gate.PcIp, entity.Id));
                 }
                 await _parkingGateRepository.AddRangeAsync(list, cancellationToken);
                 await _parkingGateRepository.SaveChangesAsync(cancellationToken);

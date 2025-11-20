@@ -15,7 +15,7 @@ namespace NPark.Infrastructure.Configuration
             builder.Property(x => x.OccupiedTime).IsRequired(false);
             builder.Property(x => x.LprIp).IsRequired(false);
 
-            builder.HasIndex(x => x.GateNumber).IsUnique();
+            builder.HasIndex(x => new { x.GateNumber, x.GateType }).IsUnique();
         }
     }
 }

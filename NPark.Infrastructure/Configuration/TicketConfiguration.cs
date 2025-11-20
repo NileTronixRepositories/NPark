@@ -20,6 +20,16 @@ namespace NPark.Infrastructure.Configuration
             builder.Property(t => t.ExceedPrice).IsRequired().HasDefaultValue(0);
             builder.Property(t => t.IsCollected).IsRequired().HasDefaultValue(false);
             builder.HasIndex(x => x.UniqueGuidPart).IsUnique();
+
+            builder.HasOne(x => x.ParkingGate)
+                .WithMany()
+                .HasForeignKey(x => x.GateId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

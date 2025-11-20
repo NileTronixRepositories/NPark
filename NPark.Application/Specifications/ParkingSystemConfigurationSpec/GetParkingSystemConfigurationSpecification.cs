@@ -31,13 +31,15 @@ namespace NPark.Application.Specifications.ParkingSystemConfigurationSpec
                 .Select(x => new GateInfo
                 {
                     GateNumber = x.GateNumber,
-                    LprIp = x.LprIp
+                    LprIp = x.LprIp,
+                    PcIp = x.PcIp,
                 }).ToList(),
                 EntryGates = x.ParkingGates.Where(x => x.GateType == GateType.Entrance)
                 .Select(x => new GateInfo
                 {
                     GateNumber = x.GateNumber,
-                    LprIp = x.LprIp
+                    LprIp = x.LprIp,
+                    PcIp = x.PcIp,
                 }).ToList()
             });
         }
