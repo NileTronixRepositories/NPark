@@ -44,7 +44,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 .MustAsync(async (command, cancellationToken) =>
                 {
                     var tokenInfo = await GetTokenInfoAsync(_contextAccessor, _tokenReader);
-                    var gateEntity = await GetGateEntityAsync(command.GateNumber, cancellationToken);
+                    var gateEntity = await GetGateEntityAsync(command.GateNumber, command.GateType, cancellationToken);
 
                     if (tokenInfo?.Role == "EntranceCashier" && gateEntity?.GateType == GateType.Exit)
                         return false;
@@ -59,15 +59,15 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
             RuleFor(x => x)
                 .MustAsync(async (command, cancellationToken) =>
                 {
-                    var gateEntity = await GetGateEntityAsync(command.GateNumber, cancellationToken);
+                    var gateEntity = await GetGateEntityAsync(command.GateNumber, command.GateType, cancellationToken);
                     return gateEntity?.IsOccupied != true;
                 })
                 .WithMessage("Gate is Occupied. / البوابة مشغولة.");
         }
 
-        private async Task<ParkingGate?> GetGateEntityAsync(int gateNumber, CancellationToken cancellationToken)
+        private async Task<ParkingGate?> GetGateEntityAsync(int gateNumber, GateType gateType, CancellationToken cancellationToken)
         {
-            return await _gateInfoRepository.FirstOrDefaultWithSpecAsync(new GetGateByGateNumberSpec(gateNumber), cancellationToken);
+            return await _gateInfoRepository.FirstOrDefaultWithSpecAsync(new GetGateByGateNumberSpec(gateNumber, gateType), cancellationToken);
         }
 
         private async Task<TokenInfoDto?> GetTokenInfoAsync(IHttpContextAccessor accessor, ITokenReader tokenReader)

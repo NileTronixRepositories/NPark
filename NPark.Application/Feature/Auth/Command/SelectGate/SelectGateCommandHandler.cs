@@ -46,7 +46,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
 
             // Fetch the gate entity based on GateNumber
             var gateEntity = await _gateInfoRepository.FirstOrDefaultWithSpecAsync(
-                new GetGateByGateNumberSpec(request.GateNumber), cancellationToken);
+                new GetGateByGateNumberSpec(request.GateNumber, request.GateType), cancellationToken);
 
             // If the gate is invalid, return error
             if (gateEntity == null)
