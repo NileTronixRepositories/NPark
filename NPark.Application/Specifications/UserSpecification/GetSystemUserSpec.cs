@@ -12,6 +12,7 @@ namespace NPark.Application.Specifications.UserSpecification
             UseNoTracking();
             Select(q => new GetSystemUserQueryResponse
             {
+                Id = q.Id,
                 Email = q.Email,
                 RoleName = q.Role.NameEn,
                 Username = q.Username

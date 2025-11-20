@@ -21,23 +21,23 @@ namespace NPark.Application.Feature.Auth.Command.Login
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage(ErrorMessage.PasswordRequired);
 
-            RuleFor(x => x.GateNumber)
-                .NotEmpty().WithMessage("Gate Number is required");
+            //RuleFor(x => x.GateNumber)
+            //    .NotEmpty().WithMessage("Gate Number is required");
 
-            RuleFor(x => x.GateType)
-                .NotEmpty().WithMessage("Gate Type is required")
-                .IsInEnum().WithMessage("Invalid Gate Type");
-            RuleFor(x => x)
-                .MustAsync(async (command, cancellation) =>
-                {
-                    return await _parkingGateRepository.IsExistAsync(x => x.GateNumber == command.GateNumber && x.GateType == command.GateType);
-                })
-                .WithMessage("Gate Not Found")
-                .MustAsync(async (command, cancellation) =>
-                {
-                    return await _parkingGateRepository.IsExistAsync(x => x.GateNumber == command.GateNumber && x.GateType == command.GateType && x.IsOccupied != false);
-                })
-                .WithMessage("Gate Already Occupied");
+            //RuleFor(x => x.GateType)
+            //    .NotEmpty().WithMessage("Gate Type is required")
+            //    .IsInEnum().WithMessage("Invalid Gate Type");
+            //RuleFor(x => x)
+            //    .MustAsync(async (command, cancellation) =>
+            //    {
+            //        return await _parkingGateRepository.IsExistAsync(x => x.GateNumber == command.GateNumber && x.GateType == command.GateType);
+            //    })
+            //    .WithMessage("Gate Not Found")
+            //    .MustAsync(async (command, cancellation) =>
+            //    {
+            //        return await _parkingGateRepository.IsExistAsync(x => x.GateNumber == command.GateNumber && x.GateType == command.GateType && x.IsOccupied != false);
+            //    })
+            //    .WithMessage("Gate Already Occupied");
         }
     }
 }

@@ -12,6 +12,7 @@ namespace NPark.Domain.Entities
         public string Email { get; private set; } = string.Empty!;
         public string PasswordHash { get; private set; } = string.Empty!;
         public string PhoneNumber { get; private set; } = string.Empty!;
+
         public string NationalId { get; private set; } = string.Empty!;
         public Guid? RoleId { get; private set; }
         public Role Role { get; private set; } = null!;
@@ -22,6 +23,8 @@ namespace NPark.Domain.Entities
         public void UpdateName(string name) => Name = name;
 
         public void UpdateEmail(string email) => Email = email;
+
+        public void UpdateUserName(string username) => Username = username;
 
         public void UpdatePasswordHash(string passwordHash) => PasswordHash = passwordHash;
 

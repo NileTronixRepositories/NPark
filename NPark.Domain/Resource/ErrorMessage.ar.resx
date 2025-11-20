@@ -222,4 +222,28 @@
   <data name="PricingSchemaId_RequiredWhenEnter" xml:space="preserve">
     <value>يجب إدخال معرف جدول التسعير عند اختيار نوع التسعير 'عند الدخول</value>
   </data>
+  <data name="UserName_Required" xml:space="preserve">
+    <value>اسم المستخدم مطلوب.</value>
+  </data>
+  <data name="UserName_Exist" xml:space="preserve">
+    <value>اسم المستخدم موجود بالفعل.</value>
+  </data>
+  <data name="Role_Requred" xml:space="preserve">
+    <value>الدور مطلوب</value>
+  </data>
+  <data name="Email_Required" xml:space="preserve">
+    <value>البريد الإلكتروني مطلوب</value>
+  </data>
+  <data name="Invalid_Email" xml:space="preserve">
+    <value> البريد الإلكتروني غير صالح</value>
+  </data>
+  <data name="Email_Exist" xml:space="preserve">
+    <value>البريد الإلكتروني موجود بالفعل.</value>
+  </data>
+  <data name="Invalid_Password" xml:space="preserve">
+    <value>يجب أن تكون كلمة المرور مكونة من 8 أحرف على الأقل، مع وجود حرف كبير، حرف صغير، ورقم.</value>
+  </data>
+  <data name="Role_Exist" xml:space="preserve">
+    <value> الدور غير موجود.</value>
+  </data>
 </root>

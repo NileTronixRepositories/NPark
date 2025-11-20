@@ -26,7 +26,6 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
 
         public async Task<Result> Handle(UpdateParkingConfigurationCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogWarning("Grace Period is {0}", request.gracePeriodMinutes ?? 0);
             var spec = new GetParkingSystemConfigurationForUpdateSpecification();
             var entity = await _parkingSystemConfigurationRepository.FirstOrDefaultWithSpecAsync(spec, cancellationToken);
             if (entity is null)

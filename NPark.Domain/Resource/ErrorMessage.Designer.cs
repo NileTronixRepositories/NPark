@@ -97,11 +97,38 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email already exists..
+        /// </summary>
+        public static string Email_Exist {
+            get {
+                return ResourceManager.GetString("Email_Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email is required..
+        /// </summary>
+        public static string Email_Required {
+            get {
+                return ResourceManager.GetString("Email_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allowed parking slots must be greater than 0.
         /// </summary>
         public static string Invalid_AllowedParkingSlots {
             get {
                 return ResourceManager.GetString("Invalid_AllowedParkingSlots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email is not valid..
+        /// </summary>
+        public static string Invalid_Email {
+            get {
+                return ResourceManager.GetString("Invalid_Email", resourceCulture);
             }
         }
         
@@ -147,6 +174,15 @@ namespace NPark.Domain.Resource {
         public static string Invalid_NationalId {
             get {
                 return ResourceManager.GetString("Invalid_NationalId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, and one number..
+        /// </summary>
+        public static string Invalid_Password {
+            get {
+                return ResourceManager.GetString("Invalid_Password", resourceCulture);
             }
         }
         
@@ -313,6 +349,24 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role does not exist..
+        /// </summary>
+        public static string Role_Exist {
+            get {
+                return ResourceManager.GetString("Role_Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role is required..
+        /// </summary>
+        public static string Role_Requred {
+            get {
+                return ResourceManager.GetString("Role_Requred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TotalDays is required when DurationType is Days..
         /// </summary>
         public static string TotalDay_Require {
@@ -345,6 +399,24 @@ namespace NPark.Domain.Resource {
         public static string Unique_Phone {
             get {
                 return ResourceManager.GetString("Unique_Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name already exists.
+        /// </summary>
+        public static string UserName_Exist {
+            get {
+                return ResourceManager.GetString("UserName_Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name is required.
+        /// </summary>
+        public static string UserName_Required {
+            get {
+                return ResourceManager.GetString("UserName_Required", resourceCulture);
             }
         }
         

@@ -6,6 +6,7 @@ using NPark.Application.Feature.RoleManagement.Query.GetRoles;
 
 namespace NPark.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class RoleController : ControllerTemplate
 
     {

@@ -4,7 +4,6 @@ using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
 using NPark.Application.Abstraction;
 using NPark.Application.Shared.Dto;
-using NPark.Application.Specifications.ParkingGateSpec;
 using NPark.Application.Specifications.UserSpecification;
 using NPark.Domain.Entities;
 using NPark.Domain.Resource;
@@ -38,11 +37,11 @@ namespace NPark.Application.Feature.Auth.Command.Login
                 return Result<UserTokenDto>.Fail(new Error
                   (ErrorMessage.WrongPassword, ErrorMessage.WrongPassword, ErrorType.Security));
 
-            var specGate = new GetParkingGateByGateNumberAndGateTypeSpecification(request.GateNumber, request.GateType);
+            //var specGate = new GetParkingGateByGateNumberAndGateTypeSpecification(request.GateNumber, request.GateType);
 
-            var gateEntity = await _parkingGateRepository.FirstOrDefaultWithSpecAsync(specGate, cancellationToken);
-            gateEntity!.SetIsOccupied(true, userEntity.Id, DateTime.UtcNow);
-            await _parkingGateRepository.SaveChangesAsync();
+            //var gateEntity = await _parkingGateRepository.FirstOrDefaultWithSpecAsync(specGate, cancellationToken);
+            //gateEntity!.SetIsOccupied(true, userEntity.Id, DateTime.UtcNow);
+            //await _parkingGateRepository.SaveChangesAsync();
             var response = await _jwtProvider.Generate(userEntity);
             return Result<UserTokenDto>.Ok(response);
         }

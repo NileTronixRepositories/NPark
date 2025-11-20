@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NPark.Application.Feature.Auth.Command.Login;
 using NPark.Application.Feature.Auth.Command.LoginFirstTime;
 using NPark.Application.Feature.Auth.Command.LogOut;
+using NPark.Application.Feature.Auth.Command.SelectGate;
 
 namespace NPark.Api.Controllers
 {
@@ -31,6 +32,13 @@ namespace NPark.Api.Controllers
 
         [HttpPost(nameof(Logout))]
         public async Task<IActionResult> Logout([FromBody] LogoutCommand command, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(command, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpPost(nameof(CheckGate))]
+        public async Task<IActionResult> CheckGate([FromBody] SelectGateCommand command, CancellationToken cancellationToken)
         {
             var result = await sender.Send(command, cancellationToken);
             return result.ToIActionResult();
