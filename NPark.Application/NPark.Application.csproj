@@ -19,9 +19,8 @@
 
   <ItemGroup>
     <Folder Include="Feature\GateConfig\Query\" />
-    <Folder Include="Feature\TicketsManagement\Query\" />
+    <Folder Include="Feature\RoleManagement\Command\" />
     <Folder Include="Feature\UserManagement\Command\" />
-    <Folder Include="Feature\UserManagement\Query\" />
   </ItemGroup>
 
 </Project>

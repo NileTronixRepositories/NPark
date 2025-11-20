@@ -14,6 +14,11 @@ namespace NPark.Application.Specifications.TicketSpecification
             AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end);
             AddCriteria(x => !x.IsCollected);
             UseNoTracking();
+            Select(x => new GetTicketForEntryGateQueryResponse
+            {
+                StartDate = x.CreatedOnUtc,
+                TicketNumber = x.Id
+            });
         }
     }
 }

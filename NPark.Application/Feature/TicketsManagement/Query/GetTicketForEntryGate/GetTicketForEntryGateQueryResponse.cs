@@ -1,6 +1,8 @@
 ﻿namespace NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate
 {
-    public class GetTicketForEntryGateQueryResponse
+    public sealed record GetTicketForEntryGateQueryResponse
     {
+        public DateTime StartDate { get; init; }
+        public Guid TicketNumber { get; init; }
     }
 }
