@@ -6,7 +6,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
 {
     public sealed record SelectGateCommand : ICommand<UserTokenDto>
     {
-        public int GateNumber { get; init; }
+        public string GateNumber { get; init; } = string.Empty;
         public GateType GateType { get; init; }
     }
 }

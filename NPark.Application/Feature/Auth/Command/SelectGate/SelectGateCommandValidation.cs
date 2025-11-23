@@ -36,7 +36,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 .NotEmpty()
                 .WithMessage("Gate number is required. / رقم البوابة مطلوب.")
                 .MustAsync(async (gateNumber, cancellationToken) =>
-                    await IsValidGateAsync(gateNumber, cancellationToken))
+                    await IsValidGateAsync(int.Parse(gateNumber.Split(' ')[0]), cancellationToken))
                 .WithMessage("Invalid Gate Number. / رقم البوابة غير صالح.");
 
             // التحقق من تطابق Role مع نوع البوابة
@@ -44,7 +44,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 .MustAsync(async (command, cancellationToken) =>
                 {
                     var tokenInfo = await GetTokenInfoAsync(_contextAccessor, _tokenReader);
-                    var gateEntity = await GetGateEntityAsync(command.GateNumber, command.GateType, cancellationToken);
+                    var gateEntity = await GetGateEntityAsync(int.Parse(command.GateNumber.Split(' ')[0]), command.GateType, cancellationToken);
 
                     if (tokenInfo?.Role == "EntranceCashier" && gateEntity?.GateType == GateType.Exit)
                         return false;
@@ -59,7 +59,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
             RuleFor(x => x)
                 .MustAsync(async (command, cancellationToken) =>
                 {
-                    var gateEntity = await GetGateEntityAsync(command.GateNumber, command.GateType, cancellationToken);
+                    var gateEntity = await GetGateEntityAsync(int.Parse(command.GateNumber.Split(' ')[0]), command.GateType, cancellationToken);
                     return gateEntity?.IsOccupied != true;
                 })
                 .WithMessage("Gate is Occupied. / البوابة مشغولة.");

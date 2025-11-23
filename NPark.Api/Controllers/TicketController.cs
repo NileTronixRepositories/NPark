@@ -19,6 +19,9 @@ namespace NPark.Api.Controllers
         public async Task<IActionResult> AddTicket(AddTicketCommand command, CancellationToken cancellationToken)
         {
             var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+                return result.ToIActionResult();
+
             return File(result.Value, "image/png", "ticket-qr.png");
         }
 

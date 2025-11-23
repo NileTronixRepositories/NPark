@@ -23,10 +23,12 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
         private readonly ITokenReader _tokenReader;
         private readonly ILogger<AddTicketCommandHandler> _logger;
 
-        public AddTicketCommandHandler(IGenericRepository<Ticket> ticketRepository,
+        public AddTicketCommandHandler(
+            IGenericRepository<Ticket> ticketRepository,
             IQRCodeService qrCodeService,
             IHttpContextAccessor httpContextAccessor, IByteVerificationService byteVerificationService,
             ITokenReader tokenReader,
+            IGenericRepository<PricingScheme> pricingSchema,
             ILogger<AddTicketCommandHandler> logger, IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository)
         {
             _logger = logger;
@@ -36,6 +38,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             _byteVerificationService = byteVerificationService ?? throw new ArgumentNullException(nameof(byteVerificationService));
             _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository;
             _tokenReader = tokenReader ?? throw new ArgumentNullException(nameof(tokenReader));
+            _pricingSchema = pricingSchema ?? throw new ArgumentNullException(nameof(pricingSchema));
+
         }
 
         public async Task<Result<byte[]>> Handle(AddTicketCommand request, CancellationToken cancellationToken)
@@ -50,7 +54,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     Error("Configuration not found", "Configuration not found", ErrorType.NotFound));
             }
             var tokenInfo = _httpContextAccessor!.HttpContext?.ReadToken(_tokenReader);
-            if (tokenInfo is null || tokenInfo.GateId.HasValue || tokenInfo.UserId.HasValue)
+            if (tokenInfo is null || !tokenInfo.GateId.HasValue || !tokenInfo.UserId.HasValue)
             {
                 return Result<byte[]>.Fail(new Error("GateId not found", "GateId not found", ErrorType.NotFound));
             }

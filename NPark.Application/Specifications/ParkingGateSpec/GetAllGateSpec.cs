@@ -1,6 +1,7 @@
 ﻿using BuildingBlock.Domain.Specification;
 using NPark.Application.Feature.GateManagement.Query.GetAll;
 using NPark.Domain.Entities;
+using NPark.Domain.Enums;
 
 namespace NPark.Application.Specifications.ParkingGateSpec
 {
@@ -12,7 +13,9 @@ namespace NPark.Application.Specifications.ParkingGateSpec
             Select(x => new GetAllGateQueryResponse
             {
                 GateId = x.Id,
-                GateName = x.GateNumber,
+                GateName = x.GateType == GateType.Entrance
+                    ? $"{x.GateNumber} Entrance"
+                    : $"{x.GateNumber} Exit",
                 GateType = x.GateType
             });
         }
