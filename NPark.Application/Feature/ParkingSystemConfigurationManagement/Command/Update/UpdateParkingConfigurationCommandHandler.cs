@@ -2,6 +2,8 @@
 using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
 using Microsoft.Extensions.Logging;
+using NPark.Application.Abstraction.Security;
+using NPark.Application.Shared.Dto;
 using NPark.Application.Specifications.ParkingGateSpec;
 using NPark.Application.Specifications.ParkingSystemConfigurationSpec;
 using NPark.Domain.Entities;
@@ -14,14 +16,17 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
         private readonly IGenericRepository<ParkingSystemConfiguration> _parkingSystemConfigurationRepository;
         private readonly IGenericRepository<ParkingGate> _parkingGateRepository;
         private readonly ILogger<UpdateParkingConfigurationCommandHandler> _logger;
+        private readonly IAuditLogger _auditLogger;
 
         public UpdateParkingConfigurationCommandHandler(IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository,
             IGenericRepository<ParkingGate> parkingGateRepository,
+            IAuditLogger auditLogger,
             ILogger<UpdateParkingConfigurationCommandHandler> logger)
         {
             _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository ?? throw new ArgumentNullException(nameof(parkingSystemConfigurationRepository));
             _parkingGateRepository = parkingGateRepository ?? throw new ArgumentNullException(nameof(parkingGateRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _auditLogger = auditLogger ?? throw new ArgumentNullException(nameof(auditLogger));
         }
 
         public async Task<Result> Handle(UpdateParkingConfigurationCommand request, CancellationToken cancellationToken)
@@ -63,6 +68,21 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
 
                 await _parkingSystemConfigurationRepository.AddAsync(entity, cancellationToken);
                 await _parkingSystemConfigurationRepository.SaveChangesAsync(cancellationToken);
+
+                await _auditLogger.LogAsync(
+                  new AuditLogEntry(
+                      EventName: "CreateParkingSystemConfiguration",
+                      EventCategory: "ParkingSystem",
+                      IsSuccess: true,
+                      StatusCode: 201,  // Created
+                      Extra: new
+                      {
+                          request.EntryGatesCount,
+                          request.ExitGatesCount,
+                          request.AllowedParkingSlots,
+                          request.PriceType
+                      }),
+                  cancellationToken);
                 return Result.Ok();
             }
             else
@@ -102,6 +122,21 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
                 }
                 await _parkingGateRepository.AddRangeAsync(list, cancellationToken);
                 await _parkingGateRepository.SaveChangesAsync(cancellationToken);
+
+                await _auditLogger.LogAsync(
+                   new AuditLogEntry(
+                       EventName: "UpdateParkingSystemConfiguration",
+                       EventCategory: "ParkingSystem",
+                       IsSuccess: true,
+                       StatusCode: 200,  // OK
+                       Extra: new
+                       {
+                           request.EntryGatesCount,
+                           request.ExitGatesCount,
+                           request.AllowedParkingSlots,
+                           request.PriceType
+                       }),
+                   cancellationToken);
 
                 return Result.Ok();
             }

@@ -17,10 +17,12 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
         private readonly IGenericRepository<ParkingGate> _gateInfoRepository;
         private readonly IJwtProvider _jwtProvider;
         private readonly IGenericRepository<User> _userInfoRepository;
+        private readonly IAuditLogger _auditLogger;
 
         public SelectGateCommandHandler(IHttpContextAccessor contextAccessor,
             ITokenReader tokenReader,
             IGenericRepository<ParkingGate> gateInfoRepository, IJwtProvider jwtProvider,
+            IAuditLogger auditLogger,
             IGenericRepository<User> userInfoRepository)
         {
             _contextAccessor = contextAccessor;
@@ -28,6 +30,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
             _gateInfoRepository = gateInfoRepository;
             _jwtProvider = jwtProvider;
             _userInfoRepository = userInfoRepository;
+            _auditLogger = auditLogger;
         }
 
         public async Task<Result<UserTokenDto>> Handle(SelectGateCommand request, CancellationToken cancellationToken)
@@ -71,6 +74,22 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 HasPc = gateEntity.HasPc,
             };
             token.GateDevicePeripheral = peripheral;
+            await _auditLogger.LogAsync(
+                new AuditLogEntry(
+                    EventName: "GateSelected",
+                    EventCategory: "Gate",
+                    IsSuccess: true,
+                    StatusCode: StatusCodes.Status200OK,
+                    UserId: userId,
+                    GateId: gateEntity.Id,
+                    Extra: new
+                    {
+                        request.GateNumber,
+                        request.GateType,
+                        gateNumber = gateEntity.GateNumber,
+                        gateType = gateEntity.GateType
+                    }),
+                cancellationToken);
             // Return the result with the generated token
             return Result<UserTokenDto>.Ok(token);
         }

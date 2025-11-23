@@ -34,6 +34,7 @@ namespace NPark.Infrastructure.Bootstrap
 
             services.AddDbConfig(configuration);
             services.AddScoped<IDbContextProvider, DbContextProvider<NParkDBContext>>();
+            services.AddScoped<IAuditLogger, AuditLogger>();
             services.AddSecurity();
             services.AddEfInfrastructure();
             services.AddBuildingBlockAuditingAndSoftDelete();

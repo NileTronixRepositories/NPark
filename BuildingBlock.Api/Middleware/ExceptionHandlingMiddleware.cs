@@ -35,7 +35,7 @@ namespace BuildingBlock.Api.Middleware
                 using (LogContext.PushProperty("traceId", traceId))
                 using (LogContext.PushProperty("correlationId", corr ?? string.Empty))
                 {
-                    Log.ForContext("IsAudit", false)
+                    Log.ForContext("IsAudit", true)
                        .Error(ex, "Unhandled exception for {RequestPath} (corr={correlationId}, trace={traceId})",
                             context.Request.Path, corr, traceId);
                 }
