@@ -10,12 +10,15 @@ namespace NPark.Domain.Entities
         public DateTime EndDate { get; private set; }
         public decimal Price { get; private set; }
         public decimal ExceedPrice { get; private set; } = 0;
+        public Guid? CollectedBy { get; private set; }
         public decimal TotalPrice => Price + ExceedPrice;
         public bool IsCollected { get; private set; }
+        public DateTime? CollectedDate { get; private set; }
         public byte[] UniqueGuidPart { get; private set; }
         public string UniqueCode => BitConverter.ToString(UniqueGuidPart).Replace("-", "");
         public Guid GateId { get; private set; }
         public Guid UserId { get; private set; }
+        public bool IsCashierCollected { get; private set; } = false;
         public User User { get; private set; }
         public ParkingGate ParkingGate { get; private set; }
 
@@ -40,7 +43,16 @@ namespace NPark.Domain.Entities
             return ticket;
         }
 
-        public void SetCollected() => IsCollected = true;
+        public void SetCollected(Guid Id)
+        {
+            IsCollected = true;
+            CollectedBy = Id;
+            CollectedDate = DateTime.Now;
+        }
+
+        public void SetIsCashierCollected() => IsCashierCollected = true;
+
+        public void SetCollectedBy(Guid collectedBy) => CollectedBy = collectedBy;
 
         private static byte[] GetGuidUniquePart(Guid guid)
         {

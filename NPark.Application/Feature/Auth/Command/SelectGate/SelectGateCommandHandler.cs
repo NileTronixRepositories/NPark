@@ -36,7 +36,11 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
         public async Task<Result<UserTokenDto>> Handle(SelectGateCommand request, CancellationToken cancellationToken)
         {
             string number = request.GateNumber.Split(" ")[0];
-            int numberParse = int.Parse(number);
+            int numberParse;
+            if (!int.TryParse(number, out numberParse))
+            {
+                return Result<UserTokenDto>.Fail(new Error("Invalid Gate Number", "The gate number is not a valid number.", ErrorType.Security));
+            }
             var tokenInfo = _contextAccessor.HttpContext?.ReadToken(_tokenReader);
             if (tokenInfo == null)
                 return Result<UserTokenDto>.Fail(new Error("Invalid Token", "Invalid Token", ErrorType.Security));
@@ -75,21 +79,19 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
             };
             token.GateDevicePeripheral = peripheral;
             await _auditLogger.LogAsync(
-                new AuditLogEntry(
-                    EventName: "GateSelected",
-                    EventCategory: "Gate",
-                    IsSuccess: true,
-                    StatusCode: StatusCodes.Status200OK,
-                    UserId: userId,
-                    GateId: gateEntity.Id,
-                    Extra: new
-                    {
-                        request.GateNumber,
-                        request.GateType,
-                        gateNumber = gateEntity.GateNumber,
-                        gateType = gateEntity.GateType
-                    }),
-                cancellationToken);
+              new AuditLogEntry(
+                  EventName: "GateSelected",
+                  EventCategory: "Gate",
+                  IsSuccess: true,
+                  StatusCode: StatusCodes.Status200OK,
+                  UserId: userId,
+                  GateId: gateEntity.Id,
+                  Extra: new
+                  {
+                      gateNumber = gateEntity.GateNumber,     // التأكد من أن القيم واضحة في gateEntity
+                      gateType = gateEntity.GateType.ToString() // تحويل الـ GateType في gateEntity إلى String
+                  }),
+              cancellationToken);
             // Return the result with the generated token
             return Result<UserTokenDto>.Ok(token);
         }

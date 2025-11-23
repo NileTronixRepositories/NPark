@@ -11,7 +11,6 @@ namespace NPark.Application.Specifications.TicketSpecification
             var start = date;
             var end = date.AddDays(1);
             AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end);
-            UseNoTracking();
             EnableTotalCount();
         }
     }

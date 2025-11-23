@@ -11,7 +11,7 @@ namespace NPark.Domain.Entities
         public string NationalId { get; private set; } = string.Empty;
 
         public string VehicleNumber { get; private set; } = string.Empty;
-        public string CardNumber { get; private set; }
+        public string CardNumber { get; private set; } = string.Empty;
         public Guid PricingSchemeId { get; private set; }
         public PricingScheme PricingScheme { get; private set; } = null!;
         public DateTime CreatedAt { get; private set; }

@@ -17,9 +17,10 @@ namespace NPark.Application.Specifications.TicketSpecification
             Select(x => new GetTicketForExitGateQueryResponse
             {
                 StartDate = x.CreatedOnUtc,
-                TicketNumber = x.Id
+                TicketNumber = x.Id,
+                isCollectedByCashier = x.IsCollected,
+                Price = x.Price
             });
-
         }
     }
 }

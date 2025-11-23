@@ -2,7 +2,7 @@
 
 namespace NPark.Application.Feature.TicketsManagement.Command.Add
 {
-    public sealed record AddTicketCommand : ICommand<byte[]>
+    public sealed record AddTicketCommand : ICommand<AddTicketCommandResponse>
     {
     }
 }

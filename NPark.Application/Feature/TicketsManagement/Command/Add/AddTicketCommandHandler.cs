@@ -11,7 +11,7 @@ using NPark.Domain.Enums;
 
 namespace NPark.Application.Feature.TicketsManagement.Command.Add
 {
-    public sealed class AddTicketCommandHandler : ICommandHandler<AddTicketCommand, byte[]>
+    public sealed class AddTicketCommandHandler : ICommandHandler<AddTicketCommand, AddTicketCommandResponse>
     {
         private readonly IGenericRepository<Ticket> _ticketRepository;
         private readonly IGenericRepository<PricingScheme> _pricingSchema;
@@ -39,10 +39,9 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository;
             _tokenReader = tokenReader ?? throw new ArgumentNullException(nameof(tokenReader));
             _pricingSchema = pricingSchema ?? throw new ArgumentNullException(nameof(pricingSchema));
-
         }
 
-        public async Task<Result<byte[]>> Handle(AddTicketCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AddTicketCommandResponse>> Handle(AddTicketCommand request, CancellationToken cancellationToken)
         {
             var spec = new GetParkingSystemConfigurationForUpdateSpecification();
             var configuration = await _parkingSystemConfigurationRepository
@@ -50,13 +49,13 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
 
             if (configuration is null)
             {
-                return Result<byte[]>.Fail(new
+                return Result<AddTicketCommandResponse>.Fail(new
                     Error("Configuration not found", "Configuration not found", ErrorType.NotFound));
             }
             var tokenInfo = _httpContextAccessor!.HttpContext?.ReadToken(_tokenReader);
             if (tokenInfo is null || !tokenInfo.GateId.HasValue || !tokenInfo.UserId.HasValue)
             {
-                return Result<byte[]>.Fail(new Error("GateId not found", "GateId not found", ErrorType.NotFound));
+                return Result<AddTicketCommandResponse>.Fail(new Error("GateId not found", "GateId not found", ErrorType.NotFound));
             }
             if (configuration.PriceType == PriceType.Enter)
             {
@@ -71,7 +70,14 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                 var combinedBytes = ticketEntity.UniqueGuidPart.Concat(new byte[] { Tbyte5 }).ToArray();
                 var encryptedData = Convert.ToBase64String(combinedBytes);
                 var TqrCode = _qrCodeService.GenerateQRCode(encryptedData);
-                return Result<byte[]>.Ok(TqrCode);
+                var response = new AddTicketCommandResponse
+                {
+                    CreatedAt = ticketEntity.StartDate,
+                    Price = ticketEntity.Price,
+                    QrCode = TqrCode,
+                    TicketId = ticketEntity.Id
+                };
+                return Result<AddTicketCommandResponse>.Ok(response);
             }
             else
             {
@@ -85,7 +91,14 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                 var combinedBytes = ticketEntity.UniqueGuidPart.Concat(new byte[] { Tbyte5 }).ToArray();
                 var encryptedData = Convert.ToBase64String(combinedBytes);
                 var TqrCode = _qrCodeService.GenerateQRCode(encryptedData);
-                return Result<byte[]>.Ok(TqrCode);
+                var response = new AddTicketCommandResponse
+                {
+                    CreatedAt = ticketEntity.StartDate,
+                    Price = ticketEntity.Price,
+                    QrCode = TqrCode,
+                    TicketId = ticketEntity.Id
+                };
+                return Result<AddTicketCommandResponse>.Ok(response);
             }
         }
     }
