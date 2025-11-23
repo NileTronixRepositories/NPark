@@ -14,6 +14,7 @@ namespace NPark.Infrastructure.Configuration
             builder.Property(t => t.StartDate).IsRequired();
             builder.Property(t => t.EndDate).IsRequired();
             builder.Property(t => t.CollectedBy).IsRequired(false);
+            builder.Property(t => t.VehicleNumber).IsRequired(false);
             builder.Property(t => t.CollectedDate).IsRequired(false);
             builder.Property(t => t.Price).IsRequired();
             builder.Property(t => t.IsCashierCollected).IsRequired().HasDefaultValue(false);

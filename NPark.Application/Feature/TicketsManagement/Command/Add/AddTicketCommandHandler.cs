@@ -64,6 +64,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     tokenInfo.GateId.Value, tokenInfo.UserId.Value
 
               );
+                if (!string.IsNullOrEmpty(request.vehicleNumber)) ticketEntity.SetVehicleNumber(request.vehicleNumber);
                 await _ticketRepository.AddAsync(ticketEntity, cancellationToken);
                 await _ticketRepository.SaveChangesAsync(cancellationToken);
                 var Tbyte5 = _byteVerificationService.GenerateComplexByte5FromGuid(ticketEntity.UniqueGuidPart);

@@ -9,6 +9,7 @@ namespace NPark.Domain.Entities
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
         public decimal Price { get; private set; }
+        public string? VehicleNumber { get; private set; } = null;
         public decimal ExceedPrice { get; private set; } = 0;
         public Guid? CollectedBy { get; private set; }
         public decimal TotalPrice => Price + ExceedPrice;
@@ -49,6 +50,8 @@ namespace NPark.Domain.Entities
             CollectedBy = Id;
             CollectedDate = DateTime.Now;
         }
+
+        public void SetVehicleNumber(string vehicleNumber) => VehicleNumber = vehicleNumber;
 
         public void SetIsCashierCollected() => IsCashierCollected = true;
 

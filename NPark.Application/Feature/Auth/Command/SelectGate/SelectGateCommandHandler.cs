@@ -92,7 +92,6 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                       gateType = gateEntity.GateType.ToString() // تحويل الـ GateType في gateEntity إلى String
                   }),
               cancellationToken);
-            // Return the result with the generated token
             return Result<UserTokenDto>.Ok(token);
         }
     }

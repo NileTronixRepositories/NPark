@@ -8,7 +8,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
     {
         public ColletByCachierCommandValidation(IGenericRepository<Ticket> repo)
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.TicketId)
                 .NotEmpty()
                 .MustAsync(async (id, token) => await repo.IsExistAsync(x => x.Id == id, token))
                 .WithMessage("Ticket not found");

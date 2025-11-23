@@ -3,6 +3,7 @@ using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
 using Microsoft.AspNetCore.Http;
 using NPark.Application.Abstraction.Security;
+using NPark.Application.Shared.Dto;
 using NPark.Application.Specifications.TicketSpecification;
 using NPark.Domain.Entities;
 
@@ -13,16 +14,19 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
         private readonly IGenericRepository<Ticket> _ticketRepository;
         private readonly ITokenReader _tokenReader;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAuditLogger _auditLogger;
 
         public CollectDailyTicketCommandHandler
             (
             IGenericRepository<Ticket> ticketRepository,
             ITokenReader tokenReader,
-            IHttpContextAccessor httpContextAccessor
+            IHttpContextAccessor httpContextAccessor,
+            IAuditLogger auditLogger
             )
         {
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
             _tokenReader = tokenReader ?? throw new ArgumentNullException(nameof(tokenReader));
+            _auditLogger = auditLogger ?? throw new ArgumentNullException(nameof(auditLogger));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
@@ -33,7 +37,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
             {
                 return Result<CollectDailyTicketResponse>.Fail(new Error("GateId not found", "GateId not found", ErrorType.NotFound));
             }
-            var spec = new TotalTicketsForTodaySpec();
+            var spec = new TotalTicketsForTodaySpec(tokenInfo.GateId.Value);
             var tickets = await _ticketRepository.ListWithSpecAsync(spec, cancellationToken);
 
             if (tickets.Count() <= 0)
@@ -52,6 +56,20 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
             };
 
             await _ticketRepository.SaveChangesAsync(cancellationToken);
+            await _auditLogger.LogAsync(
+    new AuditLogEntry(
+        EventName: "CollectDailyTicketSucceeded",
+        EventCategory: "TicketManagement",
+        IsSuccess: true,
+        StatusCode: 200,  // OK
+        Extra: new
+        {
+            response.TotalTicketsCollected,
+            response.TotalPriceCollected,
+            response.TicketCollectDetails.Count,
+            tokenInfo.UserId.Value,
+        }),
+    cancellationToken);
 
             return Result<CollectDailyTicketResponse>.Ok(response);
         }

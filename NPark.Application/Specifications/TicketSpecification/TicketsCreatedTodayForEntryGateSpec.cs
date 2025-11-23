@@ -19,7 +19,7 @@ namespace NPark.Application.Specifications.TicketSpecification
                 StartDate = x.CreatedOnUtc,
                 TicketNumber = x.Id,
                 Price = x.Price,
-                isCollectedByCashier = x.IsCollected
+                isCollectedByCashier = x.IsCashierCollected
             });
         }
     }

@@ -16,7 +16,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
 
         public async Task<Result> Handle(ColletByCachierCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _ticketRepository.GetByIdAsync(request.Id, cancellationToken);
+            var entity = await _ticketRepository.GetByIdAsync(request.TicketId, cancellationToken);
             entity!.SetIsCashierCollected();
             await _ticketRepository.SaveChangesAsync(cancellationToken);
             return Result.Ok();
