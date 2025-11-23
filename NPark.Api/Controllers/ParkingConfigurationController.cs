@@ -2,6 +2,7 @@
 using BuildingBlock.Api.ControllerTemplate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NPark.Api.Attribute;
 using NPark.Application.Feature.ParkingSystemConfigurationManagement.Command.Update;
 using NPark.Application.Feature.ParkingSystemConfigurationManagement.Query.GetSystemConfiguration;
 
@@ -14,6 +15,7 @@ namespace NPark.Api.Controllers
         {
         }
 
+        [Permission("Update")]
         [HttpPost(nameof(Update))]
         public async Task<IActionResult> Update([FromBody] UpdateParkingConfigurationCommand command, CancellationToken cancellationToken)
         {
@@ -21,6 +23,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Read")]
         [HttpGet(nameof(Get))]
         public async Task<IActionResult> Get([FromQuery] GetSystemConfigurationQuery query, CancellationToken cancellationToken)
         {

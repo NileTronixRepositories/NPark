@@ -2,6 +2,7 @@
 using BuildingBlock.Api.ControllerTemplate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NPark.Api.Attribute;
 using NPark.Application.Feature.TicketsManagement.Command.Add;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate;
@@ -15,6 +16,7 @@ namespace NPark.Api.Controllers
         {
         }
 
+        [Permission("GenerateTicket")]
         [HttpPost(nameof(AddTicket))]
         public async Task<IActionResult> AddTicket(AddTicketCommand command, CancellationToken cancellationToken)
         {
@@ -25,6 +27,7 @@ namespace NPark.Api.Controllers
             return File(result.Value, "image/png", "ticket-qr.png");
         }
 
+        [Permission("GetTickets")]
         [HttpGet(nameof(GetTicketForEntry))]
         public async Task<IActionResult> GetTicketForEntry([FromQuery] GetTicketForEntryGateQuery query, CancellationToken cancellationToken)
         {
@@ -32,6 +35,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("GetTickets")]
         [HttpGet(nameof(GetTicketForExit))]
         public async Task<IActionResult> GetTicketForExit([FromQuery] GetTicketForExitGateQuery query, CancellationToken cancellationToken)
         {

@@ -2,6 +2,7 @@
 using BuildingBlock.Api.ControllerTemplate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NPark.Api.Attribute;
 using NPark.Application.Feature.ParkingMembershipsManagement.Command.Add;
 using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetAll;
 
@@ -14,6 +15,7 @@ namespace NPark.Api.Controllers
         {
         }
 
+        [Permission("Create")]
         [HttpPost(nameof(Add))]
         public async Task<IActionResult> Add([FromForm] AddParkingMembershipCommand command, CancellationToken cancellationToken)
         {
@@ -21,6 +23,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Read")]
         [HttpGet(nameof(GetAll))]
         public async Task<IActionResult> GetAll([FromQuery] GetAllParkingMembershipQuery query, CancellationToken cancellationToken)
         {

@@ -2,6 +2,7 @@
 using BuildingBlock.Api.ControllerTemplate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NPark.Api.Attribute;
 using NPark.Application.Feature.PricingSchemaManagement.Command.Add;
 using NPark.Application.Feature.PricingSchemaManagement.Command.AddOrderSchema;
 using NPark.Application.Feature.PricingSchemaManagement.Command.Delete;
@@ -20,6 +21,7 @@ namespace NPark.Api.Controllers
         {
         }
 
+        [Permission("Create")]
         [HttpPost(nameof(Add))]
         public async Task<IActionResult> Add([FromBody] AddPricingSchemaCommand command, CancellationToken cancellationToken)
         {
@@ -27,6 +29,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Update")]
         [HttpPut(nameof(Update))]
         public async Task<IActionResult> Update([FromBody] UpdatePricingSchemaCommand command, CancellationToken cancellationToken)
         {
@@ -34,7 +37,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
-        //[Permission("Read")]
+        [Permission("Read")]
         [HttpGet(nameof(GetAll))]
         public async Task<IActionResult> GetAll([FromQuery] GetAllPricingSchemaQuery query, CancellationToken cancellationToken)
         {
@@ -42,6 +45,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Read")]
         [HttpGet(nameof(GetWithoudPagination))]
         public async Task<IActionResult> GetWithoudPagination([FromQuery] GetPricingSchemaQuery query, CancellationToken cancellationToken)
         {
@@ -49,6 +53,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Delete")]
         [HttpDelete(nameof(Delete))]
         public async Task<IActionResult> Delete([FromQuery] DeletePricingSchemaCommand command, CancellationToken cancellationToken)
         {
@@ -56,6 +61,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Read")]
         [HttpGet(nameof(GetRepeated))]
         public async Task<IActionResult> GetRepeated([FromQuery] GetRepeatedPricingSchemaQuery query, CancellationToken cancellationToken)
         {
@@ -63,6 +69,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Create")]
         [HttpPost(nameof(AddOrder))]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderSchemaCommand command, CancellationToken cancellationToken)
         {
@@ -70,6 +77,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Read")]
         [HttpGet(nameof(GetOrder))]
         public async Task<IActionResult> GetOrder([FromQuery] GetOrderSchemaQuery query, CancellationToken cancellationToken)
         {

@@ -2,6 +2,7 @@
 using BuildingBlock.Api.ControllerTemplate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NPark.Api.Attribute;
 using NPark.Application.Feature.UserManagement.Command.Add;
 using NPark.Application.Feature.UserManagement.Command.Update;
 using NPark.Application.Feature.UserManagement.Query.GetUsers;
@@ -15,6 +16,7 @@ namespace NPark.Api.Controllers
         {
         }
 
+        [Permission("Read")]
         [HttpGet(nameof(GetUserSystem))]
         public async Task<IActionResult> GetUserSystem([FromQuery] GetSystemUserQuery query, CancellationToken cancellationToken)
         {
@@ -22,6 +24,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Update")]
         [HttpPut(nameof(update))]
         public async Task<IActionResult> update([FromBody] UpdateUserCommand command, CancellationToken cancellationToken)
         {
@@ -29,6 +32,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("Create")]
         [HttpPost(nameof(Create))]
         public async Task<IActionResult> Create([FromBody] AddUserCommand command, CancellationToken cancellationToken)
         {

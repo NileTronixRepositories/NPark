@@ -2,6 +2,7 @@
 using BuildingBlock.Api.ControllerTemplate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NPark.Api.Attribute;
 using NPark.Application.Feature.RoleManagement.Query.GetRoles;
 
 namespace NPark.Api.Controllers
@@ -13,6 +14,7 @@ namespace NPark.Api.Controllers
         public RoleController(ISender sender) : base(sender)
         { }
 
+        [Permission("Read")]
         [HttpGet(nameof(GetAll))]
         public async Task<IActionResult> GetAll([FromQuery] GetRolesQuery query, CancellationToken cancellationToken)
         {
