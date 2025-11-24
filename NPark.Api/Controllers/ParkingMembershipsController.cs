@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NPark.Api.Attribute;
 using NPark.Application.Feature.ParkingMembershipsManagement.Command.Add;
 using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetAll;
+using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetSummaryById;
 
 namespace NPark.Api.Controllers
 {
@@ -26,6 +27,13 @@ namespace NPark.Api.Controllers
         [Permission("Read")]
         [HttpGet(nameof(GetAll))]
         public async Task<IActionResult> GetAll([FromQuery] GetAllParkingMembershipQuery query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpGet(nameof(GetCardSummary))]
+        public async Task<IActionResult> GetCardSummary([FromQuery] GetCardSummaryByIdQuery query, CancellationToken cancellationToken)
         {
             var result = await sender.Send(query, cancellationToken);
             return result.ToIActionResult();
