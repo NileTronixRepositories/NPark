@@ -24,6 +24,8 @@ namespace NPark.Infrastructure.Services.Seeders
 
         private const string ExitCashierUserName = "ExitCashier";
         private const string ExitCashierEmail = "exit.cashier@npak.local";
+        private const string SupervisorUserName = "Supervisor";
+        private const string SupervisorEmail = "supervisor@npak.local";
 
         public IUserSeeder(
             IGenericRepository<User> userRepo,
@@ -66,6 +68,16 @@ namespace NPark.Infrastructure.Services.Seeders
                 phone: "01000000002",
                 nationalId: "22222222222222",
                 roleId: RoleSeeder.ExitCashierRoleId);
+
+            // Supervisor User
+            await CreateUserIfNotExistsAsync(
+                userName: SupervisorUserName,
+                email: SupervisorEmail,
+                fullName: "Supervisor",
+                rawPassword: "Supervisor123",
+                phone: "01000000003",
+                nationalId: "33333333333333",
+                roleId: RoleSeeder.SupervisorRoleId);
 
             await _userRepo.SaveChangesAsync();
             _logger.LogInformation("Users Seeded Successfully (Admin, EntranceCashier, ExitCashier).");

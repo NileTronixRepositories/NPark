@@ -5,6 +5,7 @@ using BuildingBlock.Domain.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using NPark.Application.Abstraction.Security;
+using NPark.Application.Specifications.ParkingMembershipSpecification;
 using NPark.Application.Specifications.ParkingSystemConfigurationSpec;
 using NPark.Domain.Entities;
 using NPark.Domain.Enums;
@@ -22,9 +23,11 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenReader _tokenReader;
         private readonly ILogger<AddTicketCommandHandler> _logger;
+        private readonly IGenericRepository<ParkingMemberships> _parkingMembershipsRepository;
 
         public AddTicketCommandHandler(
             IGenericRepository<Ticket> ticketRepository,
+            IGenericRepository<ParkingMemberships> parkingMembershipsRepository,
             IQRCodeService qrCodeService,
             IHttpContextAccessor httpContextAccessor, IByteVerificationService byteVerificationService,
             ITokenReader tokenReader,
@@ -39,6 +42,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository;
             _tokenReader = tokenReader ?? throw new ArgumentNullException(nameof(tokenReader));
             _pricingSchema = pricingSchema ?? throw new ArgumentNullException(nameof(pricingSchema));
+            _parkingMembershipsRepository = parkingMembershipsRepository ?? throw new ArgumentNullException(nameof(parkingMembershipsRepository));
         }
 
         public async Task<Result<AddTicketCommandResponse>> Handle(AddTicketCommand request, CancellationToken cancellationToken)
@@ -57,6 +61,31 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             {
                 return Result<AddTicketCommandResponse>.Fail(new Error("GateId not found", "GateId not found", ErrorType.NotFound));
             }
+            if (request.IsSubscriber == true)
+            {
+                var specCard = new GetCardSummaryByIdSpec(request.CardNumber);
+
+                var Subscriber = await _parkingMembershipsRepository.FirstOrDefaultWithSpecAsync(specCard, cancellationToken);
+                if (Subscriber == null)
+                {
+                    return Result<AddTicketCommandResponse>.
+                        Fail(new Error("Card not found", "Card not found", ErrorType.NotFound));
+                }
+                var ticketEntity = Ticket.Create(DateTime.Now, 0,
+                   tokenInfo.GateId.Value, tokenInfo.UserId.Value);
+                ticketEntity.SetSubscriber(Subscriber.NationalId, Subscriber.VehicleNumber);
+                await _ticketRepository.AddAsync(ticketEntity, cancellationToken);
+                await _ticketRepository.SaveChangesAsync(cancellationToken);
+                var response = new AddTicketCommandResponse
+                {
+                    CreatedAt = ticketEntity.StartDate,
+                    Price = ticketEntity.Price,
+                    QrCode = [],
+                    TicketId = ticketEntity.Id,
+                    TicketInfo = ticketEntity.VehicleNumber
+                };
+                return Result<AddTicketCommandResponse>.Ok(response);
+            }
             if (configuration.PriceType == PriceType.Enter)
             {
                 var pricingSchema = await _pricingSchema.GetByIdAsync(configuration.PricingSchemaId!.Value, cancellationToken);
@@ -64,7 +93,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     tokenInfo.GateId.Value, tokenInfo.UserId.Value
 
               );
-                if (!string.IsNullOrEmpty(request.vehicleNumber)) ticketEntity.SetVehicleNumber(request.vehicleNumber);
+                if (!string.IsNullOrEmpty(request.VehicleNumber)) ticketEntity.SetVehicleNumber(request.VehicleNumber);
                 await _ticketRepository.AddAsync(ticketEntity, cancellationToken);
                 await _ticketRepository.SaveChangesAsync(cancellationToken);
                 var Tbyte5 = _byteVerificationService.GenerateComplexByte5FromGuid(ticketEntity.UniqueGuidPart);
@@ -76,7 +105,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     CreatedAt = ticketEntity.StartDate,
                     Price = ticketEntity.Price,
                     QrCode = TqrCode,
-                    TicketId = ticketEntity.Id
+                    TicketId = ticketEntity.Id,
+                    TicketInfo = ticketEntity.VehicleNumber
                 };
                 return Result<AddTicketCommandResponse>.Ok(response);
             }
@@ -97,7 +127,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     CreatedAt = ticketEntity.StartDate,
                     Price = ticketEntity.Price,
                     QrCode = TqrCode,
-                    TicketId = ticketEntity.Id
+                    TicketId = ticketEntity.Id,
+                    TicketInfo = ticketEntity.VehicleNumber
                 };
                 return Result<AddTicketCommandResponse>.Ok(response);
             }

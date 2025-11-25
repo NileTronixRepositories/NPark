@@ -10,7 +10,8 @@ namespace NPark.Application.Specifications.TicketSpecification
             var date = DateTime.Now.Date;
             var start = date;
             var end = date.AddDays(1);
-            AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end && t.GateId == gateId);
+            AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end && t.GateId == gateId
+            && !t.IsCollected);
             EnableTotalCount();
         }
     }

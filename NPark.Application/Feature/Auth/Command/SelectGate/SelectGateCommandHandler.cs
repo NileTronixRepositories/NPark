@@ -76,6 +76,8 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 PcIp = gateEntity.PcIp,
                 HasLpr = gateEntity.HasLpr,
                 HasPc = gateEntity.HasPc,
+                GateNumber = gateEntity.GateNumber,
+                GateType = gateEntity.GateType
             };
             token.GateDevicePeripheral = peripheral;
             await _auditLogger.LogAsync(

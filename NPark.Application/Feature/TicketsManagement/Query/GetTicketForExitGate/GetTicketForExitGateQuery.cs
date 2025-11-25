@@ -2,7 +2,7 @@
 
 namespace NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate
 {
-    public sealed record GetTicketForExitGateQuery : IQuery<IReadOnlyList<GetTicketForExitGateQueryResponse>>
+    public sealed record GetTicketForExitGateQuery : IQuery<GetTicketForExitGateQueryResponse>
     {
     }
 }

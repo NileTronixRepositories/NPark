@@ -22,6 +22,8 @@ namespace NPark.Domain.Entities
         public bool IsCashierCollected { get; private set; } = false;
         public User User { get; private set; }
         public ParkingGate ParkingGate { get; private set; }
+        public bool IsSubscriber { get; private set; } = false;
+        public string? SubscriberNationalId { get; private set; }
 
         private Ticket()
         { }
@@ -64,6 +66,15 @@ namespace NPark.Domain.Entities
             Span<byte> buf = stackalloc byte[4];
             BinaryPrimitives.WriteInt32BigEndian(buf, value);
             return buf.ToArray();
+        }
+
+        public void SetSubscriber(string nationalId, string? vehicleNumber = null)
+        {
+            Price = 0;
+            IsSubscriber = true;
+            IsCashierCollected = true;
+            VehicleNumber = vehicleNumber;
+            SubscriberNationalId = nationalId;
         }
     }
 }

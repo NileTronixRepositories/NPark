@@ -6,7 +6,7 @@ using NPark.Domain.Entities;
 
 namespace NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate
 {
-    public sealed class GetTicketForExitGateQueryHandler : IQueryHandler<GetTicketForExitGateQuery, IReadOnlyList<GetTicketForExitGateQueryResponse>>
+    public sealed class GetTicketForExitGateQueryHandler : IQueryHandler<GetTicketForExitGateQuery, GetTicketForExitGateQueryResponse>
     {
         private readonly IGenericRepository<Ticket> _repo;
 
@@ -14,13 +14,18 @@ namespace NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate
         {
             _repo = repository ?? throw new ArgumentNullException(nameof(repository));
         }
-        public async Task<Result<IReadOnlyList<GetTicketForExitGateQueryResponse>>> Handle(GetTicketForExitGateQuery request, CancellationToken cancellationToken)
+
+        public async Task<Result<GetTicketForExitGateQueryResponse>> Handle(GetTicketForExitGateQuery request, CancellationToken cancellationToken)
         {
             var spec = new TicketsCreatedTodayForExitGateSpec();
-            var entities = await _repo.ListWithSpecAsync(spec);
-            return Result<IReadOnlyList<GetTicketForExitGateQueryResponse>>
-                .Ok(entities);
-
+            var ticketsInfo = await _repo.ListWithSpecAsync(spec);
+            var result = new GetTicketForExitGateQueryResponse
+            {
+                TicketInfo = ticketsInfo
+            };
+            result.TotalPrice = result.TicketInfo.Sum(x => x.Price);
+            return Result<GetTicketForExitGateQueryResponse>
+                .Ok(result);
         }
     }
 }

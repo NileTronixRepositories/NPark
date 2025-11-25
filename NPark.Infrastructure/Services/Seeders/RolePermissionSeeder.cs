@@ -54,6 +54,9 @@ namespace NPark.Infrastructure.Services.Seeders
 
             // ExitCashier → GetTickets فقط
             await AddIfNotExists(RoleSeeder.ExitCashierRoleId, PermissionSeeder.GetTicketsPermissionId);
+            //Supervisor → collectTickets
+            await AddIfNotExists(RoleSeeder.SupervisorRoleId, PermissionSeeder.CollectTicketsPermissionId);
+            await AddIfNotExists(RoleSeeder.SupervisorRoleId, PermissionSeeder.GetTicketsPermissionId);
 
             if (toInsert.Count == 0)
             {

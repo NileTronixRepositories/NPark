@@ -4,22 +4,22 @@ using NPark.Domain.Entities;
 
 namespace NPark.Application.Specifications.TicketSpecification
 {
-    public class TicketsCreatedTodayForEntryGateSpec : Specification<Ticket, GetTicketForEntryGateQueryResponse>
+    public class TicketsCreatedTodayForEntryGateSpec : Specification<Ticket, GetTicketInfo>
     {
-        public TicketsCreatedTodayForEntryGateSpec()
+        public TicketsCreatedTodayForEntryGateSpec(Guid gateId)
         {
             var date = DateTime.Now.Date;
             var start = date;
             var end = date.AddDays(1);
-            AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end);
+            AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end && t.GateId == gateId);
             AddCriteria(x => !x.IsCollected);
             UseNoTracking();
-            Select(x => new GetTicketForEntryGateQueryResponse
+            Select(x => new GetTicketInfo
             {
-                StartDate = x.CreatedOnUtc,
-                TicketNumber = x.Id,
+                isCollectedByCashier = x.IsCollected,
                 Price = x.Price,
-                isCollectedByCashier = x.IsCashierCollected
+                TicketNumber = x.Id,
+                StartDate = x.CreatedOnUtc
             });
         }
     }

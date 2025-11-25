@@ -4,6 +4,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
 {
     public sealed record AddTicketCommand : ICommand<AddTicketCommandResponse>
     {
-        public string? vehicleNumber { get; set; } = string.Empty;
+        public string? VehicleNumber { get; set; } = string.Empty;
+        public bool IsSubscriber { get; set; } = false;
+        public string? CardNumber { get; set; }
     }
 }

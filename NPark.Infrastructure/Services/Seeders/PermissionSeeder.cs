@@ -17,6 +17,7 @@ namespace NPark.Infrastructure.Services.Seeders
         public static readonly Guid ReadPermissionId = new("c4f8b057-b37f-4570-bc65-d29d830fb89d");
         public static readonly Guid UpdatePermissionId = new("17a145f1-ef9d-4f74-98ff-bab12c997b8b");
         public static readonly Guid DeletePermissionId = new("42a3a074-d2c4-459d-bec9-cd6e29b7b38f");
+        public static readonly Guid CollectTicketsPermissionId = new("55555555-5555-5555-5555-555555555555");
 
         // Parking domain Permissions الجديدة
         public static readonly Guid GenerateTicketPermissionId = new("33333333-3333-3333-3333-333333333333");
@@ -54,7 +55,8 @@ namespace NPark.Infrastructure.Services.Seeders
             // Parking domain
             await AddIfNotExists(GenerateTicketPermissionId, "GenerateTicket", "توليد تذكرة", "Generate parking ticket at entrance");
             await AddIfNotExists(GetTicketsPermissionId, "GetTickets", "عرض التذاكر", "Retrieve parking tickets");
-
+            // Add CollectTickets Permission
+            await AddIfNotExists(CollectTicketsPermissionId, "CollectTickets", "جمع التذاكر", "Permission to collect tickets from the system");
             if (toInsert.Count == 0)
             {
                 _logger.LogInformation("All permissions already exist. Skipping PermissionSeeder.");

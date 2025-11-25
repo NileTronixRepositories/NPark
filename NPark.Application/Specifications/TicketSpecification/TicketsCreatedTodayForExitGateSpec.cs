@@ -1,10 +1,10 @@
 ﻿using BuildingBlock.Domain.Specification;
-using NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate;
+using NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate;
 using NPark.Domain.Entities;
 
 namespace NPark.Application.Specifications.TicketSpecification
 {
-    internal class TicketsCreatedTodayForExitGateSpec : Specification<Ticket, GetTicketForExitGateQueryResponse>
+    internal class TicketsCreatedTodayForExitGateSpec : Specification<Ticket, GetTicketInfo>
     {
         public TicketsCreatedTodayForExitGateSpec()
         {
@@ -14,12 +14,12 @@ namespace NPark.Application.Specifications.TicketSpecification
             AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end);
             AddCriteria(x => x.IsCollected);
             UseNoTracking();
-            Select(x => new GetTicketForExitGateQueryResponse
+            Select(x => new GetTicketInfo
             {
-                StartDate = x.CreatedOnUtc,
-                TicketNumber = x.Id,
                 isCollectedByCashier = x.IsCollected,
-                Price = x.Price
+                Price = x.Price,
+                TicketNumber = x.Id,
+                StartDate = x.CreatedOnUtc
             });
         }
     }

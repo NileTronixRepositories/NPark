@@ -49,6 +49,7 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [Permission("CollectTickets")]
         [HttpPost(nameof(CollectDailyTickets))]
         public async Task<IActionResult> CollectDailyTickets([FromBody] CollectDailyTicketCommand command, CancellationToken cancellationToken)
         {

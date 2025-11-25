@@ -19,6 +19,8 @@ namespace NPark.Application.Specifications.ParkingMembershipSpecification
                 NationalId = x.NationalId,
                 Phone = x.Phone,
                 VehicleNumber = x.VehicleNumber
+                ,
+                Price = x.PricingScheme.Salary
             });
             UseNoTracking();
         }

@@ -9,5 +9,6 @@
         public string CardNumber { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime EndDate { get; set; }
+        public decimal Price { get; set; }
     }
 }
