@@ -11,7 +11,6 @@ namespace NPark.Application.Specifications.TicketSpecification
                 throw new ArgumentException("uniquePart must be exactly 4 bytes.");
 
             AddCriteria(t => t.UniqueGuidPart == uniquePart);
-            UseNoTracking();
         }
     }
 }

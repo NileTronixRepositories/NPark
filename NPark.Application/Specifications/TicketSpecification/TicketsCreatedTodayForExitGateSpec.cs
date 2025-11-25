@@ -12,14 +12,15 @@ namespace NPark.Application.Specifications.TicketSpecification
             var start = date;
             var end = date.AddDays(1);
             AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end);
-            AddCriteria(x => x.IsCollected);
+            AddCriteria(x => x.EndDate != null);
             UseNoTracking();
             Select(x => new GetTicketInfo
             {
                 isCollectedByCashier = x.IsCollected,
                 Price = x.Price,
                 TicketNumber = x.Id,
-                StartDate = x.CreatedOnUtc
+                StartDate = x.CreatedOnUtc,
+                TicketInfo = x.VehicleNumber
             });
         }
     }

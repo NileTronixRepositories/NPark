@@ -71,6 +71,11 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     return Result<AddTicketCommandResponse>.
                         Fail(new Error("Card not found", "Card not found", ErrorType.NotFound));
                 }
+                if (DateTime.Now < Subscriber.CreatedAt || DateTime.Now >= Subscriber.EndDate)
+                {
+                    return Result<AddTicketCommandResponse>.Fail
+                            (new Error("invalid card date", "invalid card date", ErrorType.NotFound));
+                }
                 var ticketEntity = Ticket.Create(DateTime.Now, 0,
                    tokenInfo.GateId.Value, tokenInfo.UserId.Value);
                 ticketEntity.SetSubscriber(Subscriber.NationalId, Subscriber.VehicleNumber);

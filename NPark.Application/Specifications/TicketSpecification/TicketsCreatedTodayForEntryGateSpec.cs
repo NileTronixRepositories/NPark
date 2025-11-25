@@ -19,7 +19,8 @@ namespace NPark.Application.Specifications.TicketSpecification
                 isCollectedByCashier = x.IsCollected,
                 Price = x.Price,
                 TicketNumber = x.Id,
-                StartDate = x.CreatedOnUtc
+                StartDate = x.CreatedOnUtc,
+                TicketInfo = x.VehicleNumber
             });
         }
     }

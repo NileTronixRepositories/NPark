@@ -7,7 +7,7 @@ namespace NPark.Domain.Entities
     public sealed class Ticket : Entity<Guid>
     {
         public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
+        public DateTime? EndDate { get; private set; } = null;
         public decimal Price { get; private set; }
         public string? VehicleNumber { get; private set; } = null;
         public decimal ExceedPrice { get; private set; } = 0;
@@ -76,5 +76,6 @@ namespace NPark.Domain.Entities
             VehicleNumber = vehicleNumber;
             SubscriberNationalId = nationalId;
         }
+        public void SetExitDate() => EndDate = DateTime.Now;
     }
 }

@@ -4,6 +4,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NPark.Api.Attribute;
 using NPark.Application.Feature.TicketsManagement.Command.Add;
+using NPark.Application.Feature.TicketsManagement.Command.CalculateSalary;
+using NPark.Application.Feature.TicketsManagement.Command.CalculateSalaryForSubscriber;
 using NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket;
 using NPark.Application.Feature.TicketsManagement.Command.ColletByCachier;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate;
@@ -52,6 +54,20 @@ namespace NPark.Api.Controllers
         [Permission("CollectTickets")]
         [HttpPost(nameof(CollectDailyTickets))]
         public async Task<IActionResult> CollectDailyTickets([FromBody] CollectDailyTicketCommand command, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(command, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpPost(nameof(CalculateQrCodeTicketSalary))]
+        public async Task<IActionResult> CalculateQrCodeTicketSalary([FromBody] CalculateSalaryCommand command, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(command, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpPost(nameof(CalculateSalaryForSubscriberCommand))]
+        public async Task<IActionResult> CalculateCardTicketSalary([FromBody] CalculateSalaryForSubscriberCommand command, CancellationToken cancellationToken)
         {
             var result = await sender.Send(command, cancellationToken);
             return result.ToIActionResult();

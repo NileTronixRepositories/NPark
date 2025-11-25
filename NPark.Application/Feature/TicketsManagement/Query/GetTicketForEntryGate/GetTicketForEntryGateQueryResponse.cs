@@ -12,5 +12,6 @@
         public Guid TicketNumber { get; init; }
         public decimal Price { get; init; }
         public bool isCollectedByCashier { get; init; }
+        public string? TicketInfo { get; init; } = string.Empty;
     }
 }
