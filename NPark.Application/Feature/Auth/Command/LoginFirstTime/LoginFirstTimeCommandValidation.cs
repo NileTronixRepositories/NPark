@@ -1,33 +1,33 @@
-﻿using BuildingBlock.Application.Repositories;
-using FluentValidation;
-using NPark.Domain.Entities;
+﻿using FluentValidation;
 using NPark.Domain.Resource;
 
 namespace NPark.Application.Feature.Auth.Command.LoginFirstTime
 {
-    public class LoginFirstTimeCommandValidation : AbstractValidator<LoginFirstTimeCommand>
+    public sealed class LoginFirstTimeCommandValidation : AbstractValidator<LoginFirstTimeCommand>
     {
-        private readonly IGenericRepository<User> _user;
-
-        public LoginFirstTimeCommandValidation(IGenericRepository<User> user)
+        public LoginFirstTimeCommandValidation()
         {
-            _user = user;
-
-            RuleFor(x => x.UserName).NotEmpty().WithMessage(ErrorMessage.IsRequired)
-                .MustAsync(async (username, cancellation) =>
-                await _user.IsExistAsync(x => x.Username == username)).WithMessage(ErrorMessage.NotFound);
+            RuleFor(x => x.UserName)
+                .NotEmpty()
+                .WithMessage(ErrorMessage.UserName_Required)
+                .MaximumLength(100)
+                .WithMessage("يجب ألا يزيد اسم المستخدم عن 100 حرف (Username must not exceed 100 characters).");
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage(ErrorMessage.PasswordRequired);
+                .NotEmpty()
+                .WithMessage(ErrorMessage.PasswordRequired);
+
             RuleFor(x => x.NewPassword)
-    .NotEmpty().WithMessage(ErrorMessage.PasswordRequired);
+                .NotEmpty()
+                .WithMessage(ErrorMessage.NewPassword_Required);
 
             RuleFor(x => x.ConfirmedPassword)
-    .NotEmpty().WithMessage(ErrorMessage.PasswordRequired);
+                .NotEmpty()
+                .WithMessage(ErrorMessage.ConfirmPasswordRequired);
 
             RuleFor(x => x.ConfirmedPassword)
-                   .Equal(x => x.NewPassword)
-                   .WithMessage(ErrorMessage.PasswordMismatch);
+                .Equal(x => x.NewPassword)
+                .WithMessage(ErrorMessage.PasswordMismatch);
         }
     }
 }

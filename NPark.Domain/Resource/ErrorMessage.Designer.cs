@@ -322,6 +322,15 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password confirmation does not match the new password.
+        /// </summary>
+        public static string NewPassword_Required {
+            get {
+                return ResourceManager.GetString("NewPassword_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource not found..
         /// </summary>
         public static string NotFound {

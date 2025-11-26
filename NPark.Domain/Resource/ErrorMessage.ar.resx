@@ -306,4 +306,7 @@
   <data name="AuthLogin_Unexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء عملية تسجيل الدخول، برجاء المحاولة لاحقًا</value>
   </data>
+  <data name="NewPassword_Required" xml:space="preserve">
+    <value>تأكيد كلمة المرور لا يطابق كلمة المرور الجديدة</value>
+  </data>
 </root>

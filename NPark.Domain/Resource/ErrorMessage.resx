@@ -306,4 +306,7 @@
   <data name="AuthLogin_Unexpected" xml:space="preserve">
     <value>Unexpected error occurred during login, please try again later</value>
   </data>
+  <data name="NewPassword_Required" xml:space="preserve">
+    <value>Password confirmation does not match the new password</value>
+  </data>
 </root>
