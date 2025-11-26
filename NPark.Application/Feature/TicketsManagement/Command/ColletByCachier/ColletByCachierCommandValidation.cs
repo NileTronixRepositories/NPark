@@ -1,6 +1,7 @@
 ﻿using BuildingBlock.Application.Repositories;
 using FluentValidation;
 using NPark.Domain.Entities;
+using NPark.Domain.Resource;
 
 namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
 {
@@ -9,9 +10,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
         public ColletByCachierCommandValidation(IGenericRepository<Ticket> repo)
         {
             RuleFor(x => x.TicketId)
-                .NotEmpty()
-                .MustAsync(async (id, token) => await repo.IsExistAsync(x => x.Id == id, token))
-                .WithMessage("Ticket not found");
+             .NotEmpty()
+             .WithMessage(ErrorMessage.TicketId_Required);
         }
     }
 }

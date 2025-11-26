@@ -457,6 +457,15 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This ticket has already been collected by the cashier.
+        /// </summary>
+        public static string Ticket_AlreadyCollected {
+            get {
+                return ResourceManager.GetString("Ticket_AlreadyCollected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket not found for the provided QR code.
         /// </summary>
         public static string Ticket_NotFound {
@@ -471,6 +480,24 @@ namespace NPark.Domain.Resource {
         public static string TicketAdd_Unexpected {
             get {
                 return ResourceManager.GetString("TicketAdd_Unexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while collecting the ticket by cashier, please try again later.
+        /// </summary>
+        public static string TicketCollectByCashier_Unexpected {
+            get {
+                return ResourceManager.GetString("TicketCollectByCashier_Unexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ticket ID is required.
+        /// </summary>
+        public static string TicketId_Required {
+            get {
+                return ResourceManager.GetString("TicketId_Required", resourceCulture);
             }
         }
         

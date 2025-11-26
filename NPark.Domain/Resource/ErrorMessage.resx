@@ -291,4 +291,13 @@
   <data name="TicketsCollectDaily_Unexpected" xml:space="preserve">
     <value>Unexpected error occurred while collecting today's tickets, please try again later</value>
   </data>
+  <data name="TicketId_Required" xml:space="preserve">
+    <value>Ticket ID is required</value>
+  </data>
+  <data name="Ticket_AlreadyCollected" xml:space="preserve">
+    <value>This ticket has already been collected by the cashier</value>
+  </data>
+  <data name="TicketCollectByCashier_Unexpected" xml:space="preserve">
+    <value>Unexpected error occurred while collecting the ticket by cashier, please try again later</value>
+  </data>
 </root>

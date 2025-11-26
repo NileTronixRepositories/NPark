@@ -291,4 +291,13 @@
   <data name="TicketsCollectDaily_Unexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء تحصيل تذاكر اليوم، برجاء المحاولة لاحقًا </value>
   </data>
+  <data name="TicketId_Required" xml:space="preserve">
+    <value>رقم التذكرة مطلوب</value>
+  </data>
+  <data name="Ticket_AlreadyCollected" xml:space="preserve">
+    <value>تم تحصيل هذه التذكرة من قبل الكاشير بالفعل </value>
+  </data>
+  <data name="TicketCollectByCashier_Unexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء تحصيل التذكرة من الكاشير، برجاء المحاولة لاحقًا</value>
+  </data>
 </root>
