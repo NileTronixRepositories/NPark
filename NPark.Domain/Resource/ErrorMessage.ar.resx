@@ -285,4 +285,10 @@
   <data name="SubscriberCard_NotFound" xml:space="preserve">
     <value>لم يتم العثور على بطاقة الاشتراك </value>
   </data>
+  <data name="Tickets_NoneToCollect" xml:space="preserve">
+    <value>لا توجد تذاكر متاحة للتحصيل اليوم لهذه البوابة </value>
+  </data>
+  <data name="TicketsCollectDaily_Unexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء تحصيل تذاكر اليوم، برجاء المحاولة لاحقًا </value>
+  </data>
 </root>

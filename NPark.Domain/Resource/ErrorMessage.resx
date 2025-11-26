@@ -285,4 +285,10 @@
   <data name="SubscriberCard_NotFound" xml:space="preserve">
     <value>Subscriber card not found</value>
   </data>
+  <data name="Tickets_NoneToCollect" xml:space="preserve">
+    <value>No tickets available to collect today for this gate</value>
+  </data>
+  <data name="TicketsCollectDaily_Unexpected" xml:space="preserve">
+    <value>Unexpected error occurred while collecting today's tickets, please try again later</value>
+  </data>
 </root>

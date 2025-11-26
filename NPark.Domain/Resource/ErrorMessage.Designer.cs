@@ -475,6 +475,24 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No tickets available to collect today for this gate.
+        /// </summary>
+        public static string Tickets_NoneToCollect {
+            get {
+                return ResourceManager.GetString("Tickets_NoneToCollect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while collecting today&apos;s tickets, please try again later.
+        /// </summary>
+        public static string TicketsCollectDaily_Unexpected {
+            get {
+                return ResourceManager.GetString("TicketsCollectDaily_Unexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GateId or UserId not found.
         /// </summary>
         public static string TokenInfo_Missing {

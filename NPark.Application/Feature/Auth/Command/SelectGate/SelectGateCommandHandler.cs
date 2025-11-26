@@ -62,7 +62,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 return Result<UserTokenDto>.Fail(new Error("Invalid Gate Number", "Invalid Gate Number", ErrorType.Security));
 
             // Set the gate as occupied (marking the gate as occupied by this user)
-            if (gateEntity.IsOccupied != null && gateEntity.IsOccupied.Value)
+            if (gateEntity.IsOccupied != null && gateEntity.IsOccupied.Value && tokenInfo.UserId.Value != gateEntity?.OccupiedBy)
                 return Result<UserTokenDto>.Fail(new Error("Gate is Occupied", "Gate is Occupied", ErrorType.Security));
 
             gateEntity.SetIsOccupied(true, tokenInfo.UserId, DateTime.Now);
