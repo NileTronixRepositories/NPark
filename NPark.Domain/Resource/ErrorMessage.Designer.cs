@@ -448,6 +448,15 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subscriber card not found.
+        /// </summary>
+        public static string SubscriberCard_NotFound {
+            get {
+                return ResourceManager.GetString("SubscriberCard_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket not found for the provided QR code.
         /// </summary>
         public static string Ticket_NotFound {

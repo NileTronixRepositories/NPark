@@ -282,4 +282,7 @@
   <data name="SalaryCalculate_Unexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء حساب الرسوم، برجاء المحاولة لاحقًا</value>
   </data>
+  <data name="SubscriberCard_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على بطاقة الاشتراك </value>
+  </data>
 </root>
