@@ -246,4 +246,28 @@
   <data name="Role_Exist" xml:space="preserve">
     <value> الدور غير موجود.</value>
   </data>
+  <data name="CardNumber_Require" xml:space="preserve">
+    <value>رقم الكارت مطلوب لتذاكر المشتركين</value>
+  </data>
+  <data name="CardNumber_NonRequired" xml:space="preserve">
+    <value>يجب ترك رقم الكارت فارغًا للتذاكر غير الخاصة بالمشتركين</value>
+  </data>
+  <data name="Configuration_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على إعدادات نظام الموقف</value>
+  </data>
+  <data name="TokenInfo_Missing" xml:space="preserve">
+    <value>لم يتم العثور على رقم البوابة أو رقم المستخدم</value>
+  </data>
+  <data name="TicketAdd_Unexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء إضافة التذكرة، برجاء المحاولة لاحقًا </value>
+  </data>
+  <data name="Subscriber_Card_InvalidDate" xml:space="preserve">
+    <value>بطاقة الاشتراك غير صالحة في التاريخ الحالي</value>
+  </data>
+  <data name="ConfigurationPricingSchema_Missing" xml:space="preserve">
+    <value>تم ضبط نوع التسعير على (دخول) بدون تحديد مخطط تسعي</value>
+  </data>
+  <data name="PricingSchema_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على مخطط التسعير المحدد</value>
+  </data>
 </root>

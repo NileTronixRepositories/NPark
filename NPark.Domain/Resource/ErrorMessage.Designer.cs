@@ -70,11 +70,47 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card number must be empty for non-subscriber tickets.
+        /// </summary>
+        public static string CardNumber_NonRequired {
+            get {
+                return ResourceManager.GetString("CardNumber_NonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card number is required for subscriber tickets.
+        /// </summary>
+        public static string CardNumber_Require {
+            get {
+                return ResourceManager.GetString("CardNumber_Require", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card number is required..
         /// </summary>
         public static string CardNumber_Required {
             get {
                 return ResourceManager.GetString("CardNumber_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parking system configuration not found.
+        /// </summary>
+        public static string Configuration_NotFound {
+            get {
+                return ResourceManager.GetString("Configuration_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pricing schema is not configured for enter price type.
+        /// </summary>
+        public static string ConfigurationPricingSchema_Missing {
+            get {
+                return ResourceManager.GetString("ConfigurationPricingSchema_Missing", resourceCulture);
             }
         }
         
@@ -331,6 +367,15 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pricing scheme not found.
+        /// </summary>
+        public static string PricingSchema_NotFound {
+            get {
+                return ResourceManager.GetString("PricingSchema_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PricingSchemaId is required when PriceType is set to &apos;Enter.
         /// </summary>
         public static string PricingSchemaId_RequiredWhenEnter {
@@ -363,6 +408,33 @@ namespace NPark.Domain.Resource {
         public static string Role_Requred {
             get {
                 return ResourceManager.GetString("Role_Requred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscriber card is not valid for the current date.
+        /// </summary>
+        public static string Subscriber_Card_InvalidDate {
+            get {
+                return ResourceManager.GetString("Subscriber_Card_InvalidDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while adding ticket, please try again later.
+        /// </summary>
+        public static string TicketAdd_Unexpected {
+            get {
+                return ResourceManager.GetString("TicketAdd_Unexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GateId or UserId not found.
+        /// </summary>
+        public static string TokenInfo_Missing {
+            get {
+                return ResourceManager.GetString("TokenInfo_Missing", resourceCulture);
             }
         }
         

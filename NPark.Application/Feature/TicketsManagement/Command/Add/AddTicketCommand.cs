@@ -4,8 +4,13 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
 {
     public sealed record AddTicketCommand : ICommand<AddTicketCommandResponse>
     {
-        public string? VehicleNumber { get; set; } = string.Empty;
-        public bool IsSubscriber { get; set; } = false;
-        public string? CardNumber { get; set; }
+        // Vehicle number is optional (for non-subscribers).
+        public string? VehicleNumber { get; init; }
+
+        // True => Subscriber path, False => Normal ticket.
+        public bool IsSubscriber { get; init; }
+
+        // CardNumber is only required when IsSubscriber == true.
+        public string? CardNumber { get; init; }
     }
 }

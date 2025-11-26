@@ -246,4 +246,28 @@
   <data name="Role_Exist" xml:space="preserve">
     <value>Role does not exist.</value>
   </data>
+  <data name="CardNumber_Require" xml:space="preserve">
+    <value>Card number is required for subscriber tickets</value>
+  </data>
+  <data name="CardNumber_NonRequired" xml:space="preserve">
+    <value>Card number must be empty for non-subscriber tickets</value>
+  </data>
+  <data name="Configuration_NotFound" xml:space="preserve">
+    <value>Parking system configuration not found</value>
+  </data>
+  <data name="TokenInfo_Missing" xml:space="preserve">
+    <value>GateId or UserId not found</value>
+  </data>
+  <data name="TicketAdd_Unexpected" xml:space="preserve">
+    <value>Unexpected error occurred while adding ticket, please try again later</value>
+  </data>
+  <data name="Subscriber_Card_InvalidDate" xml:space="preserve">
+    <value>Subscriber card is not valid for the current date</value>
+  </data>
+  <data name="ConfigurationPricingSchema_Missing" xml:space="preserve">
+    <value>Pricing schema is not configured for enter price type</value>
+  </data>
+  <data name="PricingSchema_NotFound" xml:space="preserve">
+    <value>Pricing scheme not found</value>
+  </data>
 </root>

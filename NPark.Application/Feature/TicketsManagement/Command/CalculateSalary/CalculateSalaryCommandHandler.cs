@@ -100,7 +100,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CalculateSalary
 
             foreach (var order in orderPricingSchemas)
             {
-                if (enterDate > TimeSpan.FromHours(order!.PricingScheme!.TotalHours!.Value))
+                if (enterDate > TimeSpan.FromHours(order!.PricingScheme.TotalHours!.Value))
                 {
                     enterDate -= TimeSpan.FromHours(order.PricingScheme.TotalHours.Value);
                     totalSalary += order.PricingScheme.Salary;
