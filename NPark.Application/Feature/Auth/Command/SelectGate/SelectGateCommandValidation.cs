@@ -60,6 +60,9 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 .MustAsync(async (command, cancellationToken) =>
                 {
                     var gateEntity = await GetGateEntityAsync(int.Parse(command.GateNumber.Split(' ')[0]), command.GateType, cancellationToken);
+                    var tokenInfo = await GetTokenInfoAsync(_contextAccessor, _tokenReader);
+                    if (tokenInfo != null && tokenInfo.UserId.HasValue && tokenInfo.UserId.Value == gateEntity?.OccupiedBy)
+                        return true;
                     return gateEntity?.IsOccupied != true;
                 })
                 .WithMessage("Gate is Occupied. / البوابة مشغولة.");
