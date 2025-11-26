@@ -169,6 +169,15 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete a gate that has tickets.
+        /// </summary>
+        public static string Gate_HasTickets {
+            get {
+                return ResourceManager.GetString("Gate_HasTickets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allowed parking slots must be greater than 0.
         /// </summary>
         public static string Invalid_AllowedParkingSlots {
@@ -363,6 +372,15 @@ namespace NPark.Domain.Resource {
         public static string OutOfRange {
             get {
                 return ResourceManager.GetString("OutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while updating parking system configuration, please try again later.
+        /// </summary>
+        public static string ParkingConfigurationUpdate_Unexpected {
+            get {
+                return ResourceManager.GetString("ParkingConfigurationUpdate_Unexpected", resourceCulture);
             }
         }
         

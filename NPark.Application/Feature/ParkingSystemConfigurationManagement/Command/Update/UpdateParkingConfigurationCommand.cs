@@ -17,13 +17,14 @@ namespace NPark.Application.Feature.ParkingSystemConfigurationManagement.Command
         public bool DateTimeFlag { get; set; }
         public bool TicketIdFlag { get; set; }
         public bool FeesFlag { get; set; }
-        public Guid PricingSchemaId { get; set; }
+        public Guid? PricingSchemaId { get; set; }
         public List<GateInfo> EntryGates { get; set; } = new();
         public List<GateInfo> ExitGates { get; set; } = new();
     }
 
     public record GateInfo
     {
+        public Guid? GateId { get; set; }
         public int GateNumber { get; set; }
         public string? LprIp { get; set; } = string.Empty;
         public string? PcIp { get; set; } = string.Empty;

@@ -38,5 +38,13 @@ namespace NPark.Domain.Entities
         }
 
         public void SetPcIp(string pcIp) => PcIp = pcIp;
+
+        public void UpdateGateInfo(int gateNumber, GateType gateType, string? lprIp, string? pcIp)
+        {
+            GateNumber = gateNumber;
+            GateType = gateType;
+            LprIp = lprIp;
+            PcIp = pcIp;
+        }
     }
 }
