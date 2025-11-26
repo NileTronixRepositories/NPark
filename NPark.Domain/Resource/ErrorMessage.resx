@@ -270,4 +270,16 @@
   <data name="PricingSchema_NotFound" xml:space="preserve">
     <value>Pricing scheme not found</value>
   </data>
+  <data name="QrCode_Require" xml:space="preserve">
+    <value>QR code is required</value>
+  </data>
+  <data name="QrInvalid" xml:space="preserve">
+    <value>QR code must be a valid Base64 string</value>
+  </data>
+  <data name="Ticket_NotFound" xml:space="preserve">
+    <value>Ticket not found for the provided QR code</value>
+  </data>
+  <data name="SalaryCalculate_Unexpected" xml:space="preserve">
+    <value>Unexpected error occurred while calculating salary, please try again later</value>
+  </data>
 </root>

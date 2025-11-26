@@ -394,6 +394,24 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QR code is required.
+        /// </summary>
+        public static string QrCode_Require {
+            get {
+                return ResourceManager.GetString("QrCode_Require", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QR code must be a valid Base64 string.
+        /// </summary>
+        public static string QrInvalid {
+            get {
+                return ResourceManager.GetString("QrInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role does not exist..
         /// </summary>
         public static string Role_Exist {
@@ -412,11 +430,29 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while calculating salary, please try again later.
+        /// </summary>
+        public static string SalaryCalculate_Unexpected {
+            get {
+                return ResourceManager.GetString("SalaryCalculate_Unexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subscriber card is not valid for the current date.
         /// </summary>
         public static string Subscriber_Card_InvalidDate {
             get {
                 return ResourceManager.GetString("Subscriber_Card_InvalidDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ticket not found for the provided QR code.
+        /// </summary>
+        public static string Ticket_NotFound {
+            get {
+                return ResourceManager.GetString("Ticket_NotFound", resourceCulture);
             }
         }
         

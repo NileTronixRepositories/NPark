@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using NPark.Domain.Resource;
 
 namespace NPark.Application.Feature.TicketsManagement.Command.CalculateSalary
 {
@@ -8,9 +9,9 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CalculateSalary
         {
             RuleFor(x => x.QrCode)
                 .NotEmpty()
-                .WithMessage("QR Code is required.")
-                .Matches(@"^[A-Za-z0-9\+/=]+$")  // QR Code must be base64 encoded
-                .WithMessage("QR Code must be a valid base64 string.");
+                .WithMessage(ErrorMessage.QrCode_Require)
+                .Matches(@"^[A-Za-z0-9\+/=]+$") // Base64
+                .WithMessage(ErrorMessage.QrInvalid);
         }
     }
 }

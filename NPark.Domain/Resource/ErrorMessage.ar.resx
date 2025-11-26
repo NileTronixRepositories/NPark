@@ -270,4 +270,16 @@
   <data name="PricingSchema_NotFound" xml:space="preserve">
     <value>لم يتم العثور على مخطط التسعير المحدد</value>
   </data>
+  <data name="QrCode_Require" xml:space="preserve">
+    <value>رمز الـ QR مطلوب</value>
+  </data>
+  <data name="QrInvalid" xml:space="preserve">
+    <value>رمز الـ QR غير صالح، فشل التحقق من سلامة البيانات</value>
+  </data>
+  <data name="Ticket_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على التذكرة المرتبطة بهذا الرمز </value>
+  </data>
+  <data name="SalaryCalculate_Unexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء حساب الرسوم، برجاء المحاولة لاحقًا</value>
+  </data>
 </root>
