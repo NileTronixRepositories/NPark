@@ -70,6 +70,24 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid username or password.
+        /// </summary>
+        public static string Auth_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("Auth_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred during login, please try again later.
+        /// </summary>
+        public static string AuthLogin_Unexpected {
+            get {
+                return ResourceManager.GetString("AuthLogin_Unexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card number must be empty for non-subscriber tickets.
         /// </summary>
         public static string CardNumber_NonRequired {

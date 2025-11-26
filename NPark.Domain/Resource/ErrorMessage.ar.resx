@@ -300,4 +300,10 @@
   <data name="TicketCollectByCashier_Unexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء تحصيل التذكرة من الكاشير، برجاء المحاولة لاحقًا</value>
   </data>
+  <data name="Auth_InvalidCredentials" xml:space="preserve">
+    <value>اسم المستخدم أو كلمة المرور غير صحيحة</value>
+  </data>
+  <data name="AuthLogin_Unexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء عملية تسجيل الدخول، برجاء المحاولة لاحقًا</value>
+  </data>
 </root>

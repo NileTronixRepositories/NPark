@@ -300,4 +300,10 @@
   <data name="TicketCollectByCashier_Unexpected" xml:space="preserve">
     <value>Unexpected error occurred while collecting the ticket by cashier, please try again later</value>
   </data>
+  <data name="Auth_InvalidCredentials" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="AuthLogin_Unexpected" xml:space="preserve">
+    <value>Unexpected error occurred during login, please try again later</value>
+  </data>
 </root>
