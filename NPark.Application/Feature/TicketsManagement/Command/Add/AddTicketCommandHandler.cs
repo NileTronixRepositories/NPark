@@ -254,12 +254,17 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
         // --------------------------------------------------------
         private byte[] GenerateTicketQrCode(Ticket ticketEntity)
         {
+            var bytesGenerated = Array.Empty<byte>();
+            do
+            {
+                var byte5 = _byteVerificationService.GenerateComplexByte5FromGuid(ticketEntity.UniqueGuidPart);
+                var combinedBytes = ticketEntity.UniqueGuidPart.Concat(new[] { byte5 }).ToArray();
+                var encryptedData = Convert.ToBase64String(combinedBytes);
+                bytesGenerated = combinedBytes;
+            } while (bytesGenerated.Length != 5);
             // byte5 based on UniqueGuidPart
-            var byte5 = _byteVerificationService.GenerateComplexByte5FromGuid(ticketEntity.UniqueGuidPart);
-            var combinedBytes = ticketEntity.UniqueGuidPart.Concat(new[] { byte5 }).ToArray();
-            var encryptedData = Convert.ToBase64String(combinedBytes);
 
-            return _qrCodeService.GenerateQRCode(encryptedData);
+            return _qrCodeService.GenerateQRCode(bytesGenerated);
         }
 
         // --------------------------------------------------------
