@@ -4,7 +4,9 @@ using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using NPark.Application.Abstraction;
 using NPark.Application.Abstraction.Security;
+using NPark.Application.Shared.Dto;
 using NPark.Application.Specifications.ParkingMembershipSpecification;
 using NPark.Application.Specifications.ParkingSystemConfigurationSpec;
 using NPark.Domain.Entities;
@@ -25,6 +27,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenReader _tokenReader;
         private readonly ILogger<AddTicketCommandHandler> _logger;
+        private readonly IRealtimeNotifier _realtimeNotifier;
 
         public AddTicketCommandHandler(
             IGenericRepository<Ticket> ticketRepository,
@@ -35,6 +38,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             ITokenReader tokenReader,
             IGenericRepository<PricingScheme> pricingSchemaRepository,
             ILogger<AddTicketCommandHandler> logger,
+            IRealtimeNotifier realtimeNotifier,
             IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository)
         {
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
@@ -46,6 +50,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             _pricingSchemaRepository = pricingSchemaRepository ?? throw new ArgumentNullException(nameof(pricingSchemaRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository ?? throw new ArgumentNullException(nameof(parkingSystemConfigurationRepository));
+
+            _realtimeNotifier = realtimeNotifier ?? throw new ArgumentNullException(nameof(realtimeNotifier));
         }
 
         public async Task<Result<AddTicketCommandResponse>> Handle(
@@ -243,10 +249,43 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             await _ticketRepository.AddAsync(ticketEntity, cancellationToken);
             await _ticketRepository.SaveChangesAsync(cancellationToken);
 
+            await NotifyDashboardTicketAddedAsync(
+    ticketEntity,
+    isSubscriber: true,
+    cancellationToken);
             var qrCode = GenerateTicketQrCode(ticketEntity);
             var response = BuildResponse(ticketEntity, qrCode);
 
             return Result<AddTicketCommandResponse>.Ok(response);
+        }
+
+        private async Task NotifyDashboardTicketAddedAsync(
+            Ticket ticketEntity,
+            bool isSubscriber,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var payload = new TicketAddedNotification
+                {
+                    TicketId = ticketEntity.Id,
+                    GateId = ticketEntity.GateId,        // assuming Ticket has GateId property
+                    StartDate = ticketEntity.StartDate,
+                    Price = ticketEntity.Price,
+                    IsSubscriber = isSubscriber,
+                    VehicleNumber = ticketEntity.VehicleNumber
+                };
+
+                // channel name عام "tickets:added"
+                await _realtimeNotifier.PublishAsync("tickets:added", payload, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                // مفيش فشل في العملية الأساسية لو SignalR وقع
+                _logger.LogError(ex,
+                    "Failed to send realtime notification for ticket {TicketId}",
+                    ticketEntity.Id);
+            }
         }
 
         // --------------------------------------------------------

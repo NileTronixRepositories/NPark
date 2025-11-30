@@ -2,6 +2,8 @@
 using BuildingBlock.Api.Logging;
 using BuildingBlock.Api.OpenAi;
 using Microsoft.OpenApi.Models;
+using NPark.Api.RealTime;
+using NPark.Application.Abstraction;
 using NPark.Application.Bootstrap;
 using NPark.Infrastructure.Bootstrap;
 
@@ -60,10 +62,12 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
     );
 });
-
+builder.Services.AddScoped<IRealtimeNotifier, RealtimeNotifier>();
 var app = builder.Build();
 app.UseSerilogPipeline();
 app.UseCors("OpenAll_NoCreds");
+app.MapHub<NotificationsHub>("/hubs/notifications");
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
