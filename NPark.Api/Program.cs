@@ -6,6 +6,7 @@ using NPark.Api.RealTime;
 using NPark.Application.Abstraction;
 using NPark.Application.Bootstrap;
 using NPark.Infrastructure.Bootstrap;
+using NPark.Infrastructure.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.InfrastructureInjection(builder.Configuration);
 builder.Services.AddApplicationBootstrap();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSignalR();
+
 builder.Services.AddSwaggerGen(c =>
 {
     // Add Bearer Authentication to Swagger
@@ -53,19 +56,40 @@ builder.Services.AddSharedLocalization(opts =>
     opts.AllowQueryStringLang = true;
 });
 builder.Services.AddMemoryCache();
+var corsSettings = builder.Configuration
+    .GetSection("Cors")
+    .Get<CorsSettings>() ?? new CorsSettings();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("OpenAll_NoCreds", policy =>
-        policy
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-    );
+    options.AddPolicy("NParkCors", policy =>
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod();
+
+        if (corsSettings.AllowAnyOrigin)
+        {
+            policy.AllowAnyOrigin();
+        }
+        else
+        {
+            if (corsSettings.AllowedOrigins.Length > 0)
+            {
+                policy.WithOrigins(corsSettings.AllowedOrigins)
+                      .AllowCredentials();
+            }
+            else
+            {
+                // fallback آمن نسبياً: مفيش origins → معناه block للـ cross-origin
+                policy.WithOrigins(Array.Empty<string>());
+            }
+        }
+    });
 });
+
 builder.Services.AddScoped<IRealtimeNotifier, RealtimeNotifier>();
 var app = builder.Build();
 app.UseSerilogPipeline();
-app.UseCors("OpenAll_NoCreds");
+app.UseCors("NParkCors");
 app.MapHub<NotificationsHub>("/hubs/notifications");
 
 app.UseHttpsRedirection();
