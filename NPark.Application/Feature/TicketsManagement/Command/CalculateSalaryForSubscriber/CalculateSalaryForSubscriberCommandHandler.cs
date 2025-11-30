@@ -103,14 +103,9 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CalculateSalaryFor
                     EnterDate = ticket.StartDate,
                     IsCollectByCashier = ticket.IsCashierCollected,
                     IsExitValid = true,
-                    TotalSalary = 0m
+                    TotalSalary = 0m,
+                    TicketId = ticket.Id
                 };
-
-                // ---------------------------
-                // 5) Set exit date & save
-                // ---------------------------
-                ticket.SetExitDate();
-                await _ticketRepository.SaveChangesAsync(cancellationToken);
 
                 return Result<CalculateSalaryCommandResponse>.Ok(response);
             }

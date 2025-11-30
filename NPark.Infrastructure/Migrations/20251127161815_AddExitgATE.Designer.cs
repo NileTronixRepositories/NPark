@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NPark.Infrastructure;
 
@@ -11,9 +12,11 @@ using NPark.Infrastructure;
 namespace NPark.Infrastructure.Migrations
 {
     [DbContext(typeof(NParkDBContext))]
-    partial class NParkDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251127161815_AddExitgATE")]
+    partial class AddExitgATE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,9 +139,6 @@ namespace NPark.Infrastructure.Migrations
 
                     b.Property<bool?>("IsOccupied")
                         .HasColumnType("bit");
-
-                    b.Property<Guid?>("LastLoginUserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LprIp")
                         .HasColumnType("nvarchar(max)");
@@ -499,8 +499,6 @@ namespace NPark.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CollectedBy");
-
                     b.HasIndex("GateId");
 
                     b.HasIndex("UniqueGuidPart")
@@ -645,11 +643,6 @@ namespace NPark.Infrastructure.Migrations
 
             modelBuilder.Entity("NPark.Domain.Entities.Ticket", b =>
                 {
-                    b.HasOne("NPark.Domain.Entities.User", "UserCollector")
-                        .WithMany()
-                        .HasForeignKey("CollectedBy")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("NPark.Domain.Entities.ParkingGate", "ParkingGate")
                         .WithMany()
                         .HasForeignKey("GateId")
@@ -665,8 +658,6 @@ namespace NPark.Infrastructure.Migrations
                     b.Navigation("ParkingGate");
 
                     b.Navigation("User");
-
-                    b.Navigation("UserCollector");
                 });
 
             modelBuilder.Entity("NPark.Domain.Entities.User", b =>

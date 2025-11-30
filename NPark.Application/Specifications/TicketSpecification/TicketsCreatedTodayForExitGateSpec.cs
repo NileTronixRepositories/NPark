@@ -18,7 +18,7 @@ namespace NPark.Application.Specifications.TicketSpecification
             {
                 isCollectedByCashier = x.IsCollected,
                 Price = x.Price,
-                TicketNumber = x.Id,
+                TicketNumber = BitConverter.ToString(x.UniqueGuidPart).Replace("-", ""),
                 StartDate = x.CreatedOnUtc,
                 TicketInfo = x.VehicleNumber
             });

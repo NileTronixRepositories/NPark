@@ -14,6 +14,7 @@ namespace NPark.Infrastructure.Configuration
             builder.Property(t => t.StartDate).IsRequired();
             builder.Property(t => t.EndDate).IsRequired(false);
             builder.Property(t => t.CollectedBy).IsRequired(false);
+            builder.Property(t => t.ExitGateId).IsRequired(false);
             builder.Property(t => t.VehicleNumber).IsRequired(false);
             builder.Property(t => t.CollectedDate).IsRequired(false);
             builder.Property(t => t.Price).IsRequired();
@@ -36,6 +37,11 @@ namespace NPark.Infrastructure.Configuration
             builder.HasOne(x => x.User)
                 .WithMany()
                 .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.UserCollector)
+                .WithMany()
+                .HasForeignKey(x => x.CollectedBy)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

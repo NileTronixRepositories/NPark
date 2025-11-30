@@ -1,8 +1,12 @@
 ﻿using BuildingBlock.Application.Abstraction;
 using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using NPark.Application.Abstraction.Security;
+using NPark.Application.Specifications.ParkingSystemConfigurationSpec;
 using NPark.Domain.Entities;
+using NPark.Domain.Enums;
 using NPark.Domain.Resource;
 
 namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
@@ -11,13 +15,22 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
     {
         private readonly IGenericRepository<Ticket> _ticketRepository;
         private readonly ILogger<ColletByCachierCommandHandler> _logger;
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ITokenReader _tokenReader;
+        private readonly IGenericRepository<ParkingSystemConfiguration> _parkingSystemConfigurationRepository;
 
         public ColletByCachierCommandHandler(
             IGenericRepository<Ticket> ticketRepository,
+            IHttpContextAccessor contextAccessor,
+            IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository,
+            ITokenReader tokenReader,
             ILogger<ColletByCachierCommandHandler> logger)
         {
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+            _tokenReader = tokenReader ?? throw new ArgumentNullException(nameof(tokenReader));
+            _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository ?? throw new ArgumentNullException(nameof(parkingSystemConfigurationRepository));
         }
 
         public async Task<Result> Handle(
@@ -61,8 +74,44 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
                             Message: ErrorMessage.Ticket_AlreadyCollected,
                             Type: ErrorType.Conflict));
                 }
-
+                //----------------------------
+                // Get Token Info
                 // ---------------------------
+
+                var tokenInfo = _contextAccessor.HttpContext?.ReadToken(_tokenReader);
+                if (tokenInfo == null || string.IsNullOrEmpty(tokenInfo.Role))
+                    return Result.Fail(new Error(
+                            Code: "Token.Missing",
+                            Message: ErrorMessage.TokenInfo_Missing,
+                            Type: ErrorType.Security));
+
+                //------------------------------------
+                //Get Configuration
+                //------------------------------------
+                var spec = new GetParkingSystemConfigurationSpecification();
+                var configurationEntity = await _parkingSystemConfigurationRepository.FirstOrDefaultWithSpecAsync(spec, cancellationToken);
+                if (configurationEntity is null)
+                    return Result.Fail(new Error(
+                            Code: "Configuration.NotFound",
+                            Message: ErrorMessage.Configuration_NotFound,
+                            Type: ErrorType.NotFound));
+
+                //--------------------------
+                //Check valid of rule for cashier collect
+                //--------------------------
+
+                if (configurationEntity.PriceType == PriceType.Enter && tokenInfo.Role == "ExitCashier")
+                    return Result.Fail(new Error(
+                            Code: "Invalid.Exit.Collect.Cashier",
+                            Message: "can't collect ticket by exit cashier",
+                            Type: ErrorType.NotFound));
+
+                if (configurationEntity.PriceType == PriceType.Exit && tokenInfo.Role == "EntranceCashier")
+                    return Result.Fail(new Error(
+                            Code: "Invalid.Enter.Collect.Cashier",
+                            Message: "can't collect ticket by enter cashier",
+                            Type: ErrorType.NotFound));
+
                 // 3) Mark as collected by cashier
                 // ---------------------------
                 ticket.SetIsCashierCollected();

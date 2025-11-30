@@ -8,6 +8,7 @@ using NPark.Application.Feature.TicketsManagement.Command.CalculateSalary;
 using NPark.Application.Feature.TicketsManagement.Command.CalculateSalaryForSubscriber;
 using NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket;
 using NPark.Application.Feature.TicketsManagement.Command.ColletByCachier;
+using NPark.Application.Feature.TicketsManagement.Command.ExitTicket;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate;
 
@@ -68,6 +69,13 @@ namespace NPark.Api.Controllers
 
         [HttpPost(nameof(CalculateSalaryForSubscriberCommand))]
         public async Task<IActionResult> CalculateCardTicketSalary([FromBody] CalculateSalaryForSubscriberCommand command, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(command, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpPost(nameof(ExitTicket))]
+        public async Task<IActionResult> ExitTicket(ExitTicketCommand command, CancellationToken cancellationToken)
         {
             var result = await sender.Send(command, cancellationToken);
             return result.ToIActionResult();

@@ -14,6 +14,7 @@ namespace NPark.Domain.Entities
         public string? PcIp { get; private set; } = string.Empty;
         public bool HasPc => !string.IsNullOrEmpty(PcIp);
         public string? LprIp { get; private set; } = string.Empty;
+        public Guid? LastLoginUserId { get; private set; }
 
         public int? ParkingSystemConfigurationId { get; private set; }
         public ParkingSystemConfiguration? ParkingSystemConfiguration { get; private set; }
@@ -46,5 +47,7 @@ namespace NPark.Domain.Entities
             LprIp = lprIp;
             PcIp = pcIp;
         }
+
+        public void SetLastLoginUserId(Guid userId) => LastLoginUserId = userId;
     }
 }

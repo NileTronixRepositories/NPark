@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using NPark.Application.Abstraction;
 using NPark.Application.Abstraction.Security;
 using NPark.Application.Shared.Dto;
-using NPark.Application.Specifications.ParkingGateSpec;
 using NPark.Domain.Entities;
 
 namespace NPark.Application.Feature.Auth.Command.SelectGate
@@ -35,12 +34,6 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
 
         public async Task<Result<UserTokenDto>> Handle(SelectGateCommand request, CancellationToken cancellationToken)
         {
-            string number = request.GateNumber.Split(" ")[0];
-            int numberParse;
-            if (!int.TryParse(number, out numberParse))
-            {
-                return Result<UserTokenDto>.Fail(new Error("Invalid Gate Number", "The gate number is not a valid number.", ErrorType.Security));
-            }
             var tokenInfo = _contextAccessor.HttpContext?.ReadToken(_tokenReader);
             if (tokenInfo == null)
                 return Result<UserTokenDto>.Fail(new Error("Invalid Token", "Invalid Token", ErrorType.Security));
@@ -54,8 +47,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
             var userEntity = await _userInfoRepository.GetByIdAsync(userId, cancellationToken);
 
             // Fetch the gate entity based on GateNumber
-            var gateEntity = await _gateInfoRepository.FirstOrDefaultWithSpecAsync(
-                new GetGateByGateNumberSpec(numberParse, request.GateType), cancellationToken);
+            var gateEntity = await _gateInfoRepository.GetByIdAsync(request.GateId);
 
             // If the gate is invalid, return error
             if (gateEntity == null)

@@ -1,27 +1,34 @@
 ﻿using BuildingBlock.Application.Abstraction;
 using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
+using BuildingBlock.Domain.Specification;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using NPark.Application.Abstraction.Security;
 using NPark.Application.Shared.Dto;
+using NPark.Application.Specifications.ParkingSystemConfigurationSpec;
 using NPark.Application.Specifications.TicketSpecification;
 using NPark.Domain.Entities;
+using NPark.Domain.Enums;
 using NPark.Domain.Resource;
 
 namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
 {
     public sealed class CollectDailyTicketCommandHandler
-         : ICommandHandler<CollectDailyTicketCommand, CollectDailyTicketResponse>
+        : ICommandHandler<CollectDailyTicketCommand, CollectDailyTicketResponse>
     {
         private readonly IGenericRepository<Ticket> _ticketRepository;
         private readonly ITokenReader _tokenReader;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAuditLogger _auditLogger;
+        private readonly IGenericRepository<ParkingGate> _parkingGateRepository;
         private readonly ILogger<CollectDailyTicketCommandHandler> _logger;
+        private readonly IGenericRepository<ParkingSystemConfiguration> _parkingSystemConfigurationRepository;
 
         public CollectDailyTicketCommandHandler(
             IGenericRepository<Ticket> ticketRepository,
+            IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository,
+            IGenericRepository<ParkingGate> parkingGateRepository,
             ITokenReader tokenReader,
             IHttpContextAccessor httpContextAccessor,
             IAuditLogger auditLogger,
@@ -32,6 +39,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _auditLogger = auditLogger ?? throw new ArgumentNullException(nameof(auditLogger));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _parkingGateRepository = parkingGateRepository ?? throw new ArgumentNullException(nameof(parkingGateRepository));
+            _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository ?? throw new ArgumentNullException(nameof(parkingSystemConfigurationRepository));
         }
 
         public async Task<Result<CollectDailyTicketResponse>> Handle(
@@ -42,9 +51,6 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
 
             try
             {
-                // ---------------------------
-                // 1) Read token info (GateId + UserId)
-                // ---------------------------
                 var tokenInfo = _httpContextAccessor.HttpContext?.ReadToken(_tokenReader);
 
                 if (tokenInfo is null || !tokenInfo.GateId.HasValue || !tokenInfo.UserId.HasValue)
@@ -62,13 +68,50 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
                 var gateId = tokenInfo.GateId.Value;
                 var userId = tokenInfo.UserId.Value;
 
-                // ---------------------------
-                // 2) Get today's tickets for this gate
-                // ---------------------------
-                var spec = new TotalTicketsForTodaySpec(gateId);
-                var tickets = await _ticketRepository
-                    .ListWithSpecAsync(spec, cancellationToken);
+                var gate = await _parkingGateRepository.GetByIdAsync(gateId, cancellationToken);
+                if (gate is null)
+                {
+                    return Result<CollectDailyTicketResponse>.Fail(
+                        new Error(
+                            Code: "Gate.NotFound",
+                            Message: " ErrorMessage.Gate_NotFound",
+                            Type: ErrorType.NotFound));
+                }
 
+                var confSpec = new GetParkingSystemConfigurationSpecification();
+                var configurationEntity = await _parkingSystemConfigurationRepository
+                    .FirstOrDefaultWithSpecAsync(confSpec, cancellationToken);
+
+                if (configurationEntity is null)
+                {
+                    return Result<CollectDailyTicketResponse>.Fail(
+                        new Error(
+                            Code: "Configuration.NotFound",
+                            Message: ErrorMessage.Configuration_NotFound,
+                            Type: ErrorType.NotFound));
+                }
+
+                if (configurationEntity.PriceType == PriceType.Enter && gate.GateType == GateType.Exit)
+                {
+                    return Result<CollectDailyTicketResponse>.Fail(new Error(
+                        Code: "Gate.InvalidForCollect.EnterPricing",
+                        Message: "ErrorMessage.Gate_Invalid_For_Collect_Enter ",
+                        Type: ErrorType.Conflict));
+                }
+
+                if (configurationEntity.PriceType == PriceType.Exit && gate.GateType == GateType.Entrance)
+                {
+                    return Result<CollectDailyTicketResponse>.Fail(new Error(
+                        Code: "Gate.InvalidForCollect.ExitPricing",
+                        Message: " ErrorMessage.Gate_Invalid_For_Collect_Exit",
+                        Type: ErrorType.Conflict));
+                }
+
+                Specification<Ticket> spec = configurationEntity.PriceType == PriceType.Enter
+            ? new TotalTicketsForTodaySpec(gateId)
+            : new TotalTicketsForTodayForExitSpec(gateId);
+
+                var tickets = await _ticketRepository.ListWithSpecAsync(spec, cancellationToken);
                 var ticketList = tickets?.ToList() ?? new List<Ticket>();
 
                 if (ticketList.Count == 0)
@@ -83,16 +126,12 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
                             Type: ErrorType.Conflict));
                 }
 
-                // ---------------------------
-                // 3) Mark tickets as collected
-                // ---------------------------
                 foreach (var ticket in ticketList)
                 {
                     ticket.SetCollected(userId);
                 }
 
-                // نستخدم وقت واحد للتحصيل لكل التفاصيل (consistent timestamp)
-                var collectedAt = DateTime.Now; // أو DateTime.UtcNow لو النظام كله UTC
+                var fallbackCollectedAt = DateTime.Now;
 
                 var response = new CollectDailyTicketResponse
                 {
@@ -101,26 +140,17 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
                     TicketCollectDetails = ticketList
                         .Select(x => new TicketCollectDetails
                         {
-                            CollectedAt = collectedAt,
+                            CollectedAt = x.CollectedDate ?? fallbackCollectedAt,
                             TicketNumber = x.Id,
                             Price = x.Price
                         })
                         .ToList()
                 };
 
-                // ---------------------------
-                // 4) Save changes
-                // ---------------------------
                 await _ticketRepository.SaveChangesAsync(cancellationToken);
 
-                // ---------------------------
-                // 5) Audit log (Safe)
-                // ---------------------------
                 await SafeAuditAsync(response, userId, cancellationToken);
 
-                // ---------------------------
-                // 6) Return success
-                // ---------------------------
                 return Result<CollectDailyTicketResponse>.Ok(response);
             }
             catch (OperationCanceledException)
@@ -139,9 +169,6 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
             }
         }
 
-        // --------------------------------------------------------
-        // Safe audit logging: لا يوقع الريكوست لو حصل خطأ في اللوج
-        // --------------------------------------------------------
         private async Task SafeAuditAsync(
             CollectDailyTicketResponse response,
             Guid userId,
@@ -168,7 +195,6 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
             }
             catch (Exception ex)
             {
-                // مهم: اللوج لو وقع ما يبوّظش الريكوست
                 _logger.LogWarning(
                     ex,
                     "Audit logging failed for CollectDailyTicket. UserId: {UserId}",

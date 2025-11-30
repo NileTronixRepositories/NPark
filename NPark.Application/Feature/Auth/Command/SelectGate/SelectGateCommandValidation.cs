@@ -2,7 +2,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using NPark.Application.Abstraction.Security;
-using NPark.Application.Specifications.ParkingGateSpec;
 using NPark.Domain.Entities;
 using NPark.Domain.Enums;
 
@@ -32,19 +31,16 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 })
                 .WithMessage("User ID is missing in the token. / معرف المستخدم مفقود في التوكن.");
 
-            RuleFor(x => x.GateNumber)
+            RuleFor(x => x.GateId)
                 .NotEmpty()
-                .WithMessage("Gate number is required. / رقم البوابة مطلوب.")
-                .MustAsync(async (gateNumber, cancellationToken) =>
-                    await IsValidGateAsync(int.Parse(gateNumber.Split(' ')[0]), cancellationToken))
-                .WithMessage("Invalid Gate Number. / رقم البوابة غير صالح.");
+                .WithMessage("Gate number is required. / رقم البوابة مطلوب.");
 
             // التحقق من تطابق Role مع نوع البوابة
             RuleFor(x => x)
                 .MustAsync(async (command, cancellationToken) =>
                 {
                     var tokenInfo = await GetTokenInfoAsync(_contextAccessor, _tokenReader);
-                    var gateEntity = await GetGateEntityAsync(int.Parse(command.GateNumber.Split(' ')[0]), command.GateType, cancellationToken);
+                    var gateEntity = await _gateInfoRepository.GetByIdAsync(command.GateId);
 
                     if (tokenInfo?.Role == "EntranceCashier" && gateEntity?.GateType == GateType.Exit)
                         return false;
@@ -59,7 +55,7 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
             RuleFor(x => x)
                 .MustAsync(async (command, cancellationToken) =>
                 {
-                    var gateEntity = await GetGateEntityAsync(int.Parse(command.GateNumber.Split(' ')[0]), command.GateType, cancellationToken);
+                    var gateEntity = await _gateInfoRepository.GetByIdAsync(command.GateId);
                     var tokenInfo = await GetTokenInfoAsync(_contextAccessor, _tokenReader);
                     if (tokenInfo != null && tokenInfo.UserId.HasValue && tokenInfo.UserId.Value == gateEntity?.OccupiedBy)
                         return true;
@@ -68,21 +64,10 @@ namespace NPark.Application.Feature.Auth.Command.SelectGate
                 .WithMessage("Gate is Occupied. / البوابة مشغولة.");
         }
 
-        private async Task<ParkingGate?> GetGateEntityAsync(int gateNumber, GateType gateType, CancellationToken cancellationToken)
-        {
-            return await _gateInfoRepository.FirstOrDefaultWithSpecAsync(new GetGateByGateNumberSpec(gateNumber, gateType), cancellationToken);
-        }
-
         private async Task<TokenInfoDto?> GetTokenInfoAsync(IHttpContextAccessor accessor, ITokenReader tokenReader)
         {
             var tokenInfo = _contextAccessor.HttpContext?.ReadToken(_tokenReader);
             return tokenInfo;
-        }
-
-        private async Task<bool> IsValidGateAsync(int gateNumber, CancellationToken cancellationToken)
-        {
-            var gateEntity = await _gateInfoRepository.IsExistAsync(g => g.GateNumber == gateNumber, cancellationToken);
-            return gateEntity;
         }
     }
 }

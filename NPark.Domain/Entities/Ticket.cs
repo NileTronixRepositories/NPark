@@ -18,9 +18,11 @@ namespace NPark.Domain.Entities
         public byte[] UniqueGuidPart { get; private set; }
         public string UniqueCode => BitConverter.ToString(UniqueGuidPart).Replace("-", "");
         public Guid GateId { get; private set; }
+        public Guid? ExitGateId { private set; get; }
         public Guid UserId { get; private set; }
         public bool IsCashierCollected { get; private set; } = false;
         public User User { get; private set; }
+        public User? UserCollector { get; private set; }
         public ParkingGate ParkingGate { get; private set; }
         public bool IsSubscriber { get; private set; } = false;
         public string? SubscriberNationalId { get; private set; }
@@ -53,6 +55,8 @@ namespace NPark.Domain.Entities
             CollectedDate = DateTime.Now;
         }
 
+        public void SetExitGate(Guid exitGateId) => ExitGateId = exitGateId;
+
         public void SetVehicleNumber(string vehicleNumber) => VehicleNumber = vehicleNumber;
 
         public void SetIsCashierCollected() => IsCashierCollected = true;
@@ -76,6 +80,18 @@ namespace NPark.Domain.Entities
             VehicleNumber = vehicleNumber;
             SubscriberNationalId = nationalId;
         }
+
+        public void SetPrice(decimal price) => Price = price;
+
         public void SetExitDate() => EndDate = DateTime.Now;
+
+        public static byte[] ParseUniqueCode(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
+                throw new ArgumentException("Invalid ticket code.", nameof(code));
+
+            // "63729C54" -> byte[4]
+            return Convert.FromHexString(code);
+        }
     }
 }

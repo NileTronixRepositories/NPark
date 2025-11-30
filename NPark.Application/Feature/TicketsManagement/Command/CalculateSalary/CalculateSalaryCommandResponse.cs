@@ -2,6 +2,7 @@
 {
     public sealed record CalculateSalaryCommandResponse
     {
+        public Guid TicketId { get; init; }
         public decimal TotalSalary { get; init; }
         public DateTime EnterDate { get; init; }
         public bool IsExitValid { get; init; }
