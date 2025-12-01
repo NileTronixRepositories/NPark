@@ -2,9 +2,9 @@
 
 namespace BuildingBlock.Domain.EntitiesHelper
 {
-    public class AggregateRoot<TKey> : Entity<TKey>
+    public class AggregateRoot<TKey> : Entity<TKey>, IHasDomainEvents
     {
-        private List<IDomainEvent> _domainEvents = new();
+        private readonly List<IDomainEvent> _domainEvents = new();
 
         protected AggregateRoot(TKey id)
             : base(id) { }
@@ -12,11 +12,13 @@ namespace BuildingBlock.Domain.EntitiesHelper
         protected AggregateRoot()
         { }
 
-        public List<IDomainEvent> GetDomainEvents() => _domainEvents;
+        protected void RaiseDomainEvent(IDomainEvent domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
         public void ClearDomainEvents() => _domainEvents.Clear();
-
-        protected void RaiseDomainEvent(IDomainEvent domainEvent) =>
-            _domainEvents.Add(domainEvent);
     }
 }

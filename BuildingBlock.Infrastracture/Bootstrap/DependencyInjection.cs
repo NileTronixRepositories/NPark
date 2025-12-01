@@ -36,11 +36,19 @@ namespace BuildingBlock.Infrastracture.Bootstrap
             return services;
         }
 
+        public static IServiceCollection AddBuildingBlockDomainEvent(this IServiceCollection services)
+        {
+            services.AddScoped<DomainEventsInterceptor>();
+            return services;
+        }
+
         public static IServiceCollection AddBuildingBlockAuditingAndSoftDelete(this IServiceCollection services)
         {
             return services
                 .AddBuildingBlockAuditing()
-                .AddBuildingBlockSoftDelete();
+                .AddBuildingBlockSoftDelete()
+                .AddBuildingBlockDomainEvent()
+                ;
         }
 
         public static IServiceCollection AddSecurity(this IServiceCollection services)
