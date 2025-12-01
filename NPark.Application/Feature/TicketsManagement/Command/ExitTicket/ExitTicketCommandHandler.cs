@@ -79,12 +79,17 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
                     TicketId = ticketEntity.Id,
                     GateId = gateId,
                     UserId = userId,
-                    // لو Ticket عنده EndDate، استخدمها، وإلا خذ Now
                     ExitDate = ticketEntity.EndDate ?? DateTime.Now
                 };
 
                 // channel name: "tickets:exited"
-                await _realtimeNotifier.PublishAsync("tickets:exited", payload, cancellationToken);
+                await _realtimeNotifier.NotifyTicketExitedAsync(new TicketExitedNotification
+                {
+                    TicketId = ticketEntity.Id,
+                    GateId = gateId,
+                    UserId = userId,
+                    ExitDate = ticketEntity.EndDate ?? DateTime.Now
+                });
             }
             catch (Exception ex)
             {

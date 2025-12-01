@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using NPark.Application.Abstraction;
+using NPark.Application.Shared.Dto;
 
 namespace NPark.Api.RealTime
 {
@@ -8,16 +9,18 @@ namespace NPark.Api.RealTime
     /// </summary>
     public sealed class RealtimeNotifier : IRealtimeNotifier
     {
-        private readonly IHubContext<NotificationsHub> _hubContext;
+        private readonly IHubContext<NotificationsHub, IRealtimeNotificationClient> _hub;
 
-        public RealtimeNotifier(IHubContext<NotificationsHub> hubContext)
+        public RealtimeNotifier(
+            IHubContext<NotificationsHub, IRealtimeNotificationClient> hub)
         {
-            _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
+            _hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }
 
-        public Task PublishAsync(string channel, object payload, CancellationToken cancellationToken = default)
-        {
-            return _hubContext.Clients.All.SendAsync(channel, payload, cancellationToken);
-        }
+        public Task NotifyTicketAddedAsync(TicketAddedNotification payload)
+            => _hub.Clients.All.TicketAdded(payload);
+
+        public Task NotifyTicketExitedAsync(TicketExitedNotification payload)
+            => _hub.Clients.All.TicketExited(payload);
     }
 }

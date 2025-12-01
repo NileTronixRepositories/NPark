@@ -277,7 +277,15 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                 };
 
                 // channel name عام "tickets:added"
-                await _realtimeNotifier.PublishAsync("tickets:added", payload, cancellationToken);
+                await _realtimeNotifier.NotifyTicketAddedAsync(new TicketAddedNotification
+                {
+                    TicketId = ticketEntity.Id,
+                    GateId = ticketEntity.GateId,
+                    StartDate = ticketEntity.StartDate,
+                    Price = ticketEntity.Price,
+                    IsSubscriber = isSubscriber,
+                    VehicleNumber = ticketEntity.VehicleNumber
+                });
             }
             catch (Exception ex)
             {

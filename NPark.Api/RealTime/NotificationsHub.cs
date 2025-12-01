@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using NPark.Application.Abstraction;
 
 namespace NPark.Api.RealTime
 {
-    /// <summary>
-    /// Generic notifications hub. Projects can use channels like "tickets:added", "users:changed", etc.
-    /// </summary>
-    public sealed class NotificationsHub : Hub
+    public sealed class NotificationsHub : Hub<IRealtimeNotificationClient>
     {
     }
 }
