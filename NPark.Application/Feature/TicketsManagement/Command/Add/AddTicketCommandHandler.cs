@@ -325,7 +325,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                 Price = ticketEntity.Price,
                 QrCode = qrCode ?? Array.Empty<byte>(),
                 TicketId = ticketEntity.Id,
-                TicketInfo = ticketEntity.VehicleNumber
+                TicketInfo = BitConverter.ToString(ticketEntity.UniqueGuidPart).Replace("-", ""),
             };
         }
     }

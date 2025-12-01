@@ -315,4 +315,10 @@
   <data name="Gate_HasTickets" xml:space="preserve">
     <value>لا يمكن حذف بوابة تحتوي على تذاكر مسجلة</value>
   </data>
+  <data name="EntranceGate" xml:space="preserve">
+    <value>بوابة دخول</value>
+  </data>
+  <data name="ExitGate" xml:space="preserve">
+    <value>بوابة خروج</value>
+  </data>
 </root>

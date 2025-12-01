@@ -169,6 +169,24 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entrance Gate.
+        /// </summary>
+        public static string EntranceGate {
+            get {
+                return ResourceManager.GetString("EntranceGate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Gate.
+        /// </summary>
+        public static string ExitGate {
+            get {
+                return ResourceManager.GetString("ExitGate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete a gate that has tickets.
         /// </summary>
         public static string Gate_HasTickets {

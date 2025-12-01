@@ -315,4 +315,10 @@
   <data name="Gate_HasTickets" xml:space="preserve">
     <value>Cannot delete a gate that has tickets</value>
   </data>
+  <data name="EntranceGate" xml:space="preserve">
+    <value>Entrance Gate</value>
+  </data>
+  <data name="ExitGate" xml:space="preserve">
+    <value>Exit Gate</value>
+  </data>
 </root>
