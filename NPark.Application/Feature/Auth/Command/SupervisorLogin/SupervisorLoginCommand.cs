@@ -6,9 +6,9 @@ namespace NPark.Application.Feature.Auth.Command.SupervisorLogin
 {
     public sealed record SupervisorLoginCommand : ICommand<UserTokenDto>
     {
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public int GateNumber { get; set; }
-        public GateType GateType { get; set; }
+        public string UserName { get; init; } = string.Empty;
+        public string Password { get; init; } = string.Empty;
+        public int GateNumber { get; init; }
+        public GateType GateType { get; init; }
     }
 }

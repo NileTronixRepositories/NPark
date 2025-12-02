@@ -88,6 +88,33 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token is invalid or missing.
+        /// </summary>
+        public static string AuthTokenInvalid {
+            get {
+                return ResourceManager.GetString("AuthTokenInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User ID is missing in the token.
+        /// </summary>
+        public static string AuthTokenUserIdMissing {
+            get {
+                return ResourceManager.GetString("AuthTokenUserIdMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found.
+        /// </summary>
+        public static string AuthUserNotFound {
+            get {
+                return ResourceManager.GetString("AuthUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card number must be empty for non-subscriber tickets.
         /// </summary>
         public static string CardNumber_NonRequired {
@@ -192,6 +219,42 @@ namespace NPark.Domain.Resource {
         public static string Gate_HasTickets {
             get {
                 return ResourceManager.GetString("Gate_HasTickets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate not found.
+        /// </summary>
+        public static string GateNotFound {
+            get {
+                return ResourceManager.GetString("GateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate is occupied by another user.
+        /// </summary>
+        public static string GateOccupied {
+            get {
+                return ResourceManager.GetString("GateOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid gate type for your role.
+        /// </summary>
+        public static string GateRoleMismatch {
+            get {
+                return ResourceManager.GetString("GateRoleMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while selecting gate, please try again later.
+        /// </summary>
+        public static string GateSelectUnexpected {
+            get {
+                return ResourceManager.GetString("GateSelectUnexpected", resourceCulture);
             }
         }
         

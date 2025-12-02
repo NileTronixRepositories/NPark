@@ -21,7 +21,7 @@ namespace NPark.Application.Feature.UserManagement.Command.Update
         public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var entity = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
-            entity.UpdateEmail(request.Email);
+            entity!.UpdateEmail(request.Email);
             entity.UpdateUserName(request.UserName);
             entity.SetRole(request.RoleId);
             await _userRepository.SaveChangesAsync(cancellationToken);

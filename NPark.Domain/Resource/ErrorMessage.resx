@@ -300,9 +300,6 @@
   <data name="TicketCollectByCashier_Unexpected" xml:space="preserve">
     <value>Unexpected error occurred while collecting the ticket by cashier, please try again later</value>
   </data>
-  <data name="Auth_InvalidCredentials" xml:space="preserve">
-    <value>Invalid username or password</value>
-  </data>
   <data name="AuthLogin_Unexpected" xml:space="preserve">
     <value>Unexpected error occurred during login, please try again later</value>
   </data>
@@ -320,5 +317,29 @@
   </data>
   <data name="ExitGate" xml:space="preserve">
     <value>Exit Gate</value>
+  </data>
+  <data name="AuthTokenInvalid" xml:space="preserve">
+    <value>Token is invalid or missing</value>
+  </data>
+  <data name="Auth_InvalidCredentials" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="AuthTokenUserIdMissing" xml:space="preserve">
+    <value>User ID is missing in the token</value>
+  </data>
+  <data name="AuthUserNotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="GateNotFound" xml:space="preserve">
+    <value>Gate not found</value>
+  </data>
+  <data name="GateRoleMismatch" xml:space="preserve">
+    <value>Invalid gate type for your role</value>
+  </data>
+  <data name="GateOccupied" xml:space="preserve">
+    <value>Gate is occupied by another user</value>
+  </data>
+  <data name="GateSelectUnexpected" xml:space="preserve">
+    <value>Unexpected error occurred while selecting gate, please try again later</value>
   </data>
 </root>

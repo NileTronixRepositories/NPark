@@ -21,12 +21,12 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
 
         public ExitTicketCommandHandler(IGenericRepository<Ticket> ticketRepository,
             IHttpContextAccessor httpContextAccessor, ITokenReader tokenReader,
-            IRealtimeNotifier realtimeNotifier, ILogger<ExitTicketCommandHandler> logger)
+            IRealtimeNotifier realTimeNotifier, ILogger<ExitTicketCommandHandler> logger)
         {
             _ticketRepository = ticketRepository;
             _httpContextAccessor = httpContextAccessor;
             _tokenReader = tokenReader;
-            _realtimeNotifier = realtimeNotifier;
+            _realtimeNotifier = realTimeNotifier;
             _logger = logger;
         }
 
@@ -57,6 +57,14 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
                         Code: "Ticket.NotFound",
                         Message: ErrorMessage.Ticket_NotFound,
                         Type: ErrorType.NotFound));
+            }
+            if (ticketEntity.EndDate.HasValue)
+            {
+                return Result.Fail(
+                    new Error(
+                        Code: "Ticket.AlreadyExited",
+                        Message: "Ticket.AlreadyExited",
+                        Type: ErrorType.Domain));
             }
             ticketEntity.SetExitGate(gateId);
             ticketEntity.SetExitDate();

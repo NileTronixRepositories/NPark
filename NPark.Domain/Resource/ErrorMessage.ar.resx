@@ -300,9 +300,6 @@
   <data name="TicketCollectByCashier_Unexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء تحصيل التذكرة من الكاشير، برجاء المحاولة لاحقًا</value>
   </data>
-  <data name="Auth_InvalidCredentials" xml:space="preserve">
-    <value>اسم المستخدم أو كلمة المرور غير صحيحة</value>
-  </data>
   <data name="AuthLogin_Unexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء عملية تسجيل الدخول، برجاء المحاولة لاحقًا</value>
   </data>
@@ -320,5 +317,29 @@
   </data>
   <data name="ExitGate" xml:space="preserve">
     <value>بوابة خروج</value>
+  </data>
+  <data name="AuthTokenInvalid" xml:space="preserve">
+    <value>التوكن غير صالح أو مفقود </value>
+  </data>
+  <data name="Auth_InvalidCredentials" xml:space="preserve">
+    <value>اسم المستخدم أو كلمة المرور غير صحيحة</value>
+  </data>
+  <data name="AuthTokenUserIdMissing" xml:space="preserve">
+    <value>معرّف المستخدم مفقود في التوكن</value>
+  </data>
+  <data name="AuthUserNotFound" xml:space="preserve">
+    <value>المستخدم غير موجود </value>
+  </data>
+  <data name="GateNotFound" xml:space="preserve">
+    <value>لم يتم العثور على البوابة المحددة</value>
+  </data>
+  <data name="GateRoleMismatch" xml:space="preserve">
+    <value>نوع البوابة غير مسموح لدورك الحالي</value>
+  </data>
+  <data name="GateOccupied" xml:space="preserve">
+    <value>البوابة مشغولة من مستخدم آخر </value>
+  </data>
+  <data name="GateSelectUnexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء اختيار البوابة، برجاء المحاولة لاحقًا</value>
   </data>
 </root>

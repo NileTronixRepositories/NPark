@@ -190,10 +190,13 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CalculateSalary
         // Helper: Calculate total salary for duration (EXIT pricing)
         // --------------------------------------------------------
         private async Task<decimal> CalculateTotalSalaryAsync(
-            TimeSpan duration,
-            CancellationToken cancellationToken)
+    TimeSpan duration,
+    CancellationToken cancellationToken)
         {
-            decimal totalSalary = 0m;
+            if (duration <= TimeSpan.Zero)
+            {
+                return 0m;
+            }
 
             var orderPricingSchemas = await _orderPricingSchemaRepository
                 .ListWithSpecAsync(new OrderPriceSchemaSpec(), cancellationToken);
@@ -205,26 +208,76 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CalculateSalary
             }
 
             var orderedSchemas = orderPricingSchemas
-                .Where(o => o?.PricingScheme?.TotalHours.HasValue == true)
-                .OrderBy(o => o.Count)
+                .Where(o => o?.PricingScheme?.TotalHours is not null &&
+                            o.PricingScheme.TotalHours > 0)
+                .OrderBy(o => o.Count) // ترتيب الشرائح
                 .ToList();
 
-            var remaining = duration;
-            foreach (var order in orderedSchemas)
+            if (!orderedSchemas.Any())
             {
-                if (remaining <= TimeSpan.Zero)
+                _logger.LogWarning("No valid pricing schemas (with TotalHours > 0) found.");
+                return 0m;
+            }
+
+            decimal totalSalary = 0m;
+            var remaining = duration;
+
+            // لو فيه شريحة واحدة بس → نكرر نفس الشريحة لحد ما الـ duration يخلص
+            if (orderedSchemas.Count == 1)
+            {
+                var single = orderedSchemas[0];
+                var hours = single.PricingScheme.TotalHours!.Value;
+                var salary = single.PricingScheme.Salary;
+
+                if (hours <= 0)
                 {
-                    break;
+                    _logger.LogWarning("Single pricing schema has non-positive TotalHours.");
+                    return 0m;
                 }
 
-                var hours = order!.PricingScheme.TotalHours!.Value;
-                var salary = order.PricingScheme.Salary;
+                var slotsCount = (int)Math.Ceiling(remaining.TotalHours / hours);
+                totalSalary += slotsCount * salary;
+
+                return totalSalary;
+            }
+
+            // 1) نطبق كل الشرائح ما عدا آخر شريحة مرة واحدة بالترتيب
+            for (var i = 0; i < orderedSchemas.Count - 1 && remaining > TimeSpan.Zero; i++)
+            {
+                var schema = orderedSchemas[i];
+
+                var hours = schema.PricingScheme.TotalHours!.Value;
+                var salary = schema.PricingScheme.Salary;
 
                 var slot = TimeSpan.FromHours(hours);
 
                 remaining -= slot;
                 totalSalary += salary;
             }
+
+            // لو غطينا المدة كلها في الشرائح الأولى → خلاص
+            if (remaining <= TimeSpan.Zero)
+            {
+                return totalSalary;
+            }
+
+            // 2) آخر شريحة: تتكرر لحد ما الـ remaining يخلص
+            var lastSchema = orderedSchemas[^1];
+            var lastHours = lastSchema.PricingScheme.TotalHours!.Value;
+            var lastSalary = lastSchema.PricingScheme.Salary;
+
+            if (lastHours <= 0)
+            {
+                _logger.LogWarning("Last pricing schema has non-positive TotalHours.");
+                return totalSalary;
+            }
+
+            var remainingHours = remaining.TotalHours;
+
+            // عدد مرات تكرار آخر شريحة
+            var lastSlotsCount = (int)Math.Ceiling(remainingHours / lastHours);
+
+            totalSalary += lastSlotsCount * lastSalary;
 
             return totalSalary;
         }

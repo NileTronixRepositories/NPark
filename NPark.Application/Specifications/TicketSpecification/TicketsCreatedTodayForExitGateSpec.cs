@@ -12,7 +12,7 @@ namespace NPark.Application.Specifications.TicketSpecification
             var start = date;
             var end = date.AddDays(1);
             AddCriteria(t => t.CreatedOnUtc >= start && t.CreatedOnUtc < end);
-            AddCriteria(x => x.EndDate != null);
+            AddCriteria(x => x.EndDate != null && x.EndDate.HasValue && !x.IsCollected);
             UseNoTracking();
             Select(x => new GetTicketInfo
             {
