@@ -345,4 +345,10 @@
   <data name="MembershipPhoneExists" xml:space="preserve">
     <value>رقم الهاتف مستخدم بالفعل لمشترك آخر</value>
   </data>
+  <data name="PricingSchemaNameExist" xml:space="preserve">
+    <value>اسم خطة التسعير مستخدم بالفعل، برجاء اختيار اسم آخر</value>
+  </data>
+  <data name="PricingSchemeAddUnexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء إضافة خطة التسعير، برجاء المحاولة لاحقًا</value>
+  </data>
 </root>

@@ -14,8 +14,10 @@ namespace NPark.Application.Feature.PricingSchemaManagement.Command.Add
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
-            RuleFor(x => x.Name).NotEmpty().WithMessage(ErrorMessage.IsRequired);
-            RuleFor(x => x.DurationType).IsInEnum().WithMessage(ErrorMessage.IsRequired);
+            RuleFor(x => x.Name)
+                .MustAsync(async (name, token) =>
+                    !await _repository.IsExistAsync(p => p.Name == name, token))
+                .WithMessage("اسم خطة التسعير مستخدم بالفعل، برجاء اختيار اسم آخر (Pricing scheme name is already in use, please choose another one)."); RuleFor(x => x.DurationType).IsInEnum().WithMessage(ErrorMessage.IsRequired);
             RuleFor(x => x.StartTime).NotEmpty().WithMessage(ErrorMessage.IsRequired).When(x => !x.IsRepeated);
             RuleFor(x => x.EndTime).NotEmpty().WithMessage(ErrorMessage.IsRequired).When(x => !x.IsRepeated);
             RuleFor(x => x.Price).GreaterThanOrEqualTo(0).WithMessage(ErrorMessage.InvalidPrice);

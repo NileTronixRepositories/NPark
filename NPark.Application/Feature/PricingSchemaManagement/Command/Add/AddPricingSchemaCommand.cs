@@ -5,13 +5,13 @@ namespace NPark.Application.Feature.PricingSchemaManagement.Command.Add
 {
     public sealed record AddPricingSchemaCommand : ICommand
     {
-        public string Name { get; set; }
-        public DurationType DurationType { get; set; }
-        public TimeSpan? StartTime { get; set; }
-        public TimeSpan? EndTime { get; set; }
-        public decimal Price { get; set; }
-        public bool IsRepeated { get; set; }
-        public int? TotalDays { get; set; }
-        public int? TotalHours { get; set; }
+        public string Name { get; init; } = string.Empty;
+        public DurationType DurationType { get; init; }
+        public TimeSpan? StartTime { get; init; }
+        public TimeSpan? EndTime { get; init; }
+        public decimal Price { get; init; }
+        public bool IsRepeated { get; init; }
+        public int? TotalDays { get; init; }
+        public int? TotalHours { get; init; }
     }
 }

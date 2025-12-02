@@ -520,6 +520,24 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pricing scheme name is already in use, please choose another one.
+        /// </summary>
+        public static string PricingSchemaNameExist {
+            get {
+                return ResourceManager.GetString("PricingSchemaNameExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while adding pricing scheme, please try again later.
+        /// </summary>
+        public static string PricingSchemeAddUnexpected {
+            get {
+                return ResourceManager.GetString("PricingSchemeAddUnexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pricing Scheme ID is required..
         /// </summary>
         public static string PricingSchemeId {

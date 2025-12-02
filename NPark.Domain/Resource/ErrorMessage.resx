@@ -345,4 +345,10 @@
   <data name="MembershipPhoneExists" xml:space="preserve">
     <value>Phone number is already used by another membership</value>
   </data>
+  <data name="PricingSchemaNameExist" xml:space="preserve">
+    <value>Pricing scheme name is already in use, please choose another one</value>
+  </data>
+  <data name="PricingSchemeAddUnexpected" xml:space="preserve">
+    <value>Unexpected error occurred while adding pricing scheme, please try again later</value>
+  </data>
 </root>
