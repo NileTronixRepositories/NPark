@@ -64,7 +64,7 @@ namespace NPark.Application.Feature.Auth.Command.Login
                     return Result<UserTokenDto>.Fail(
                         new Error(
                             Code: "Auth.InvalidCredentials",
-                            Message: "اسم المستخدم أو كلمة المرور غير صحيحة (Invalid username or password).",
+                            Message: ErrorMessage.Auth_InvalidCredentials,
                             Type: ErrorType.Security));
                 }
 

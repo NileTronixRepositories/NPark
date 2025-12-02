@@ -103,13 +103,13 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ColletByCachier
                 if (configurationEntity.PriceType == PriceType.Enter && tokenInfo.Role == "ExitCashier")
                     return Result.Fail(new Error(
                             Code: "Invalid.Exit.Collect.Cashier",
-                            Message: "can't collect ticket by exit cashier",
+                            Message: ErrorMessage.GateInvalidForCollectExitPricing,
                             Type: ErrorType.NotFound));
 
                 if (configurationEntity.PriceType == PriceType.Exit && tokenInfo.Role == "EntranceCashier")
                     return Result.Fail(new Error(
                             Code: "Invalid.Enter.Collect.Cashier",
-                            Message: "can't collect ticket by enter cashier",
+                            Message: ErrorMessage.GateInvalidForCollectEnterPricing,
                             Type: ErrorType.NotFound));
 
                 // 3) Mark as collected by cashier

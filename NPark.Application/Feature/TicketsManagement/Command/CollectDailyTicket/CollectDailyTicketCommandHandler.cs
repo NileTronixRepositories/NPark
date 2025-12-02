@@ -74,7 +74,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
                     return Result<CollectDailyTicketResponse>.Fail(
                         new Error(
                             Code: "Gate.NotFound",
-                            Message: " ErrorMessage.Gate_NotFound",
+                            Message: ErrorMessage.GateNotFound,
                             Type: ErrorType.NotFound));
                 }
 
@@ -95,7 +95,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
                 {
                     return Result<CollectDailyTicketResponse>.Fail(new Error(
                         Code: "Gate.InvalidForCollect.EnterPricing",
-                        Message: "ErrorMessage.Gate_Invalid_For_Collect_Enter ",
+                        Message: ErrorMessage.GateInvalidForCollectExitPricing,
                         Type: ErrorType.Conflict));
                 }
 
@@ -103,7 +103,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket
                 {
                     return Result<CollectDailyTicketResponse>.Fail(new Error(
                         Code: "Gate.InvalidForCollect.ExitPricing",
-                        Message: " ErrorMessage.Gate_Invalid_For_Collect_Exit",
+                        Message: ErrorMessage.GateInvalidForCollectEnterPricing,
                         Type: ErrorType.Conflict));
                 }
 

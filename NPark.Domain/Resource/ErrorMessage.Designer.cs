@@ -223,6 +223,24 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot collect the ticket at an entrance gate because the current pricing mode is Pay on Exit..
+        /// </summary>
+        public static string GateInvalidForCollectEnterPricing {
+            get {
+                return ResourceManager.GetString("GateInvalidForCollectEnterPricing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot collect the ticket at an exit gate because the current pricing mode is Pay on Entry..
+        /// </summary>
+        public static string GateInvalidForCollectExitPricing {
+            get {
+                return ResourceManager.GetString("GateInvalidForCollectExitPricing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gate not found.
         /// </summary>
         public static string GateNotFound {

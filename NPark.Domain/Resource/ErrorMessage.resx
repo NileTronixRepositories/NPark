@@ -351,4 +351,10 @@
   <data name="PricingSchemeAddUnexpected" xml:space="preserve">
     <value>Unexpected error occurred while adding pricing scheme, please try again later</value>
   </data>
+  <data name="GateInvalidForCollectEnterPricing" xml:space="preserve">
+    <value>You cannot collect the ticket at an entrance gate because the current pricing mode is Pay on Exit.</value>
+  </data>
+  <data name="GateInvalidForCollectExitPricing" xml:space="preserve">
+    <value>You cannot collect the ticket at an exit gate because the current pricing mode is Pay on Entry.</value>
+  </data>
 </root>

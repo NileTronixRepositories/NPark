@@ -4,6 +4,7 @@ using BuildingBlock.Domain.Results;
 using Microsoft.Extensions.Logging;
 using NPark.Domain.Entities;
 using NPark.Domain.Enums;
+using NPark.Domain.Resource;
 
 namespace NPark.Application.Feature.PricingSchemaManagement.Command.Add
 {
@@ -59,7 +60,7 @@ namespace NPark.Application.Feature.PricingSchemaManagement.Command.Add
                 return Result.Fail(
                     new Error(
                         Code: "PricingScheme.Add.Unexpected",
-                        Message: "حدث خطأ غير متوقع أثناء إضافة خطة التسعير، برجاء المحاولة لاحقًا (Unexpected error occurred while adding pricing scheme, please try again later).",
+                        Message: ErrorMessage.PricingSchemeAddUnexpected,
                         Type: ErrorType.Infrastructure));
             }
         }

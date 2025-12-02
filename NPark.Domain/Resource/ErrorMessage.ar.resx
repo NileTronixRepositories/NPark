@@ -351,4 +351,12 @@
   <data name="PricingSchemeAddUnexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء إضافة خطة التسعير، برجاء المحاولة لاحقًا</value>
   </data>
+  <data name="GateInvalidForCollectEnterPricing" xml:space="preserve">
+    <value>لا يمكن تحصيل التذكرة من بوابة دخول لأن نظام التسعير الحالي هو الدفع عند الخروج.
+يُرجى استخدام بوابة خروج لتحصيل التذكرة.</value>
+  </data>
+  <data name="GateInvalidForCollectExitPricing" xml:space="preserve">
+    <value>لا يمكن تحصيل التذكرة من بوابة خروج لأن نظام التسعير الحالي هو الدفع عند الدخول.
+يُرجى استخدام بوابة دخول لتحصيل التذكرة.</value>
+  </data>
 </root>
