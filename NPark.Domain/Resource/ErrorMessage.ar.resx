@@ -142,7 +142,7 @@
     <value>عدد بوابات الخروج يجب ألا يقل عن1.</value>
   </data>
   <data name="Invalid_Image" xml:space="preserve">
-    <value>صورة يجب أن تكون صورة صالحة</value>
+    <value>ملف الصورة غير صالح، يُسمح فقط بالامتدادات ‎.jpg و ‎.jpeg و ‎.png</value>
   </data>
   <data name="Invalid_NationalId" xml:space="preserve">
     <value>رقم البطاقة الشخصية يجب أن يكون رقم مصري مكون من 14 رقم."</value>
@@ -193,7 +193,7 @@
     <value>عدد الساعات" مطلوب عندما يكون "نوع المدة" هو ساعات.</value>
   </data>
   <data name="Unique_NationalId" xml:space="preserve">
-    <value>رقم البطاقة الشخصية يجب أن يكون فريد</value>
+    <value>الرقم القومي مستخدم بالفعل لمشترك آخر</value>
   </data>
   <data name="Unique_Phone" xml:space="preserve">
     <value>رقم الهاتف يجب أن يكون فريد</value>
@@ -341,5 +341,8 @@
   </data>
   <data name="GateSelectUnexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع أثناء اختيار البوابة، برجاء المحاولة لاحقًا</value>
+  </data>
+  <data name="MembershipPhoneExists" xml:space="preserve">
+    <value>رقم الهاتف مستخدم بالفعل لمشترك آخر</value>
   </data>
 </root>

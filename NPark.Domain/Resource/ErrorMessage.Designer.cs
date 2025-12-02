@@ -304,7 +304,7 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to image must be a valid image file (jpg, png, jpeg)..
+        ///   Looks up a localized string similar to Invalid image file, only .jpg, .jpeg, and .png are allowed.
         /// </summary>
         public static string Invalid_Image {
             get {
@@ -399,6 +399,15 @@ namespace NPark.Domain.Resource {
         public static string IsRequired {
             get {
                 return ResourceManager.GetString("IsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number is already used by another membership.
+        /// </summary>
+        public static string MembershipPhoneExists {
+            get {
+                return ResourceManager.GetString("MembershipPhoneExists", resourceCulture);
             }
         }
         
@@ -673,7 +682,7 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to National ID must be unique.
+        ///   Looks up a localized string similar to National ID is already used by another membership.
         /// </summary>
         public static string Unique_NationalId {
             get {

@@ -142,7 +142,7 @@
     <value>Exit gates count must be at least 1</value>
   </data>
   <data name="Invalid_Image" xml:space="preserve">
-    <value>image must be a valid image file (jpg, png, jpeg).</value>
+    <value>Invalid image file, only .jpg, .jpeg, and .png are allowed</value>
   </data>
   <data name="Invalid_NationalId" xml:space="preserve">
     <value>National ID must be a valid 14-digit Egyptian ID.</value>
@@ -193,7 +193,7 @@
     <value>TotalHours is required when DurationType is Hours.</value>
   </data>
   <data name="Unique_NationalId" xml:space="preserve">
-    <value>National ID must be unique</value>
+    <value>National ID is already used by another membership</value>
   </data>
   <data name="Unique_Phone" xml:space="preserve">
     <value>Phone number must be unique.</value>
@@ -341,5 +341,8 @@
   </data>
   <data name="GateSelectUnexpected" xml:space="preserve">
     <value>Unexpected error occurred while selecting gate, please try again later</value>
+  </data>
+  <data name="MembershipPhoneExists" xml:space="preserve">
+    <value>Phone number is already used by another membership</value>
   </data>
 </root>
