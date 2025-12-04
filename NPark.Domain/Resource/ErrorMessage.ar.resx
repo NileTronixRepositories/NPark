@@ -359,4 +359,7 @@
     <value>لا يمكن تحصيل التذكرة من بوابة خروج لأن نظام التسعير الحالي هو الدفع عند الدخول.
 يُرجى استخدام بوابة دخول لتحصيل التذكرة.</value>
   </data>
+  <data name="TicketAlreadyExited" xml:space="preserve">
+    <value>تم خروج التذكرة بالفعل</value>
+  </data>
 </root>

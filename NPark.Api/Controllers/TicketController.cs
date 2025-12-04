@@ -9,6 +9,7 @@ using NPark.Application.Feature.TicketsManagement.Command.CalculateSalaryForSubs
 using NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket;
 using NPark.Application.Feature.TicketsManagement.Command.ColletByCachier;
 using NPark.Application.Feature.TicketsManagement.Command.ExitTicket;
+using NPark.Application.Feature.TicketsManagement.Command.SearchTicket;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate;
 
@@ -78,6 +79,13 @@ namespace NPark.Api.Controllers
         public async Task<IActionResult> ExitTicket(ExitTicketCommand command, CancellationToken cancellationToken)
         {
             var result = await sender.Send(command, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpGet(nameof(SearchTicket))]
+        public async Task<IActionResult> SearchTicket([FromQuery] SearchTicketCommand query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
             return result.ToIActionResult();
         }
     }

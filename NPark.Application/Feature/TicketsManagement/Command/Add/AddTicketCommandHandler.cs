@@ -173,7 +173,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                 gateId: gateId,
                 userId: userId);
 
-            ticketEntity.SetSubscriber(subscriber.NationalId, subscriber.VehicleNumber);
+            ticketEntity.SetSubscriber(subscriber.NationalId, subscriber.VehicleNumber, subscriber.CardNumber);
 
             await _ticketRepository.AddAsync(ticketEntity, cancellationToken);
             await _ticketRepository.SaveChangesAsync(cancellationToken);

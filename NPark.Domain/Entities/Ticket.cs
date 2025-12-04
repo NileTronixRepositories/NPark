@@ -16,7 +16,7 @@ namespace NPark.Domain.Entities
         public bool IsCollected { get; private set; }
         public DateTime? CollectedDate { get; private set; }
         public byte[] UniqueGuidPart { get; private set; }
-        public string UniqueCode => BitConverter.ToString(UniqueGuidPart).Replace("-", "");
+        public string UniqueCode { get; private set; }
         public Guid GateId { get; private set; }
         public Guid? ExitGateId { private set; get; }
         public Guid UserId { get; private set; }
@@ -26,6 +26,7 @@ namespace NPark.Domain.Entities
         public ParkingGate ParkingGate { get; private set; }
         public bool IsSubscriber { get; private set; } = false;
         public string? SubscriberNationalId { get; private set; }
+        public string? CardNumber { get; private set; } = null;
 
         private Ticket()
         { }
@@ -39,11 +40,12 @@ namespace NPark.Domain.Entities
                 StartDate = startDate,
                 Price = price,
                 GateId = gateId,
-                UserId = userId
+                UserId = userId,
             };
 
             // Save the first 4 bytes of the Guid as the unique part
             ticket.UniqueGuidPart = GetGuidUniquePart(ticket.Id);
+            ticket.UniqueCode = BitConverter.ToString(ticket.UniqueGuidPart).Replace("-", "");
 
             return ticket;
         }
@@ -72,13 +74,14 @@ namespace NPark.Domain.Entities
             return buf.ToArray();
         }
 
-        public void SetSubscriber(string nationalId, string? vehicleNumber = null)
+        public void SetSubscriber(string nationalId, string? vehicleNumber = null, string? cardNumber = null)
         {
             Price = 0;
             IsSubscriber = true;
             IsCashierCollected = true;
             VehicleNumber = vehicleNumber;
             SubscriberNationalId = nationalId;
+            CardNumber = cardNumber;
         }
 
         public void SetPrice(decimal price) => Price = price;

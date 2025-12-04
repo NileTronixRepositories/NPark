@@ -20,7 +20,6 @@ namespace NPark.Application.Bootstrap
                 cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
                 cfg.AddOpenBehavior(typeof(ExceptionMappingBehavior<,>));
             });
-
             return services;
         }
 

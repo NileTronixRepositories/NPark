@@ -655,6 +655,15 @@ namespace NPark.Domain.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ticket Already Exited.
+        /// </summary>
+        public static string TicketAlreadyExited {
+            get {
+                return ResourceManager.GetString("TicketAlreadyExited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unexpected error occurred while collecting the ticket by cashier, please try again later.
         /// </summary>
         public static string TicketCollectByCashier_Unexpected {

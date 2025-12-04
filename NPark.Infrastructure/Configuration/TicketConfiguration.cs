@@ -17,6 +17,7 @@ namespace NPark.Infrastructure.Configuration
             builder.Property(t => t.ExitGateId).IsRequired(false);
             builder.Property(t => t.VehicleNumber).IsRequired(false);
             builder.Property(t => t.CollectedDate).IsRequired(false);
+            builder.Property(t => t.UniqueCode).IsRequired(false);
             builder.Property(t => t.Price).IsRequired();
             builder.Property(t => t.IsSubscriber).IsRequired().HasDefaultValue(false);
             builder.Property(t => t.SubscriberNationalId).IsRequired(false);

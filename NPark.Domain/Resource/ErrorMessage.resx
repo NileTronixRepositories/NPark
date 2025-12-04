@@ -357,4 +357,7 @@
   <data name="GateInvalidForCollectExitPricing" xml:space="preserve">
     <value>You cannot collect the ticket at an exit gate because the current pricing mode is Pay on Entry.</value>
   </data>
+  <data name="TicketAlreadyExited" xml:space="preserve">
+    <value>Ticket Already Exited</value>
+  </data>
 </root>

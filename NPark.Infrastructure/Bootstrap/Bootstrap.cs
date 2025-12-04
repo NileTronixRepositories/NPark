@@ -70,6 +70,7 @@ namespace NPark.Infrastructure.Bootstrap
                 options.UseSqlServer(connectionString);
                 options.AddInterceptors(sp.GetRequiredService<SoftDeleteEntitiesInterceptor>());
                 options.AddInterceptors(sp.GetRequiredService<AuditableEntitiesInterceptor>());
+                options.AddInterceptors(sp.GetRequiredService<DomainEventsInterceptor>());
             });
 
             return services;

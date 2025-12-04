@@ -11,8 +11,8 @@ using NPark.Infrastructure.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.InfrastructureInjection(builder.Configuration);
 builder.Services.AddApplicationBootstrap();
+builder.Services.InfrastructureInjection(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSignalR();
@@ -88,22 +88,32 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IRealtimeNotifier, RealtimeNotifier>();
 var app = builder.Build();
-app.UseSerilogPipeline();
-app.UseCors("NParkCors");
-app.MapHub<NotificationsHub>("/hubs/notifications");
 
+app.UseSerilogPipeline();
+
+// HTTPS
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseCors("NParkCors");
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSharedLocalization();
-// Configure the HTTP request pipeline.
 
+app.UseSharedLocalization();
+
+// Swagger (اختياري حسب الـ Env)
 app.UseSwagger();
 app.UseSwaggerUI();
 
 // Custom Middleware
 app.MapLoggingDiagnostics();
-///////////////////////
+
+// SignalR Hubs
+app.MapHub<NotificationsHub>("/hubs/notifications");
+
+// Controllers
 app.MapControllers();
+
 app.Run();

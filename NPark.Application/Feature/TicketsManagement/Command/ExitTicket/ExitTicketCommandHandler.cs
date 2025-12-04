@@ -63,7 +63,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
                 return Result.Fail(
                     new Error(
                         Code: "Ticket.AlreadyExited",
-                        Message: "Ticket.AlreadyExited",
+                        Message: ErrorMessage.TicketAlreadyExited,
                         Type: ErrorType.Domain));
             }
             ticketEntity.SetExitGate(gateId);
