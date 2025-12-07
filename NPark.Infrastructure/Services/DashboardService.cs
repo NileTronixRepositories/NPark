@@ -103,6 +103,12 @@ namespace NPark.Infrastructure.Services
 
             var subscriptionCount = await _context.Set<ParkingMemberships>()
                 .CountAsync(cancellationToken);
+            var ActiveSubscriptionCount = await _context.Set<ParkingMemberships>()
+                .Where(m => m.EndDate >= DateTime.Now)
+                .CountAsync(cancellationToken);
+            var InactiveSubscriptionCount = await _context.Set<ParkingMemberships>()
+                .Where(m => m.EndDate < DateTime.Now)
+                .CountAsync(cancellationToken);
 
             var enterTicketsCount = await enterTicketsQuery
                 .CountAsync(cancellationToken);
@@ -399,7 +405,9 @@ namespace NPark.Infrastructure.Services
                 TopCollectorTicketsCount = topCollectorTicketsCount,
 
                 EntryGates = entryGates,
-                ExitGates = exitGates
+                ExitGates = exitGates,
+                ActiveSubscriptionCount = ActiveSubscriptionCount,
+                InactiveSubscriptionCount = InactiveSubscriptionCount
             };
 
             return dto;

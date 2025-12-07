@@ -12,6 +12,7 @@ using NPark.Application.Feature.TicketsManagement.Command.ExitTicket;
 using NPark.Application.Feature.TicketsManagement.Command.SearchTicket;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate;
+using NPark.Application.Feature.TicketsManagement.Query.GetTicketInsidePark;
 
 namespace NPark.Api.Controllers
 {
@@ -84,6 +85,13 @@ namespace NPark.Api.Controllers
 
         [HttpGet(nameof(SearchTicket))]
         public async Task<IActionResult> SearchTicket([FromQuery] SearchTicketCommand query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpGet(nameof(TicketsInsidePark))]
+        public async Task<IActionResult> TicketsInsidePark([FromQuery] GetTicketInsideParkQuery query, CancellationToken cancellationToken)
         {
             var result = await sender.Send(query, cancellationToken);
             return result.ToIActionResult();

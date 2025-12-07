@@ -34,6 +34,8 @@
 
         /// <summary>Total number of active memberships in the system.</summary>
         public int SubscriptionCount { get; init; }
+        public int ActiveSubscriptionCount { get; init; }
+        public int InactiveSubscriptionCount { get; init; }
 
         /// <summary>Total number of entry tickets issued this day.</summary>
         public int EnterTicketsCount { get; init; }
