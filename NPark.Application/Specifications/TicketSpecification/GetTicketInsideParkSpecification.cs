@@ -8,7 +8,7 @@ namespace NPark.Application.Specifications.TicketSpecification
     {
         public GetTicketInsideParkSpecification()
         {
-            AddCriteria(t => t.CreatedOnUtc >= DateTime.Now.Date && t.EndDate == null);
+            AddCriteria(t => t.CreatedOnUtc <= DateTime.Now.Date && t.EndDate == null);
             Select(x => new GetTicketInsideParkQueryResponse
             {
                 isCollectedByCashier = x.IsCashierCollected,

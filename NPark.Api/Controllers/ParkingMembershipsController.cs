@@ -4,7 +4,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NPark.Api.Attribute;
 using NPark.Application.Feature.ParkingMembershipsManagement.Command.Add;
+using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetActiveMembership;
 using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetAll;
+using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetInactiveMembership;
+using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetMembershipExpireNextSevenDays;
 using NPark.Application.Feature.ParkingMembershipsManagement.Query.GetSummaryById;
 
 namespace NPark.Api.Controllers
@@ -34,6 +37,27 @@ namespace NPark.Api.Controllers
 
         [HttpGet(nameof(GetCardSummary))]
         public async Task<IActionResult> GetCardSummary([FromQuery] GetCardSummaryByIdQuery query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpGet(nameof(GetActiveMembership))]
+        public async Task<IActionResult> GetActiveMembership([FromQuery] GetActiveMembershipQuery query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpGet(nameof(GetInactiveMembership))]
+        public async Task<IActionResult> GetInactiveMembership([FromQuery] GetInactiveMembershipQuery query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [HttpGet(nameof(GetMembershipExpireNextSevenDays))]
+        public async Task<IActionResult> GetMembershipExpireNextSevenDays([FromQuery] GetMembershipExpireNextSevenDaysQuery query, CancellationToken cancellationToken)
         {
             var result = await sender.Send(query, cancellationToken);
             return result.ToIActionResult();

@@ -10,6 +10,8 @@ using NPark.Application.Feature.TicketsManagement.Command.CollectDailyTicket;
 using NPark.Application.Feature.TicketsManagement.Command.ColletByCachier;
 using NPark.Application.Feature.TicketsManagement.Command.ExitTicket;
 using NPark.Application.Feature.TicketsManagement.Command.SearchTicket;
+using NPark.Application.Feature.TicketsManagement.Query.GetEntryTicketForAdmin;
+using NPark.Application.Feature.TicketsManagement.Query.GetExitTicketForAdmin;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForEntryGate;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketForExitGate;
 using NPark.Application.Feature.TicketsManagement.Query.GetTicketInsidePark;
@@ -39,9 +41,24 @@ namespace NPark.Api.Controllers
             return result.ToIActionResult();
         }
 
+        [HttpGet(nameof(GetTicketsForEntryAdmin))]
+        public async Task<IActionResult> GetTicketsForEntryAdmin([FromQuery] GetEntryTicketForAdminQuery query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
+            return result.ToIActionResult();
+        }
+
         [Permission("GetTickets")]
         [HttpGet(nameof(GetTicketForExit))]
         public async Task<IActionResult> GetTicketForExit([FromQuery] GetTicketForExitGateQuery query, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(query, cancellationToken);
+            return result.ToIActionResult();
+        }
+
+        [Permission("GetTickets")]
+        [HttpGet(nameof(GetTicketsForExitAdmin))]
+        public async Task<IActionResult> GetTicketsForExitAdmin([FromQuery] GetExitTicketForAdminQuery query, CancellationToken cancellationToken)
         {
             var result = await sender.Send(query, cancellationToken);
             return result.ToIActionResult();
