@@ -14,6 +14,7 @@ namespace NPark.Application.Specifications.ParkingMembershipSpecification
                     m.EndDate <= sevenDaysLater);
             Select(m => new GetMembershipExpireNextSevenDaysQueryResponse
             {
+                Id = m.Id,
                 CardNumber = m.CardNumber,
                 CreatedAt = m.CreatedAt,
                 EndDate = m.EndDate,

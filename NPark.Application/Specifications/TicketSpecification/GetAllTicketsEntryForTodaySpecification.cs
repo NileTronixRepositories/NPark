@@ -15,6 +15,7 @@ namespace NPark.Application.Specifications.TicketSpecification
             UseNoTracking();
             Select(x => new GetEntryTicketForAdminQueryResponse
             {
+                Id = x.Id,
                 isCollectedByCashier = x.IsCollected,
                 Price = x.Price,
                 TicketNumber = x.UniqueCode,

@@ -3,6 +3,7 @@
     public sealed record GetMembershipExpireNextSevenDaysQueryResponse
     {
         public string Name { get; set; } = string.Empty;
+        public Guid Id { get; set; }
 
         public string Phone { get; set; } = string.Empty;
         public string NationalId { get; set; } = string.Empty;

@@ -16,6 +16,7 @@ namespace NPark.Application.Specifications.TicketSpecification
             UseNoTracking();
             Select(x => new GetExitTicketForAdminQueryResponse
             {
+                Id = x.Id,
                 isCollectedByCashier = x.IsCollected,
                 Price = x.Price,
                 TicketNumber = BitConverter.ToString(x.UniqueGuidPart).Replace("-", ""),

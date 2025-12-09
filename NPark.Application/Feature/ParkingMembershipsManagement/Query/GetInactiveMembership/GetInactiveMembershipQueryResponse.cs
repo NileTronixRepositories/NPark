@@ -2,8 +2,8 @@
 {
     public sealed record GetInactiveMembershipQueryResponse
     {
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-
         public string Phone { get; set; } = string.Empty;
         public string NationalId { get; set; } = string.Empty;
         public string VehicleNumber { get; set; } = string.Empty;

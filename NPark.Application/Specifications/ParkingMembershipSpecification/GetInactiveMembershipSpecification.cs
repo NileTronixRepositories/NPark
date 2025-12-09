@@ -11,6 +11,7 @@ namespace NPark.Application.Specifications.ParkingMembershipSpecification
             AddCriteria(p => p.EndDate < DateTime.Now);
             Select(p => new GetInactiveMembershipQueryResponse
             {
+                Id = p.Id,
                 CardNumber = p.CardNumber,
                 CreatedAt = p.CreatedAt,
                 EndDate = p.EndDate,
