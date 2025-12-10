@@ -7,6 +7,7 @@ using NPark.Application.Abstraction;
 using NPark.Application.Abstraction.Security;
 using NPark.Application.Shared.Dto;
 using NPark.Domain.Entities;
+using NPark.Domain.Enums;
 using NPark.Domain.Resource;
 
 namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
@@ -15,19 +16,22 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
     {
         private readonly IGenericRepository<Ticket> _ticketRepository;
         private readonly ITokenReader _tokenReader;
+        private readonly IGenericRepository<ParkingGate> _parkingGateRepository;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRealtimeNotifier _realtimeNotifier;
         private readonly ILogger<ExitTicketCommandHandler> _logger;
 
         public ExitTicketCommandHandler(IGenericRepository<Ticket> ticketRepository,
             IHttpContextAccessor httpContextAccessor, ITokenReader tokenReader,
-            IRealtimeNotifier realTimeNotifier, ILogger<ExitTicketCommandHandler> logger)
+            IRealtimeNotifier realTimeNotifier, ILogger<ExitTicketCommandHandler> logger, IGenericRepository<ParkingGate> parkingGateRepository)
         {
             _ticketRepository = ticketRepository;
             _httpContextAccessor = httpContextAccessor;
             _tokenReader = tokenReader;
             _realtimeNotifier = realTimeNotifier;
             _logger = logger;
+            _parkingGateRepository = parkingGateRepository;
         }
 
         public async Task<Result> Handle(ExitTicketCommand request, CancellationToken cancellationToken)
@@ -50,6 +54,18 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
             var userId = tokenInfo.UserId.Value;
             var ticketEntity = await _ticketRepository.GetByIdAsync(request.TicketId);
 
+            var gateInfo = await _parkingGateRepository.GetByIdAsync(tokenInfo.GateId.Value, cancellationToken);
+
+            if (gateInfo is null)
+            {
+                _logger.LogWarning("Gate info not found while adding ticket.");
+                return Result.Fail(
+                    new Error(
+                        Code: "Gate.NotFound",
+                        Message: ErrorMessage.GateNotFound,
+                        Type: ErrorType.NotFound));
+            }
+
             if (ticketEntity is null)
             {
                 return Result.Fail(
@@ -70,7 +86,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
             ticketEntity.SetExitDate();
 
             await _ticketRepository.SaveChangesAsync(cancellationToken);
-            await NotifyDashboardTicketExitedAsync(ticketEntity, gateId, userId, cancellationToken);
+            await NotifyDashboardTicketExitedAsync(ticketEntity, gateId, userId, gateInfo, cancellationToken);
             return Result.Ok();
         }
 
@@ -78,26 +94,26 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
             Ticket ticketEntity,
             Guid gateId,
             Guid userId,
+            ParkingGate x,
             CancellationToken cancellationToken)
         {
             try
             {
+                var gateNumber = x.GateType == GateType.Entrance
+    ? $"{ErrorMessage.EntranceGate} {x.GateNumber}"
+    : $"{ErrorMessage.ExitGate} {x.GateNumber} ";
                 var payload = new TicketExitedNotification
                 {
                     TicketId = ticketEntity.Id,
                     GateId = gateId,
                     UserId = userId,
-                    ExitDate = ticketEntity.EndDate ?? DateTime.Now
+                    ExitDate = ticketEntity.EndDate ?? DateTime.Now,
+                    GateNumber = gateNumber
                 };
 
                 // channel name: "tickets:exited"
-                await _realtimeNotifier.NotifyTicketExitedAsync(new TicketExitedNotification
-                {
-                    TicketId = ticketEntity.Id,
-                    GateId = gateId,
-                    UserId = userId,
-                    ExitDate = ticketEntity.EndDate ?? DateTime.Now
-                });
+                await _realtimeNotifier.NotifyTicketExitedAsync(payload
+              );
             }
             catch (Exception ex)
             {

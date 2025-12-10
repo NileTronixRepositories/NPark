@@ -19,6 +19,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
      : ICommandHandler<AddTicketCommand, AddTicketCommandResponse>
     {
         private readonly IGenericRepository<Ticket> _ticketRepository;
+        private readonly IGenericRepository<ParkingGate> _parkingGateRepository;
         private readonly IGenericRepository<PricingScheme> _pricingSchemaRepository;
         private readonly IGenericRepository<ParkingSystemConfiguration> _parkingSystemConfigurationRepository;
         private readonly IGenericRepository<ParkingMemberships> _parkingMembershipsRepository;
@@ -39,7 +40,8 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             IGenericRepository<PricingScheme> pricingSchemaRepository,
             ILogger<AddTicketCommandHandler> logger,
             IRealtimeNotifier realtimeNotifier,
-            IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository)
+            IGenericRepository<ParkingSystemConfiguration> parkingSystemConfigurationRepository,
+            IGenericRepository<ParkingGate> parkingGateRepository)
         {
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
             _parkingMembershipsRepository = parkingMembershipsRepository ?? throw new ArgumentNullException(nameof(parkingMembershipsRepository));
@@ -52,6 +54,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             _parkingSystemConfigurationRepository = parkingSystemConfigurationRepository ?? throw new ArgumentNullException(nameof(parkingSystemConfigurationRepository));
 
             _realtimeNotifier = realtimeNotifier ?? throw new ArgumentNullException(nameof(realtimeNotifier));
+            _parkingGateRepository = parkingGateRepository ?? throw new ArgumentNullException(nameof(parkingGateRepository));
         }
 
         public async Task<Result<AddTicketCommandResponse>> Handle(
@@ -79,9 +82,9 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                             Type: ErrorType.NotFound));
                 }
 
-                // ---------------------------
-                // 2) Read token (GateId + UserId)
-                // ---------------------------
+                // ---------------------------------------------------------------
+                // 2) Read token (GateId + UserId) And Get GateInfo
+                // --------------------------------------------------------------
                 var tokenInfo = _httpContextAccessor.HttpContext?.ReadToken(_tokenReader);
                 if (tokenInfo is null || !tokenInfo.GateId.HasValue || !tokenInfo.UserId.HasValue)
                 {
@@ -90,6 +93,18 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                         new Error(
                             Code: "Token.GateOrUser.NotFound",
                             Message: ErrorMessage.TokenInfo_Missing,
+                            Type: ErrorType.NotFound));
+                }
+
+                var gateInfo = await _parkingGateRepository.GetByIdAsync(tokenInfo.GateId.Value, cancellationToken);
+
+                if (gateInfo is null)
+                {
+                    _logger.LogWarning("Gate info not found while adding ticket.");
+                    return Result<AddTicketCommandResponse>.Fail(
+                        new Error(
+                            Code: "Gate.NotFound",
+                            Message: ErrorMessage.GateNotFound,
                             Type: ErrorType.NotFound));
                 }
 
@@ -103,6 +118,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                         configuration,
                         tokenInfo.GateId.Value,
                         tokenInfo.UserId.Value,
+                        gateInfo,
                         cancellationToken);
                 }
 
@@ -111,6 +127,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     configuration,
                     tokenInfo.GateId.Value,
                     tokenInfo.UserId.Value,
+                    gateInfo,
                     cancellationToken);
             }
             catch (OperationCanceledException)
@@ -137,6 +154,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             ParkingSystemConfiguration configuration,
             Guid gateId,
             Guid userId,
+            ParkingGate x,
             CancellationToken cancellationToken)
         {
             // 1) Get subscriber by card number
@@ -191,6 +209,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
             ParkingSystemConfiguration configuration,
             Guid gateId,
             Guid userId,
+            ParkingGate x,
             CancellationToken cancellationToken)
         {
             var now = DateTime.Now; // أو DateTime.UtcNow حسب نظامك
@@ -251,6 +270,7 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
 
             await NotifyDashboardTicketAddedAsync(
     ticketEntity,
+    x,
     isSubscriber: true,
     cancellationToken);
             var qrCode = GenerateTicketQrCode(ticketEntity);
@@ -261,11 +281,15 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
 
         private async Task NotifyDashboardTicketAddedAsync(
             Ticket ticketEntity,
+            ParkingGate x,
             bool isSubscriber,
             CancellationToken cancellationToken)
         {
             try
             {
+                var gateNumber = x.GateType == GateType.Entrance
+                    ? $"{ErrorMessage.EntranceGate} {x.GateNumber}"
+                    : $"{ErrorMessage.ExitGate} {x.GateNumber} ";
                 var payload = new TicketAddedNotification
                 {
                     TicketId = ticketEntity.Id,
@@ -273,19 +297,12 @@ namespace NPark.Application.Feature.TicketsManagement.Command.Add
                     StartDate = ticketEntity.StartDate,
                     Price = ticketEntity.Price,
                     IsSubscriber = isSubscriber,
-                    VehicleNumber = ticketEntity.VehicleNumber
+                    VehicleNumber = ticketEntity.VehicleNumber,
+                    GateNumber = gateNumber
                 };
 
                 // channel name عام "tickets:added"
-                await _realtimeNotifier.NotifyTicketAddedAsync(new TicketAddedNotification
-                {
-                    TicketId = ticketEntity.Id,
-                    GateId = ticketEntity.GateId,
-                    StartDate = ticketEntity.StartDate,
-                    Price = ticketEntity.Price,
-                    IsSubscriber = isSubscriber,
-                    VehicleNumber = ticketEntity.VehicleNumber
-                });
+                await _realtimeNotifier.NotifyTicketAddedAsync(payload);
             }
             catch (Exception ex)
             {

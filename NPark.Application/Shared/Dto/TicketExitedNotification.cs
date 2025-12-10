@@ -9,5 +9,6 @@
         public Guid GateId { get; init; }
         public Guid UserId { get; init; }
         public DateTime ExitDate { get; init; }
+        public string GateNumber { get; init; } = string.Empty;
     }
 }

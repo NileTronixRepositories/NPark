@@ -3,6 +3,7 @@
     public enum VehiclePassengerData
     {
         LPR = 0,
-        ScannerId = 1
+        ScannerId = 1,
+        Both = 2
     }
 }
