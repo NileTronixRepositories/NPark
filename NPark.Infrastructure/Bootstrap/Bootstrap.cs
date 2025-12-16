@@ -31,7 +31,6 @@ namespace NPark.Infrastructure.Bootstrap
         {
             services.Configure<EncryptionOptions>(configuration.GetSection("EncryptionOptions"));
             services.Configure<SalaryConfig>(configuration.GetSection("SalaryConfig"));
-
             services.AddDbConfig(configuration);
             services.AddScoped<IDbContextProvider, DbContextProvider<NParkDBContext>>();
             services.AddScoped<IAuditLogger, AuditLogger>();
@@ -47,7 +46,6 @@ namespace NPark.Infrastructure.Bootstrap
             services.AddQrCodeService();
             services.AddSeeding();
             services.AddAuth(configuration);
-
             services.AddHttpClient("device-http", c =>
             {
             }).SetHandlerLifetime(TimeSpan.FromMinutes(5));

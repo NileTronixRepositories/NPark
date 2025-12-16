@@ -1,0 +1,6 @@
+@TrafficLicensing.Api_HostAddress = http://localhost:5093
+
+GET {{TrafficLicensing.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

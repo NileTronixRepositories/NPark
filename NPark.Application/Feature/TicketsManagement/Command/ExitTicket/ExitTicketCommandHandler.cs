@@ -36,9 +36,9 @@ namespace NPark.Application.Feature.TicketsManagement.Command.ExitTicket
 
         public async Task<Result> Handle(ExitTicketCommand request, CancellationToken cancellationToken)
         {
-            // ---------------------------
+            // ----------------------------------------
             // 1) Read token info (GateId + UserId)
-            // ---------------------------
+            // ----------------------------------------
             var tokenInfo = _httpContextAccessor.HttpContext?.ReadToken(_tokenReader);
 
             if (tokenInfo is null || !tokenInfo.GateId.HasValue || !tokenInfo.UserId.HasValue)
