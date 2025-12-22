@@ -1,4 +1,7 @@
-﻿namespace CRM.Application.Abstraction.Security;
+﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+namespace CRM.Application.Abstraction.Security;
 
 public static class HttpContextJwtExtensions
 {

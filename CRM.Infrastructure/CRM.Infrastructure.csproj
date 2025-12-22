@@ -20,4 +20,9 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingBlock.Infrastracture\BuildingBlock.Infrastracture.csproj" />
+    <ProjectReference Include="..\CRM.Application\CRM.Application.csproj" />
+  </ItemGroup>
+
 </Project>
