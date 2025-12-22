@@ -144,11 +144,20 @@
   <data name="Login_Password_Required" xml:space="preserve">
     <value>Password is required.</value>
   </data>
+  <data name="Product_ProductId_Required" xml:space="preserve">
+    <value>ProductId is required</value>
+  </data>
+  <data name="Product_SupportEndDate_Required" xml:space="preserve">
+    <value>Support end date is required</value>
+  </data>
   <data name="Site_NameEn_Required" xml:space="preserve">
     <value>Site English name is required.</value>
   </data>
   <data name="Site_NameEn_Unique" xml:space="preserve">
     <value>Site English name must be unique</value>
+  </data>
+  <data name="Site_Products_Empty" xml:space="preserve">
+    <value>Products list cannot be empty when provided</value>
   </data>
   <data name="WrongLoginCredintial" xml:space="preserve">
     <value>Email or Password not valid TryAgain!</value>

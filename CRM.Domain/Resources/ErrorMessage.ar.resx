@@ -144,11 +144,20 @@
   <data name="Login_Password_Required" xml:space="preserve">
     <value>كلمة المرور مطلوبة.</value>
   </data>
+  <data name="Product_ProductId_Required" xml:space="preserve">
+    <value>معرّف المنتج مطلوب.</value>
+  </data>
+  <data name="Product_SupportEndDate_Required" xml:space="preserve">
+    <value>تاريخ انتهاء الدعم مطلوب.</value>
+  </data>
   <data name="Site_NameEn_Required" xml:space="preserve">
     <value>اسم الموقع بالإنجليزية مطلوب.</value>
   </data>
   <data name="Site_NameEn_Unique" xml:space="preserve">
     <value>اسم الموقع بالإنجليزية يجب أن يكون فريدًا</value>
+  </data>
+  <data name="Site_Products_Empty" xml:space="preserve">
+    <value>قائمة المنتجات لا يجب أن تكون فارغة عند إرسالها.</value>
   </data>
   <data name="WrongLoginCredintial" xml:space="preserve">
     <value>الايميل او كلمة المرور غير صحيحة</value>

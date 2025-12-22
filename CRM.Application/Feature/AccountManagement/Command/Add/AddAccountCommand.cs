@@ -14,5 +14,11 @@ namespace CRM.Application.Feature.AccountManagement.Command.Add
     {
         public string NameEn { get; init; } = string.Empty;
         public string? NameAr { get; init; }
+        public List<AddProductDto>? Products { get; init; } = new(); // <ProductId, SupportEndDate>
+    }
+    public sealed record AddProductDto
+    {
+        public Guid ProductId { get; init; }
+        public DateTime SupportEndDate { get; init; }
     }
 }

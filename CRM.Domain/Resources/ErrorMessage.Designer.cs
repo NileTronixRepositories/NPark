@@ -142,6 +142,24 @@ namespace CRM.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProductId is required.
+        /// </summary>
+        public static string Product_ProductId_Required {
+            get {
+                return ResourceManager.GetString("Product_ProductId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support end date is required.
+        /// </summary>
+        public static string Product_SupportEndDate_Required {
+            get {
+                return ResourceManager.GetString("Product_SupportEndDate_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Site English name is required..
         /// </summary>
         public static string Site_NameEn_Required {
@@ -156,6 +174,15 @@ namespace CRM.Domain.Resources {
         public static string Site_NameEn_Unique {
             get {
                 return ResourceManager.GetString("Site_NameEn_Unique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Products list cannot be empty when provided.
+        /// </summary>
+        public static string Site_Products_Empty {
+            get {
+                return ResourceManager.GetString("Site_Products_Empty", resourceCulture);
             }
         }
         

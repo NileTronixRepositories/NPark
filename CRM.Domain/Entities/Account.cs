@@ -42,6 +42,8 @@ namespace CRM.Domain.Entities
 
         public void AddSite(Site site) => _sites.Add(site);
 
+        public void AddSites(IEnumerable<Site> sites) => _sites.AddRange(sites);
+
         public void RemoveSite(Site site) => _sites.Remove(site);
 
         public void AssignRole(Guid roleId) => RoleId = roleId;

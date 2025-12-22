@@ -46,9 +46,27 @@ namespace CRM.Application.Feature.AccountManagement.Command.Add
                     Type: ErrorType.Conflict
                     ));
             }
+            //3-Genereate Password
             var pass = _passwordService.Hash(request.Password);
-            var account = Account.Create(request.NameEn, request.NameAr, request.Email, request.Password);
+
+            //4-Create Account
+            var account = Account.Create(request.NameEn, request.NameAr, request.Email, pass);
             account.AssignRole(new Guid("f37ac10b-58cc-4372-a567-0e02b2c3d479"));
+
+            //5-Add Sites
+            var Sites = new List<Site>();
+
+            foreach (var site in request.Sites)
+            {
+                var siteEntity = Site.Create(site.NameEn, site.NameAr);
+                foreach (var product in site.Products!)
+                {
+                    var productEntity = SiteProduct.Create(siteEntity.Id, product.ProductId, product.SupportEndDate);
+                    siteEntity.AddSiteProduct(productEntity);
+                }
+                Sites.Add(siteEntity);
+            }
+            account.AddSites(Sites);
             await _accountRepository.AddAsync(account, cancellationToken);
             await _accountRepository.SaveChangesAsync(cancellationToken);
             return Result.Ok();
