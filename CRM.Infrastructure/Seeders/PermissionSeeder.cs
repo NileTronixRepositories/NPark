@@ -11,10 +11,19 @@ namespace CRM.Infrastructure.Seeders
         private readonly IGenericRepository<Permission> _permissionRepo;
         private readonly ILogger<PermissionSeeder> _logger;
 
+        // Center
         public static readonly Guid CreateCenterPermissionId = new("c4f8b057-b37f-4570-bc65-d29d830fb89d");
+
         public static readonly Guid UpdateCenterPermissionId = new("17a145f1-ef9d-4f74-98ff-bab12c997b8b");
         public static readonly Guid DeleteCenterPermissionId = new("42a3a074-d2c4-459d-bec9-cd6e29b7b38f");
         public static readonly Guid ReadCenterPermissionId = new("55555555-5555-5555-5555-555555555555");
+
+        // Product
+        public static readonly Guid CreateProductPermissionId = new("7b1e9c2e-5d3b-4c5e-8b0a-2a9dd3f8c0a1");
+
+        public static readonly Guid ReadProductPermissionId = new("a6b0c0c7-2b76-4f21-9a0b-2d1a2d7f8c02");
+        public static readonly Guid UpdateProductPermissionId = new("f5a1e18d-8f4b-4e18-9a7f-4f6e9b3a0c03");
+        public static readonly Guid DeleteProductPermissionId = new("c3d4a2b1-1e1b-4b3a-8b7a-8c9f0a1b2c04");
 
         public PermissionSeeder(IGenericRepository<Permission> permissionRepo, ILogger<PermissionSeeder> logger)
         {
@@ -38,11 +47,17 @@ namespace CRM.Infrastructure.Seeders
                 toInsert.Add(Permission.CreateWithID(id, name, nameAr, desc));
             }
 
-            // CRUD
+            // Center - CRUD
             await AddIfNotExists(CreateCenterPermissionId, "Platform:Centers:Create", "إضافة", "For Creating");
             await AddIfNotExists(ReadCenterPermissionId, "Platform:Centers:Read", "قراءة", "For Reading");
             await AddIfNotExists(UpdateCenterPermissionId, "Platform:Centers:Update", "تعديل", "For Updating");
             await AddIfNotExists(DeleteCenterPermissionId, "Platform:Centers:Delete", "حذف", "For Deleting");
+
+            // Product - CRUD (NEW)
+            await AddIfNotExists(CreateProductPermissionId, "Platform:Products:Create", "إضافة", "For Creating");
+            await AddIfNotExists(ReadProductPermissionId, "Platform:Products:Read", "قراءة", "For Reading");
+            await AddIfNotExists(UpdateProductPermissionId, "Platform:Products:Update", "تعديل", "For Updating");
+            await AddIfNotExists(DeleteProductPermissionId, "Platform:Products:Delete", "حذف", "For Deleting");
 
             if (toInsert.Count == 0)
             {

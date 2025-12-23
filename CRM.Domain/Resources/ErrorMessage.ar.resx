@@ -144,6 +144,21 @@
   <data name="Login_Password_Required" xml:space="preserve">
     <value>كلمة المرور مطلوبة.</value>
   </data>
+  <data name="Product_DescriptionAr_MaxLength" xml:space="preserve">
+    <value>الوصف بالعربية يجب ألا يزيد عن 2000 حرف.</value>
+  </data>
+  <data name="Product_DescriptionEn_MaxLength" xml:space="preserve">
+    <value>الوصف بالإنجليزية يجب ألا يزيد عن 2000 حرف.</value>
+  </data>
+  <data name="Product_Image_InvalidType" xml:space="preserve">
+    <value>الصورة يجب أن تكون (jpg, jpeg, png, webp).</value>
+  </data>
+  <data name="Product_Image_MaxSize" xml:space="preserve">
+    <value>حجم الصورة يجب ألا يتجاوز 2 ميجابايت.</value>
+  </data>
+  <data name="Product_NameEn_Required" xml:space="preserve">
+    <value>اسم المنتج بالإنجليزية مطلوب.</value>
+  </data>
   <data name="Product_ProductId_Required" xml:space="preserve">
     <value>معرّف المنتج مطلوب.</value>
   </data>

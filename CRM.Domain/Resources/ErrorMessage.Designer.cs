@@ -142,6 +142,51 @@ namespace CRM.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arabic description must not exceed 2000 characters..
+        /// </summary>
+        public static string Product_DescriptionAr_MaxLength {
+            get {
+                return ResourceManager.GetString("Product_DescriptionAr_MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English description must not exceed 2000 characters..
+        /// </summary>
+        public static string Product_DescriptionEn_MaxLength {
+            get {
+                return ResourceManager.GetString("Product_DescriptionEn_MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image must be an image file (jpg, jpeg, png, webp)..
+        /// </summary>
+        public static string Product_Image_InvalidType {
+            get {
+                return ResourceManager.GetString("Product_Image_InvalidType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image size must not exceed 2 MB..
+        /// </summary>
+        public static string Product_Image_MaxSize {
+            get {
+                return ResourceManager.GetString("Product_Image_MaxSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English name is required..
+        /// </summary>
+        public static string Product_NameEn_Required {
+            get {
+                return ResourceManager.GetString("Product_NameEn_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ProductId is required.
         /// </summary>
         public static string Product_ProductId_Required {

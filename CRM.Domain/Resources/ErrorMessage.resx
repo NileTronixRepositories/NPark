@@ -144,6 +144,21 @@
   <data name="Login_Password_Required" xml:space="preserve">
     <value>Password is required.</value>
   </data>
+  <data name="Product_DescriptionAr_MaxLength" xml:space="preserve">
+    <value>Arabic description must not exceed 2000 characters.</value>
+  </data>
+  <data name="Product_DescriptionEn_MaxLength" xml:space="preserve">
+    <value>English description must not exceed 2000 characters.</value>
+  </data>
+  <data name="Product_Image_InvalidType" xml:space="preserve">
+    <value>Image must be an image file (jpg, jpeg, png, webp).</value>
+  </data>
+  <data name="Product_Image_MaxSize" xml:space="preserve">
+    <value>Image size must not exceed 2 MB.</value>
+  </data>
+  <data name="Product_NameEn_Required" xml:space="preserve">
+    <value>English name is required.</value>
+  </data>
   <data name="Product_ProductId_Required" xml:space="preserve">
     <value>ProductId is required</value>
   </data>
