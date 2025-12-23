@@ -174,6 +174,33 @@
   <data name="Site_Products_Empty" xml:space="preserve">
     <value>قائمة المنتجات لا يجب أن تكون فارغة عند إرسالها.</value>
   </data>
+  <data name="Ticket_Description_Required" xml:space="preserve">
+    <value>الوصف مطلوب.</value>
+  </data>
+  <data name="Ticket_Phone_Invalid" xml:space="preserve">
+    <value>رقم موبايل مصري غير صحيح</value>
+  </data>
+  <data name="Ticket_Phone_Required" xml:space="preserve">
+    <value>رقم الهاتف مطلوب.</value>
+  </data>
+  <data name="Ticket_ProductId_Required" xml:space="preserve">
+    <value>معرّف المنتج مطلوب.</value>
+  </data>
+  <data name="Ticket_Product_NotFound" xml:space="preserve">
+    <value>المنتج غير موجود.</value>
+  </data>
+  <data name="Ticket_Severity_Invalid" xml:space="preserve">
+    <value>مستوى الخطورة غير صحيح.</value>
+  </data>
+  <data name="Ticket_SiteId_Required" xml:space="preserve">
+    <value>معرّف الموقع مطلوب.</value>
+  </data>
+  <data name="Ticket_Site_NotFound" xml:space="preserve">
+    <value>الموقع غير موجود.</value>
+  </data>
+  <data name="Ticket_Subject_Required" xml:space="preserve">
+    <value>العنوان مطلوب.</value>
+  </data>
   <data name="WrongLoginCredintial" xml:space="preserve">
     <value>الايميل او كلمة المرور غير صحيحة</value>
   </data>

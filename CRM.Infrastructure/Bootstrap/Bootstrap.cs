@@ -5,11 +5,13 @@ using BuildingBlock.Infrastracture.Interceptors;
 using BuildingBlock.Infrastracture.Options;
 using BuildingBlock.Infrastracture.Repositories;
 using BuildingBlock.Infrastracture.Service;
+using CRM.Application.Abstraction;
 using CRM.Application.Abstraction.Security;
 using CRM.Application.Abstraction.Seeder;
 using CRM.Infrastructure.Autorization;
 using CRM.Infrastructure.Option;
 using CRM.Infrastructure.Seeders;
+using CRM.Infrastructure.Service;
 using CRM.Infrastructure.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +30,8 @@ namespace CRM.Infrastructure.Bootstrap
         public static IServiceCollection InfrastructureInjection(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<EncryptionOptions>(configuration.GetSection("EncryptionOptions"));
-
+            services.Configure<SmtpOptions>(configuration.GetSection("Smtp"));
+            services.AddScoped<IEmailSender, MailKitEmailSender>();
             services.AddDbConfig(configuration);
             services.AddScoped<IDbContextProvider, DbContextProvider<CRMDBContext>>();
             services.AddSecurity();

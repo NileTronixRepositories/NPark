@@ -5,6 +5,7 @@ namespace CRM.Domain.Entities
     public sealed class Product : Entity<Guid>
     {
         private List<SiteProduct> _siteProducts = new List<SiteProduct>(); // <==>
+        private List<Ticket> _tickets = new List<Ticket>(); // <==>
 
         public string NameEn { get; private set; } = string.Empty;
         public string? NameAr { get; private set; }
@@ -13,6 +14,7 @@ namespace CRM.Domain.Entities
         public string? ImagePath { get; private set; }
 
         public IReadOnlyCollection<SiteProduct> SiteProducts => _siteProducts;
+        public IReadOnlyCollection<Ticket> Tickets => _tickets;
 
         private Product()
         {

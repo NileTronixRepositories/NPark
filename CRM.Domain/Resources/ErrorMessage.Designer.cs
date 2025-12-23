@@ -232,6 +232,87 @@ namespace CRM.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description is required..
+        /// </summary>
+        public static string Ticket_Description_Required {
+            get {
+                return ResourceManager.GetString("Ticket_Description_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Egyptian mobile number.
+        /// </summary>
+        public static string Ticket_Phone_Invalid {
+            get {
+                return ResourceManager.GetString("Ticket_Phone_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number is required..
+        /// </summary>
+        public static string Ticket_Phone_Required {
+            get {
+                return ResourceManager.GetString("Ticket_Phone_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product not found..
+        /// </summary>
+        public static string Ticket_Product_NotFound {
+            get {
+                return ResourceManager.GetString("Ticket_Product_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProductId is required..
+        /// </summary>
+        public static string Ticket_ProductId_Required {
+            get {
+                return ResourceManager.GetString("Ticket_ProductId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Severity is invalid..
+        /// </summary>
+        public static string Ticket_Severity_Invalid {
+            get {
+                return ResourceManager.GetString("Ticket_Severity_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site not found..
+        /// </summary>
+        public static string Ticket_Site_NotFound {
+            get {
+                return ResourceManager.GetString("Ticket_Site_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SiteId is required..
+        /// </summary>
+        public static string Ticket_SiteId_Required {
+            get {
+                return ResourceManager.GetString("Ticket_SiteId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject is required..
+        /// </summary>
+        public static string Ticket_Subject_Required {
+            get {
+                return ResourceManager.GetString("Ticket_Subject_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email or Password not valid TryAgain!.
         /// </summary>
         public static string WrongLoginCredintial {
