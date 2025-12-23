@@ -13,5 +13,12 @@
         public Guid Id { get; init; }
         public string NameEn { get; init; } = string.Empty;
         public string? NameAr { get; init; }
+        public List<GetProductsDto> Products { get; init; } = new();
+    }
+    public sealed record GetProductsDto
+    {
+        public Guid Id { get; init; }
+        public string NameEn { get; init; } = string.Empty;
+        public DateTime SupportDateEnd { get; init; }
     }
 }

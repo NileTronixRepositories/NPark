@@ -16,6 +16,7 @@ namespace CRM.Domain.Entities
 
         public static SiteProduct Create(Guid siteId, Guid productId, DateTime supportEndDate) => new SiteProduct()
         {
+            Id = Guid.NewGuid(),
             SiteId = siteId,
             ProductId = productId,
             SupportEndDate = supportEndDate

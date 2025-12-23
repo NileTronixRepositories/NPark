@@ -61,6 +61,7 @@ namespace CRM.Application.Feature.AccountManagement.Command.Add
                 var siteEntity = Site.Create(site.NameEn, site.NameAr);
                 foreach (var product in site.Products!)
                 {
+                    //6-Check for Product Existence
                     var productEntity = SiteProduct.Create(siteEntity.Id, product.ProductId, product.SupportEndDate);
                     siteEntity.AddSiteProduct(productEntity);
                 }

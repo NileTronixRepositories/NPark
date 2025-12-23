@@ -18,7 +18,7 @@ namespace CRM.Application.Feature.AccountManagement.Query.GetAll
 
         public async Task<Result<Pagination<GetAllAccountQueryResponse>>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
         {
-            var spec = new GetAllAccountSpec();
+            var spec = new GetAllAccountSpec(request);
             var response = _accountRepository.GetWithSpec(spec);
             var result = new Pagination<GetAllAccountQueryResponse>(request.PageNumber, request.PageSize, response.count,
                 response.data.ToList());

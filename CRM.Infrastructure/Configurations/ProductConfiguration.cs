@@ -12,8 +12,8 @@ namespace CRM.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.NameEn).IsRequired().HasMaxLength(100);
             builder.Property(x => x.NameEn).IsRequired(false).HasMaxLength(100);
-            builder.Property(x => x.DescriptionAr).IsRequired(false).HasMaxLength(100);
-            builder.Property(x => x.DescriptionEn).IsRequired(false).HasMaxLength(100);
+            builder.Property(x => x.DescriptionAr).IsRequired(false).HasMaxLength(2000);
+            builder.Property(x => x.DescriptionEn).IsRequired(false).HasMaxLength(2000);
             builder.HasIndex(x => x.NameEn).IsUnique();
             builder.HasMany(x => x.SiteProducts).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
         }
