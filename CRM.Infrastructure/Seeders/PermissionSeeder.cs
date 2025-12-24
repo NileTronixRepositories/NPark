@@ -25,6 +25,13 @@ namespace CRM.Infrastructure.Seeders
         public static readonly Guid UpdateProductPermissionId = new("f5a1e18d-8f4b-4e18-9a7f-4f6e9b3a0c03");
         public static readonly Guid DeleteProductPermissionId = new("c3d4a2b1-1e1b-4b3a-8b7a-8c9f0a1b2c04");
 
+        // Ticket (NEW) - CRUD
+        public static readonly Guid CreateTicketPermissionId = new("b9f2b7c1-0e42-4a6e-9bb5-5d9c31d3a101");
+
+        public static readonly Guid ReadTicketPermissionId = new("b9f2b7c1-0e42-4a6e-9bb5-5d9c31d3a102");
+        public static readonly Guid UpdateTicketPermissionId = new("b9f2b7c1-0e42-4a6e-9bb5-5d9c31d3a103");
+        public static readonly Guid DeleteTicketPermissionId = new("b9f2b7c1-0e42-4a6e-9bb5-5d9c31d3a104");
+
         public PermissionSeeder(IGenericRepository<Permission> permissionRepo, ILogger<PermissionSeeder> logger)
         {
             _permissionRepo = permissionRepo ?? throw new ArgumentNullException(nameof(permissionRepo));
@@ -53,11 +60,17 @@ namespace CRM.Infrastructure.Seeders
             await AddIfNotExists(UpdateCenterPermissionId, "Platform:Centers:Update", "تعديل", "For Updating");
             await AddIfNotExists(DeleteCenterPermissionId, "Platform:Centers:Delete", "حذف", "For Deleting");
 
-            // Product - CRUD (NEW)
+            // Product - CRUD
             await AddIfNotExists(CreateProductPermissionId, "Platform:Products:Create", "إضافة", "For Creating");
             await AddIfNotExists(ReadProductPermissionId, "Platform:Products:Read", "قراءة", "For Reading");
             await AddIfNotExists(UpdateProductPermissionId, "Platform:Products:Update", "تعديل", "For Updating");
             await AddIfNotExists(DeleteProductPermissionId, "Platform:Products:Delete", "حذف", "For Deleting");
+
+            // Ticket - CRUD (NEW)
+            await AddIfNotExists(CreateTicketPermissionId, "Account:Tickets:Create", "إضافة", "For Creating"); // Add/Create
+            await AddIfNotExists(ReadTicketPermissionId, "Account:Tickets:Read", "قراءة", "For Reading");
+            await AddIfNotExists(UpdateTicketPermissionId, "Account:Tickets:Update", "تعديل", "For Updating");
+            await AddIfNotExists(DeleteTicketPermissionId, "Account:Tickets:Delete", "حذف", "For Deleting");
 
             if (toInsert.Count == 0)
             {

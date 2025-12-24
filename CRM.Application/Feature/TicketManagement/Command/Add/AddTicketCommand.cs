@@ -1,5 +1,6 @@
 ﻿using BuildingBlock.Application.Abstraction;
 using CRM.Domain.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace CRM.Application.Feature.TicketManagement.Command.Add
 {
@@ -12,5 +13,7 @@ namespace CRM.Application.Feature.TicketManagement.Command.Add
         public TicketSeverity Severity { get; init; }
         public Guid SiteId { get; init; }
         public Guid ProductId { get; init; }
+
+        public List<IFormFile>? Attachments { get; init; } = new List<IFormFile>();
     }
 }

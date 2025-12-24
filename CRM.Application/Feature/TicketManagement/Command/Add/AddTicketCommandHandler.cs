@@ -1,9 +1,11 @@
 ﻿using BuildingBlock.Application.Abstraction;
+using BuildingBlock.Application.Abstraction.Media;
 using BuildingBlock.Application.Repositories;
 using BuildingBlock.Domain.Results;
 using CRM.Application.Abstraction;
 using CRM.Application.Shared.Dto;
 using CRM.Domain.Entities;
+using CRM.Domain.FileName;
 using CRM.Domain.Resources;
 
 namespace CRM.Application.Feature.TicketManagement.Command.Add
@@ -13,15 +15,17 @@ namespace CRM.Application.Feature.TicketManagement.Command.Add
         private readonly IGenericRepository<Ticket> _ticketRepository;
         private readonly IGenericRepository<Site> _siteRepository;
         private readonly IGenericRepository<Product> _productRepository;
+        private readonly IMediaService _mediaService;
         private readonly IEmailSender _emailSender;
 
         public AddTicketCommandHandler(IGenericRepository<Ticket> ticketRepository, IGenericRepository<Site> siteRepository,
-            IGenericRepository<Product> productRepository, IEmailSender emailSender)
+            IGenericRepository<Product> productRepository, IEmailSender emailSender, IMediaService mediaService)
         {
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
             _siteRepository = siteRepository ?? throw new ArgumentNullException(nameof(siteRepository));
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            _mediaService = mediaService ?? throw new ArgumentNullException(nameof(mediaService));
         }
 
         public async Task<Result> Handle(AddTicketCommand request, CancellationToken cancellationToken)
@@ -46,6 +50,17 @@ namespace CRM.Application.Feature.TicketManagement.Command.Add
             var ticket = Ticket.Create(request.Description, request.Email, request.Subject, request.PhoneNumber,
                    request.Severity, request.SiteId, request.ProductId);
 
+            //Add Attachments if any
+            if (request.Attachments != null && request.Attachments.Any())
+            {
+                foreach (var file in request.Attachments)
+                {
+                    var mediaResult = await _mediaService.SaveAsync(file, FileNames.TicketAttachment);
+
+                    var attachment = TicketAttachment.Create(ticket.Id, mediaResult);
+                    ticket.AddAttachment(attachment);
+                }
+            }
             await _ticketRepository.AddAsync(ticket, cancellationToken);
             await _ticketRepository.SaveChangesAsync(cancellationToken);
 

@@ -5,6 +5,7 @@ namespace CRM.Domain.Entities
 {
     public sealed class Ticket : Entity<Guid>
     {
+        private List<TicketAttachment> _attachments = new List<TicketAttachment>(); //private set>
         public string Description { get; private set; } = string.Empty;
 
         public string Email { get; private set; } = string.Empty;
@@ -16,6 +17,7 @@ namespace CRM.Domain.Entities
         public Site Site { get; private set; }
         public Guid ProductId { get; private set; }
         public Product Product { get; private set; }
+        public IReadOnlyList<TicketAttachment> Attachments => _attachments;
 
         private Ticket()
         { }
@@ -32,5 +34,7 @@ namespace CRM.Domain.Entities
                 SiteId = site,
                 ProductId = product
             };
+
+        public void AddAttachment(TicketAttachment attachment) => _attachments.Add(attachment);
     }
 }
