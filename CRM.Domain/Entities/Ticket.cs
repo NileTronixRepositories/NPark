@@ -36,5 +36,9 @@ namespace CRM.Domain.Entities
             };
 
         public void AddAttachment(TicketAttachment attachment) => _attachments.Add(attachment);
+
+        public void UpdateStatus(TicketStatus status) => Status = status;
+
+        public void UpdateSeverity(TicketSeverity severity) => Severity = severity;
     }
 }

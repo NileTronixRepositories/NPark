@@ -232,11 +232,38 @@ namespace CRM.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description cannot be empty..
+        /// </summary>
+        public static string Ticket_Description_Empty {
+            get {
+                return ResourceManager.GetString("Ticket_Description_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description must not exceed 2000 characters..
+        /// </summary>
+        public static string Ticket_Description_MaxLength {
+            get {
+                return ResourceManager.GetString("Ticket_Description_MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description is required..
         /// </summary>
         public static string Ticket_Description_Required {
             get {
                 return ResourceManager.GetString("Ticket_Description_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ticket id is required..
+        /// </summary>
+        public static string Ticket_Id_Required {
+            get {
+                return ResourceManager.GetString("Ticket_Id_Required", resourceCulture);
             }
         }
         
@@ -300,6 +327,15 @@ namespace CRM.Domain.Resources {
         public static string Ticket_SiteId_Required {
             get {
                 return ResourceManager.GetString("Ticket_SiteId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ticket severity is invalid..
+        /// </summary>
+        public static string Ticket_Status_Invalid {
+            get {
+                return ResourceManager.GetString("Ticket_Status_Invalid", resourceCulture);
             }
         }
         

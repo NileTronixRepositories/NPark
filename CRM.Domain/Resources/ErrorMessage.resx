@@ -174,8 +174,17 @@
   <data name="Site_Products_Empty" xml:space="preserve">
     <value>Products list cannot be empty when provided</value>
   </data>
+  <data name="Ticket_Description_Empty" xml:space="preserve">
+    <value>Description cannot be empty.</value>
+  </data>
+  <data name="Ticket_Description_MaxLength" xml:space="preserve">
+    <value>Description must not exceed 2000 characters.</value>
+  </data>
   <data name="Ticket_Description_Required" xml:space="preserve">
     <value>Description is required.</value>
+  </data>
+  <data name="Ticket_Id_Required" xml:space="preserve">
+    <value>Ticket id is required.</value>
   </data>
   <data name="Ticket_Phone_Invalid" xml:space="preserve">
     <value>Invalid Egyptian mobile number</value>
@@ -197,6 +206,9 @@
   </data>
   <data name="Ticket_Site_NotFound" xml:space="preserve">
     <value>Site not found.</value>
+  </data>
+  <data name="Ticket_Status_Invalid" xml:space="preserve">
+    <value>Ticket severity is invalid.</value>
   </data>
   <data name="Ticket_Subject_Required" xml:space="preserve">
     <value>Subject is required.</value>

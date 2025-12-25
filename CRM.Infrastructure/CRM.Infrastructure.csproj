@@ -27,4 +27,8 @@
     <ProjectReference Include="..\CRM.Application\CRM.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Service\Dashboard\" />
+  </ItemGroup>
+
 </Project>

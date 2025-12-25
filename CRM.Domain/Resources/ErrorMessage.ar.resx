@@ -174,8 +174,17 @@
   <data name="Site_Products_Empty" xml:space="preserve">
     <value>قائمة المنتجات لا يجب أن تكون فارغة عند إرسالها.</value>
   </data>
+  <data name="Ticket_Description_Empty" xml:space="preserve">
+    <value>الوصف لا يمكن أن يكون فارغًا.</value>
+  </data>
+  <data name="Ticket_Description_MaxLength" xml:space="preserve">
+    <value>الوصف يجب ألا يزيد عن 2000 حرف.</value>
+  </data>
   <data name="Ticket_Description_Required" xml:space="preserve">
     <value>الوصف مطلوب.</value>
+  </data>
+  <data name="Ticket_Id_Required" xml:space="preserve">
+    <value>معرّف التذكرة مطلوب.</value>
   </data>
   <data name="Ticket_Phone_Invalid" xml:space="preserve">
     <value>رقم موبايل مصري غير صحيح</value>
@@ -197,6 +206,9 @@
   </data>
   <data name="Ticket_Site_NotFound" xml:space="preserve">
     <value>الموقع غير موجود.</value>
+  </data>
+  <data name="Ticket_Status_Invalid" xml:space="preserve">
+    <value>مستوى خطورة التذكرة غير صحيح.</value>
   </data>
   <data name="Ticket_Subject_Required" xml:space="preserve">
     <value>العنوان مطلوب.</value>
