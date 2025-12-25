@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Feature\AuthManagement\Query\" />
+    <Folder Include="Feature\TicketManagement\Query\" />
   </ItemGroup>
 
 </Project>

@@ -36,8 +36,7 @@ namespace CRM.Application.Feature.TicketManagement.Command.Add
                     .WithMessage(ErrorMessage.Ticket_Phone_Invalid)
                 .When(x => x.PhoneNumber != null);
 
-            RuleFor(x => x.Severity)
-                .IsInEnum().WithMessage(ErrorMessage.Ticket_Severity_Invalid);
+
 
             RuleFor(x => x.SiteId)
                 .NotEmpty().WithMessage(ErrorMessage.Ticket_SiteId_Required);

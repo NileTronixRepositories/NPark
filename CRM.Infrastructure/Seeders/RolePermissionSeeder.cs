@@ -54,6 +54,8 @@ namespace CRM.Infrastructure.Seeders
             await AddIfNotExists(RoleSeeder.AccountRoleId, PermissionSeeder.UpdateTicketPermissionId);
             await AddIfNotExists(RoleSeeder.AccountRoleId, PermissionSeeder.DeleteTicketPermissionId);
             await AddIfNotExists(RoleSeeder.AccountRoleId, PermissionSeeder.ReadProductPermissionId);
+            await AddIfNotExists(RoleSeeder.AccountRoleId, PermissionSeeder.ReadAccountSitePermissionId);
+            await AddIfNotExists(RoleSeeder.SuperAdminRoleId, PermissionSeeder.ReadPlatformSitePermissionId);
 
             if (toInsert.Count == 0)
             {

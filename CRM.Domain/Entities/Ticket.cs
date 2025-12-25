@@ -22,13 +22,13 @@ namespace CRM.Domain.Entities
         private Ticket()
         { }
 
-        public static Ticket Create(string description, string email, string subject, string? phoneNumber, TicketSeverity severity,
+        public static Ticket Create(string description, string email, string subject, string? phoneNumber,
             Guid site, Guid product) => new Ticket()
             {
                 Description = description,
                 Email = email,
                 Status = TicketStatus.Pending,
-                Severity = severity,
+                Severity = TicketSeverity.Medium,
                 Subject = subject,
                 PhoneNumber = phoneNumber,
                 SiteId = site,

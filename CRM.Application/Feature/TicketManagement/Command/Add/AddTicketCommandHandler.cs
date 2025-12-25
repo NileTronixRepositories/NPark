@@ -48,7 +48,7 @@ namespace CRM.Application.Feature.TicketManagement.Command.Add
                     ));
             //3-Add Ticket
             var ticket = Ticket.Create(request.Description, request.Email, request.Subject, request.PhoneNumber,
-                   request.Severity, request.SiteId, request.ProductId);
+                  request.SiteId, request.ProductId);
 
             //Add Attachments if any
             if (request.Attachments != null && request.Attachments.Any())

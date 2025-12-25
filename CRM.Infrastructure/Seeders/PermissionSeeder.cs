@@ -32,6 +32,11 @@ namespace CRM.Infrastructure.Seeders
         public static readonly Guid UpdateTicketPermissionId = new("b9f2b7c1-0e42-4a6e-9bb5-5d9c31d3a103");
         public static readonly Guid DeleteTicketPermissionId = new("b9f2b7c1-0e42-4a6e-9bb5-5d9c31d3a104");
 
+        // Site (NEW) - Read Only
+        public static readonly Guid ReadAccountSitePermissionId = new("2d1b71bb-707f-4b1e-9df9-7d58b1f2b201");
+
+        public static readonly Guid ReadPlatformSitePermissionId = new("2d1b71bb-707f-4b1e-9df9-7d58b1f2b202");
+
         public PermissionSeeder(IGenericRepository<Permission> permissionRepo, ILogger<PermissionSeeder> logger)
         {
             _permissionRepo = permissionRepo ?? throw new ArgumentNullException(nameof(permissionRepo));
@@ -71,6 +76,9 @@ namespace CRM.Infrastructure.Seeders
             await AddIfNotExists(ReadTicketPermissionId, "Account:Tickets:Read", "قراءة", "For Reading");
             await AddIfNotExists(UpdateTicketPermissionId, "Account:Tickets:Update", "تعديل", "For Updating");
             await AddIfNotExists(DeleteTicketPermissionId, "Account:Tickets:Delete", "حذف", "For Deleting");
+            // Site - Read (NEW)
+            await AddIfNotExists(ReadAccountSitePermissionId, "Account:Site:Read", "قراءة", "For Reading Sites (Account)");
+            await AddIfNotExists(ReadPlatformSitePermissionId, "Platform:Site:Read", "قراءة", "For Reading Sites (Platform)");
 
             if (toInsert.Count == 0)
             {
